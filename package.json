@@ -13,27 +13,67 @@
     "jsonld"
   ],
   "author": {
-		"name": "Adler Faulkner",
-		"email": "adler@comake.io"
-	},
+    "name": "Adler Faulkner",
+    "email": "adler@comake.io"
+  },
   "bugs": {
     "url": "https://github.com/comake/skl-sync-server/issues"
   },
   "homepage": "https://github.com/comake/skl-sync-server#readme",
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server",
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server",
   "lsd:components": "dist/components/components.jsonld",
   "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/components/context.jsonld": "dist/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
   },
   "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/dist/": "dist/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/templates/config/": "templates/config/"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/": "dist/components/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/config/": "config/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/dist/": "dist/"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "scripts": {
-    "test": "npm run test:ts && npm run jest"
+  "bin": {
+    "skl-sync-server": "bin/server.js"
   },
+  "commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+  "scripts": {
+    "start": "node ./bin/server.js",
+    "build": "npm run build:ts && npm run build:components",
+    "build:components": "componentsjs-generator -s src -c dist/components -r scs",
+    "build:ts": "tsc",
+    "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
+    "jest": "jest --coverage --passWithNoTests",
+    "test": "npm run test:ts && npm run jest",
+    "test:ts": "tsc -p test --noEmit",
+    "test:integration": "jest --coverageReporters text-summary -- test/integration",
+    "test:unit": "jest --config=./jest.coverage.config.js test/unit",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@tsconfig/node14": "^1.0.3",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^18.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "componentsjs-generator": "^3.0.5",
+    "eslint": "^8.18.0",
+    "eslint-config-es": "^3.26.13",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^25.7.0",
+    "eslint-plugin-tsdoc": "^0.2.16",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.0",
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "componentsjs": "^5.2.0",
+    "jest": "^28.1.3"
+  }
 }
