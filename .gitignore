@@ -1,0 +1,10 @@
+.eslintcache
+componentsjs-error-state.json
+tsconfig.tsbuildinfo
+.DS_Store
+
+/coverage
+/data
+/dist
+/docs
+/node_modules
