@@ -1,0 +1,12 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Creates a server that supports HTTP requests.",
+      "@id": "urn:skl-app-server:default:ServerFactory",
+      "@type": "BaseHttpServerFactory",
+      "handler": { "@id": "urn:skl-app-server:default:HttpHandler" },
+      "options_showStackTrace": { "@id": "urn:skl-app-server:default:variable:showStackTrace" }
+    }
+  ]
+}

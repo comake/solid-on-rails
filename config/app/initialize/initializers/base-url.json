@@ -1,0 +1,13 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Logs a warning if the base URL changes.",
+      "@id": "urn:skl-app-server:default:BaseUrlVerifier",
+      "@type": "BaseUrlVerifier",
+      "baseUrl": { "@id": "urn:skl-app-server:default:variable:baseUrl" },
+      "storageKey": "current-base-url",
+      "storage": { "@id": "urn:skl-app-server:default:SetupStorage" }
+    }
+  ]
+}

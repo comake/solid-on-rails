@@ -1,0 +1,63 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Extracts CLI arguments into a key/value object. Config and mainModulePath are only defined here so their description is returned.",
+      "@id": "urn:skl-app-server-setup:default:CliExtractor",
+      "@type": "YargsCliExtractor",
+      "parameters": {
+        "config": {
+          "alias": "c",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "The configuration for the server. The default only stores data in memory; to persist to your filesystem, use @css:config/file.json."
+        },
+        "mainModulePath": {
+          "alias": "m",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "Path from where Components.js will start its lookup when initializing configurations."
+        },
+        "loggingLevel": {
+          "alias": "l",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "The detail level of logging; useful for debugging problems."
+        },
+        "modulePathPlaceholder": {
+          "alias": "o",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "A placeholder for the path to the `@comake/skl-app-server` module root. The 'resolveAssetPath' function of PathResolver will replace this string with the actual path"
+        },
+        "envVarPrefix": {
+          "alias": "v",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "Only environment variables starting with this prefix will be parsed when initializing configurations."
+        },
+        "baseUrl": {
+          "alias": "b",
+          "requiresArg": true,
+          "type": "string",
+          "describe": "The public URL of your server."
+        },
+        "port": {
+          "alias": "p",
+          "requiresArg": true,
+          "type": "number",
+          "describe": "The TCP port on which the server runs."
+        },
+        "showStackTrace": {
+          "alias": "t",
+          "type": "boolean",
+          "describe": "Enables detailed logging on error pages."
+        }
+      },
+      "options": {
+        "usage": "node ./bin/server.js [args]",
+        "loadFromEnv": true
+      }
+    }
+  ]
+}

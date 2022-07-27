@@ -10,8 +10,7 @@ module.exports = {
   testRegex: '/test/(unit|integration)/.*\\.test\\.ts$',
   moduleFileExtensions: [
     'ts',
-    'js',
-    'json'
+    'js'
   ],
   testEnvironment: 'node',
   collectCoverage: true,

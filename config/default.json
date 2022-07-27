@@ -1,0 +1,20 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sklas:config/app/main/default.json",
+    "files-sklas:config/app/initialize/default.json",
+    "files-sklas:config/app/finalize/default.json",
+    "files-sklas:config/app/variables/default.json",
+    "files-sklas:config/app/path/default.json",
+
+    "files-sklas:config/server/handler/default.json",
+    "files-sklas:config/server/middleware/default.json",
+    "files-sklas:config/server/server-factory/default.json",
+    "files-sklas:config/server/static/default.json",
+  ],
+  "@graph": [
+    {
+      "comment": "An SKL application server."
+    }
+  ]
+}

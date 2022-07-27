@@ -1,0 +1,16 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": [
+        "Sets up the global logging factory which is necessary for logging.",
+        "This needs to happen before any other activity takes places, since all other components depend on logging."
+      ],
+      "@id": "urn:skl-app-server:default:LoggerInitializer",
+      "@type": "LoggerInitializer",
+      "loggerFactory": {
+        "@id": "urn:skl-app-server:default:LoggerFactory"
+      }
+    }
+  ]
+}

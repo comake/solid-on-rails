@@ -1,0 +1,12 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Creates the server that starts listening for requests.",
+      "@id": "urn:skl-app-server:default:ServerInitializer",
+      "@type": "ServerInitializer",
+      "serverFactory": { "@id": "urn:skl-app-server:default:ServerFactory" },
+      "port": { "@id": "urn:skl-app-server:default:variable:port" }
+    }
+  ]
+}

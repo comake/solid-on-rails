@@ -1,0 +1,34 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Servers static files on fixed URLs.",
+      "@id": "urn:skl-app-server:default:StaticAssetHandler",
+      "@type": "StaticAssetHandler",
+      "options_expires": 86400,
+      "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" }
+      "assets": [
+        {
+          "StaticAssetHandler:_assets_key": "/favicon.ico",
+          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/favicon.ico"
+        },
+        {
+          "StaticAssetHandler:_assets_key": "/css/styles/",
+          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/styles/"
+        },
+        {
+          "StaticAssetHandler:_assets_key": "/css/fonts/",
+          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/fonts/"
+        },
+        {
+          "StaticAssetHandler:_assets_key": "/css/images/",
+          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/"
+        },
+        {
+          "StaticAssetHandler:_assets_key": "/css/scripts/",
+          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/scripts/"
+        }
+      ]
+    }
+  ]
+}

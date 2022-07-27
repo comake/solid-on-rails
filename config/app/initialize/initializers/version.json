@@ -1,0 +1,12 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Writes the version number to storage.",
+      "@id": "urn:skl-app-server:default:ModuleVersionVerifier",
+      "@type": "ModuleVersionVerifier",
+      "storageKey": "current-server-version",
+      "storage": { "@id": "urn:skl-app-server:default:SetupStorage" }
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
-  "name": "@comake/skl-sync-server",
+  "name": "@comake/skl-app-server",
   "version": "0.0.0",
-  "description": "Syncs data from various data sources using SKL.",
+  "description": "Runs a Node.js server using componentsjs preset with configurations for SKL.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/comake/skl-sync-server.git"
+    "url": "git+https://github.com/comake/skl-app-server.git"
   },
   "keywords": [
     "skl",
@@ -17,33 +17,39 @@
     "email": "adler@comake.io"
   },
   "bugs": {
-    "url": "https://github.com/comake/skl-sync-server/issues"
+    "url": "https://github.com/comake/skl-app-server/issues"
   },
-  "homepage": "https://github.com/comake/skl-sync-server#readme",
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server",
+  "homepage": "https://github.com/comake/skl-app-server#readme",
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server",
   "lsd:components": "dist/components/components.jsonld",
   "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
   },
   "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/dist/": "dist/"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/": "dist/components/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/config/": "config/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/dist/": "dist/"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "bin",
+    "dist",
+    "config",
+    "assets"
+  ],
   "bin": {
-    "skl-sync-server": "bin/server.js"
+    "skl-app-server": "bin/server.js"
   },
   "commitlint": {
-		"extends": [
-			"@commitlint/config-conventional"
-		]
-	},
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "scripts": {
     "start": "node ./bin/server.js",
     "build": "npm run build:ts && npm run build:components",
-    "build:components": "componentsjs-generator -s src -c dist/components -r scs",
+    "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore",
     "build:ts": "tsc",
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
     "jest": "jest --coverage --passWithNoTests",
@@ -57,11 +63,18 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@tsconfig/node14": "^1.0.3",
+    "@types/cors": "^2.8.12",
+    "@types/end-of-stream": "^1.4.1",
+    "@types/fs-extra": "^9.0.13",
     "@types/jest": "^28.1.6",
+    "@types/mime-types": "^2.1.1",
     "@types/node": "^18.6.1",
+    "@types/pump": "^1.1.1",
+    "@types/supertest": "^2.0.12",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
-    "componentsjs-generator": "^3.0.5",
+    "componentsjs-generator": "^2.6.1",
     "eslint": "^8.18.0",
     "eslint-config-es": "^3.26.13",
     "eslint-plugin-import": "^2.26.0",
@@ -73,7 +86,18 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "arrayify-stream": "^2.0.0",
     "componentsjs": "^5.2.0",
-    "jest": "^28.1.3"
+    "cors": "^2.8.5",
+    "end-of-stream": "^1.4.4",
+    "escape-string-regexp": "^4.0.0",
+    "fs-extra": "^10.1.0",
+    "jest": "^28.1.3",
+    "mime-types": "^2.1.35",
+    "node-mocks-http": "^1.11.0",
+    "pump": "^3.0.0",
+    "supertest": "^6.2.4",
+    "ws": "^8.8.1",
+    "yargs": "^17.5.1"
   }
 }
