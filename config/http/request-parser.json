@@ -1,0 +1,15 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "@id": "urn:skl-app-server:default:RequestParser",
+      "@type": "BasicRequestParser",
+      "args_urlExtractor": {
+        "@id": "urn:skl-app-server:default:UrlExtractor",
+        "@type": "OriginalUrlExtractor",
+        "args_includeQueryString": false
+      },
+      "args_bodyParser": { "@type": "RawBodyParser" }
+    }
+  ]
+}

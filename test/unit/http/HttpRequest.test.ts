@@ -1,4 +1,4 @@
-import { isHttpRequest } from '../../../src/server/HttpRequest';
+import { isHttpRequest } from '../../../src/http/HttpRequest';
 
 describe('HttpRequest', (): void => {
   describe('#isHttpRequest', (): void => {

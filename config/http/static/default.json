@@ -1,5 +1,5 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^4.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Servers static files on fixed URLs.",
@@ -13,19 +13,19 @@
           "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/favicon.ico"
         },
         {
-          "StaticAssetHandler:_assets_key": "/css/styles/",
+          "StaticAssetHandler:_assets_key": "/styles/",
           "StaticAssetHandler:_assets_value": "@sklAppServer:assets/styles/"
         },
         {
-          "StaticAssetHandler:_assets_key": "/css/fonts/",
+          "StaticAssetHandler:_assets_key": "/fonts/",
           "StaticAssetHandler:_assets_value": "@sklAppServer:assets/fonts/"
         },
         {
-          "StaticAssetHandler:_assets_key": "/css/images/",
+          "StaticAssetHandler:_assets_key": "/images/",
           "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/"
         },
         {
-          "StaticAssetHandler:_assets_key": "/css/scripts/",
+          "StaticAssetHandler:_assets_key": "/scripts/",
           "StaticAssetHandler:_assets_value": "@sklAppServer:assets/scripts/"
         }
       ]

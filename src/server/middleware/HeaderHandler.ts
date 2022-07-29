@@ -1,5 +1,5 @@
-import { HttpHandler } from '../HttpHandler';
-import type { HttpResponse } from '../HttpResponse';
+import { HttpHandler } from '../../http/handler/HttpHandler';
+import type { HttpResponse } from '../../http/HttpResponse';
 
 /**
  * Handler that sets custom headers on the response.

@@ -1,6 +1,9 @@
 import { createReadStream } from 'fs';
 import escapeStringRegexp from 'escape-string-regexp';
 import * as mime from 'mime-types';
+import { HttpHandler } from '../../http/handler/HttpHandler';
+import type { HttpHandlerInput } from '../../http/handler/HttpHandler';
+import type { HttpRequest } from '../../http/HttpRequest';
 import { getLoggerFor } from '../../logging/LogUtil';
 import { APPLICATION_OCTET_STREAM } from '../../util/ContentTypes';
 import { NotFoundHttpError } from '../../util/errors/NotFoundHttpError';
@@ -8,9 +11,6 @@ import { NotImplementedHttpError } from '../../util/errors/NotImplementedHttpErr
 import type { PathResolver } from '../../util/path/PathResolver';
 import { joinFilePath } from '../../util/PathUtil';
 import { pipeSafely } from '../../util/StreamUtil';
-import type { HttpHandlerInput } from '../HttpHandler';
-import { HttpHandler } from '../HttpHandler';
-import type { HttpRequest } from '../HttpRequest';
 
 /**
  * Handler that serves static resources on specific paths.

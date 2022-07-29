@@ -1,6 +1,6 @@
 import type { Server } from 'http';
 import { ServerInitializer } from '../../../../src/init/initialize/ServerInitializer';
-import type { HttpServerFactory } from '../../../../src/server/HttpServerFactory';
+import type { HttpServerFactory } from '../../../../src/server/factory/HttpServerFactory';
 
 describe('ServerInitializer', (): void => {
   let server: Server;

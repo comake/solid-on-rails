@@ -2,7 +2,7 @@
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
   "@graph": [
     {
-      "comment": "This version of the server has no IDP or pod provisioning.",
+      "comment": "Attempt to resolve requests first as static assets, then as normal routes.",
       "@id": "urn:skl-app-server:default:HttpHandler",
       "@type": "SequenceHandler",
       "handlers": [
@@ -11,7 +11,7 @@
           "@type": "WaterfallHandler",
           "handlers": [
             { "@id": "urn:skl-app-server:default:StaticAssetHandler" },
-            { "@id": "urn:skl-app-server:default:LdpHandler" }
+            { "@id": "urn:skl-app-server:default:RoutesHandler" }
           ]
         }
       ]

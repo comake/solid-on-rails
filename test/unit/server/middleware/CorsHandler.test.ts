@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createRequest, createResponse } from 'node-mocks-http';
-import type { HttpResponse } from '../../../../src/server/HttpResponse';
+import type { HttpResponse } from '../../../../src/http/HttpResponse';
 import { CorsHandler } from '../../../../src/server/middleware/CorsHandler';
 import { guardStream } from '../../../../src/util/GuardedStream';
 

@@ -1,0 +1,42 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sklas:config/http/error-handler.json",
+    "files-sklas:config/http/response-writer.json",
+    "files-sklas:config/http/request-parser.json",
+  ]
+  "@graph": [
+    {
+      "comment": "Handles input parsing.",
+      "@id": "urn:skl-app-server:default:RoutesHandler",
+      "@type": "ParsingHttpHandler",
+      "args_requestParser": { "@id": "urn:skl-app-server:default:RequestParser" },
+      "args_errorHandler": { "@id": "urn:skl-app-server:default:ErrorHandler" },
+      "args_responseWriter": { "@id": "urn:skl-app-server:default:ResponseWriter" },
+      "args_requestHandler": {
+        "comment": "Routes all requests to the proper handlers.",
+        "@type": "WaterfallHandler",
+        "handlers": [
+          {
+            "comment": [
+              "This handler is required to prevent Components.js issues with arrays.",
+              "This might be fixed in the next Components.js release after which this can be removed."
+            ],
+            "@type": "UnsupportedAsyncHandler"
+          },
+          { "@id": "urn:skl-app-server:auth:password:IndexRouteHandler" }
+        ]
+      }
+    },
+    {
+      "@id": "urn:skl-app-server:auth:password:IndexRouteHandler",
+      "@type": "RouteHandler",
+      "baseUrl": { "@id": "@id": "urn:skl-app-server:default:variable:baseUrl" },
+      "route": {
+        "path": "/",
+        "method": "GET"
+      },
+      "handler": {}
+    }
+  ]
+}

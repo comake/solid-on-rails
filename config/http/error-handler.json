@@ -1,0 +1,20 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Wraps around the main error handler as a fallback in case something goes wrong.",
+      "@id": "urn:skl-app-server:default:ErrorHandler",
+      "@type": "SafeErrorHandler",
+      "showStackTrace": { "@id": "urn:skl-app-server:default:variable:showStackTrace" },
+      "errorHandler": {
+        "@type": "WaterfallHandler",
+        "handlers": [
+          {
+            "comment": "Internally redirects are created by throwing a specific error, this handler converts them to the correct response.",
+            "@type": "RedirectingErrorHandler"
+          }
+        ]
+      }
+    }
+  ]
+}

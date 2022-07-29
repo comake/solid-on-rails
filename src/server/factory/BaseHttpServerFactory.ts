@@ -3,10 +3,10 @@ import type { Server, IncomingMessage, ServerResponse } from 'http';
 import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import { URL } from 'url';
-import { getLoggerFor } from '../logging/LogUtil';
-import { isError } from '../util/errors/ErrorUtil';
-import { guardStream } from '../util/GuardedStream';
-import type { HttpHandler } from './HttpHandler';
+import type { HttpHandler } from '../../http/handler/HttpHandler';
+import { getLoggerFor } from '../../logging/LogUtil';
+import { isError } from '../../util/errors/ErrorUtil';
+import { guardStream } from '../../util/GuardedStream';
 import type { HttpServerFactory } from './HttpServerFactory';
 
 /**

@@ -1,6 +1,6 @@
 import type { Server } from 'http';
 import { promisify } from 'util';
-import type { HttpServerFactory } from '../../server/HttpServerFactory';
+import type { HttpServerFactory } from '../../server/factory/HttpServerFactory';
 import type { Finalizable } from '../finalize/Finalizable';
 import { Initializer } from './Initializer';
 

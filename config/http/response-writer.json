@@ -1,0 +1,10 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Writes the result to the response stream.",
+      "@id": "urn:skl-app-server:default:ResponseWriter",
+      "@type": "BasicResponseWriter"
+    }
+  ]
+}

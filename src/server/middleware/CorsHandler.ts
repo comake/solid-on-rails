@@ -1,7 +1,7 @@
 import cors from 'cors';
 import type { CorsOptions, CorsRequest } from 'cors';
-import type { HttpHandlerInput } from '../HttpHandler';
-import { HttpHandler } from '../HttpHandler';
+import type { HttpHandlerInput } from '../../http/handler/HttpHandler';
+import { HttpHandler } from '../../http/handler/HttpHandler';
 
 const defaultOptions: CorsOptions = {
   origin: (origin: any, callback: any): void => callback(null, origin ?? '*'),

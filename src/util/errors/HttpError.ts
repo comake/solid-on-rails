@@ -35,18 +35,6 @@ export class HttpError<T extends number = number> extends Error implements HttpE
   public static isInstance(error: any): error is HttpError {
     return isError(error) && typeof (error as any).statusCode === 'number';
   }
-
-  /**
-   * Returns quads representing metadata relevant to this error.
-   */
-  // public generateMetadata(subject: Quad_Subject | string): Quad[] {
-  //   // The reason we have this here instead of the generate function below
-  //   // is because we still want errors created with `new HttpError` to be treated identical
-  //   // as errors created with the constructor of the error class corresponding to that specific status code.
-  //   return [
-  //     quad(toNamedTerm(subject), SOLID_ERROR.terms.errorResponse, generateHttpErrorUri(this.statusCode)),
-  //   ];
-  // }
 }
 
 /**

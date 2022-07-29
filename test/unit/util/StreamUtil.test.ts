@@ -1,8 +1,8 @@
 import { PassThrough, Readable } from 'stream';
 import arrayifyStream from 'arrayify-stream';
+import { isHttpRequest } from '../../../src/http/HttpRequest';
 import type { Logger } from '../../../src/logging/Logger';
 import { getLoggerFor } from '../../../src/logging/LogUtil';
-import { isHttpRequest } from '../../../src/server/HttpRequest';
 import {
   guardedStreamFrom, pipeSafely, transformSafely,
   readableToString, readJsonStream, getSingleItem,
@@ -15,7 +15,7 @@ jest.mock('../../../src/logging/LogUtil', (): any => {
 });
 const logger: jest.Mocked<Logger> = getLoggerFor('StreamUtil') as any;
 
-jest.mock('../../../src/server/HttpRequest', (): any => ({
+jest.mock('../../../src/http/HttpRequest', (): any => ({
   isHttpRequest: jest.fn(),
 }));
 

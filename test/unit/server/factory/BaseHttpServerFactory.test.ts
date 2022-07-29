@@ -1,11 +1,11 @@
 import type { Server } from 'http';
 import request from 'supertest';
-import type { BaseHttpServerOptions } from '../../../src/server/BaseHttpServerFactory';
-import { BaseHttpServerFactory } from '../../../src/server/BaseHttpServerFactory';
-import type { HttpHandler } from '../../../src/server/HttpHandler';
-import type { HttpResponse } from '../../../src/server/HttpResponse';
-import { joinFilePath } from '../../../src/util/PathUtil';
-import { getPort } from '../../util/Util';
+import type { HttpHandler } from '../../../../src/http/handler/HttpHandler';
+import type { HttpResponse } from '../../../../src/http/HttpResponse';
+import type { BaseHttpServerOptions } from '../../../../src/server/factory/BaseHttpServerFactory';
+import { BaseHttpServerFactory } from '../../../../src/server/factory/BaseHttpServerFactory';
+import { joinFilePath } from '../../../../src/util/PathUtil';
+import { getPort } from '../../../util/Util';
 
 const port = getPort('BaseHttpServerFactory');
 

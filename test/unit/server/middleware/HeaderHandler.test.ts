@@ -1,5 +1,5 @@
 import { createRequest, createResponse } from 'node-mocks-http';
-import type { HttpResponse } from '../../../../src/server/HttpResponse';
+import type { HttpResponse } from '../../../../src/http/HttpResponse';
 import { HeaderHandler } from '../../../../src/server/middleware/HeaderHandler';
 import { guardStream } from '../../../../src/util/GuardedStream';
 
