@@ -11,8 +11,14 @@
     "files-sklas:config/http/static/default.json",
     "files-sklas:config/http/routes/default.json",
 
+    "files-sklas:config/http/error-handler.json",
+    "files-sklas:config/http/response-writer.json",
+    "files-sklas:config/http/request-parser.json",
+
     "files-sklas:config/server/middleware/default.json",
     "files-sklas:config/server/server-factory/default.json",
+
+    "files-scs:config/storage/key-value/memory.json",
   ],
   "@graph": [
     {

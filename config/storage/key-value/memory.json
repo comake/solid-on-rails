@@ -1,0 +1,13 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-scs:config/storage/key-value/storages/setup.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Internal value storage.",
+      "@id": "urn:skl-app-server:default:KeyValueStorage",
+      "@type": "MemoryMapStorage"
+    }
+  ]
+}
