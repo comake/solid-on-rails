@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Servers static files on fixed URLs.",
       "@id": "urn:skl-app-server:default:StaticAssetHandler",
       "@type": "StaticAssetHandler",
       "options_expires": 86400,
-      "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" }
+      "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" },
       "assets": [
         {
           "StaticAssetHandler:_assets_key": "/favicon.ico",

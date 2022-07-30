@@ -1,0 +1,11 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Uses the winston library for logging",
+      "@id": "urn:skl-app-server:default:LoggerFactory",
+      "@type": "WinstonLoggerFactory",
+      "level": { "@id": "urn:skl-app-server:default:variable:loggingLevel" }
+    }
+  ]
+}

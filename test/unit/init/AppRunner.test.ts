@@ -142,7 +142,11 @@ describe('AppRunner', (): void => {
       expect(manager.configRegistry.register)
         .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:skl-app-server-setup:default:CliResolver', {});
+      expect(manager.instantiate).toHaveBeenNthCalledWith(
+        1,
+        'urn:skl-app-server-setup:default:CliResolver',
+        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+      );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
@@ -174,7 +178,11 @@ describe('AppRunner', (): void => {
       expect(manager.configRegistry.register)
         .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:skl-app-server-setup:default:CliResolver', {});
+      expect(manager.instantiate).toHaveBeenNthCalledWith(
+        1,
+        'urn:skl-app-server-setup:default:CliResolver',
+        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+      );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
         argv: [ 'node', 'script', '--envVarPrefix=CUSTOM_ENV_PREFIX' ],
@@ -253,7 +261,11 @@ describe('AppRunner', (): void => {
       expect(manager.configRegistry.register)
         .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:skl-app-server-setup:default:CliResolver', {});
+      expect(manager.instantiate).toHaveBeenNthCalledWith(
+        1,
+        'urn:skl-app-server-setup:default:CliResolver',
+        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+      );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);

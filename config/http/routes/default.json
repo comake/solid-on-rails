@@ -1,10 +1,10 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
   "import": [
     "files-sklas:config/http/error-handler.json",
     "files-sklas:config/http/response-writer.json",
     "files-sklas:config/http/request-parser.json",
-  ]
+  ],
   "@graph": [
     {
       "comment": "Handles input parsing.",
@@ -31,12 +31,14 @@
     {
       "@id": "urn:skl-app-server:auth:password:IndexRouteHandler",
       "@type": "RouteHandler",
-      "baseUrl": { "@id": "@id": "urn:skl-app-server:default:variable:baseUrl" },
       "route": {
         "path": "/",
         "method": "GET"
       },
-      "handler": {}
+      "handler": {
+        "@type": "StaticHandler",
+        "value": "do nothing"
+      }
     }
   ]
 }

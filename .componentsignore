@@ -1,5 +1,6 @@
 [
   "BaseHttpError",
   "Error",
-  "HttpErrorOptions"
+  "HttpErrorOptions",
+  "WinstonLogger"
 ]

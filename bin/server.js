@@ -2,7 +2,7 @@
 const { AppRunner } = require("..");
 
 const main = async () => {
-  new AppRunner().run();
+  new AppRunner().runCliSync(process);
 };
 
 main();

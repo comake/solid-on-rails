@@ -21,14 +21,6 @@
           }
         },
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:modulePathPlaceholder",
-          "CombinedSettingsResolver:_resolvers_value": {
-            "@type": "KeyExtractor",
-            "key": "modulePathPlaceholder",
-            "defaultValue": "sklAppServer"
-          }
-        },
-        {
           "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:port",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "KeyExtractor",

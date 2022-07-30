@@ -24,12 +24,6 @@
           "type": "string",
           "describe": "The detail level of logging; useful for debugging problems."
         },
-        "modulePathPlaceholder": {
-          "alias": "o",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "A placeholder for the path to the `@comake/skl-app-server` module root. The 'resolveAssetPath' function of PathResolver will replace this string with the actual path"
-        },
         "envVarPrefix": {
           "alias": "v",
           "requiresArg": true,

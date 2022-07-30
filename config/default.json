@@ -1,5 +1,5 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-sync-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
   "import": [
     "files-sklas:config/app/main/default.json",
     "files-sklas:config/app/initialize/default.json",
@@ -18,7 +18,10 @@
     "files-sklas:config/server/middleware/default.json",
     "files-sklas:config/server/server-factory/default.json",
 
-    "files-scs:config/storage/key-value/memory.json",
+    "files-sklas:config/storage/key-value/memory.json",
+
+    "files-sklas:config/util/variables/default.json",
+    "files-sklas:config/util/logging/winston.json",
   ],
   "@graph": [
     {

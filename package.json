@@ -49,7 +49,7 @@
   "scripts": {
     "start": "node ./bin/server.js",
     "build": "npm run build:ts && npm run build:components",
-    "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore",
+    "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore --typeScopedContexts",
     "build:ts": "tsc",
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
     "jest": "jest --coverage --passWithNoTests",
@@ -88,7 +88,7 @@
   },
   "dependencies": {
     "arrayify-stream": "^2.0.0",
-    "componentsjs": "^5.2.0",
+    "componentsjs": "^4.5.0",
     "cors": "^2.8.5",
     "end-of-stream": "^1.4.4",
     "escape-string-regexp": "^4.0.0",
@@ -100,6 +100,8 @@
     "pump": "^3.0.0",
     "supertest": "^6.2.4",
     "url-join": "^4.0.1",
+    "winston": "^3.8.1",
+    "winston-transport": "^4.5.0",
     "ws": "^8.8.1",
     "yargs": "^17.5.1"
   }

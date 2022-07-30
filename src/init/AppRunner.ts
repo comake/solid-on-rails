@@ -116,7 +116,7 @@ export class AppRunner {
     );
 
     // Build the CLI components and use them to generate values for the Components.js variables
-    const variables = await this.resolveVariables(componentsManager, argv, params.envVarPrefix);
+    const variables = await this.resolveVariables(componentsManager, argv, params);
 
     const app = await this.createApp(componentsManager, variables);
 
@@ -166,13 +166,18 @@ export class AppRunner {
   private async resolveVariables(
     componentsManager: ComponentsManager<CliResolver>,
     argv: string[],
-    envVarPrefix: string,
+    parameters: CliParameters,
   ): Promise<VariableBindings> {
     try {
       // Create a CliResolver, which combines a CliExtractor and a VariableResolver
-      const resolver = await componentsManager.instantiate(DEFAULT_CLI_RESOLVER, {});
+      const resolver = await componentsManager.instantiate(DEFAULT_CLI_RESOLVER, {
+        variables: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          'urn:skl-app-server:default:variable:modulePathPlaceholder': parameters.modulePathPlaceholder,
+        },
+      });
       // Convert CLI args to CLI bindings
-      const cliValues = await resolver.cliExtractor.handleSafe({ argv, envVarPrefix });
+      const cliValues = await resolver.cliExtractor.handleSafe({ argv, envVarPrefix: parameters.envVarPrefix });
       // Convert CLI bindings into variable bindings
       return await resolver.settingsResolver.handleSafe(cliValues);
     } catch (error: unknown) {
