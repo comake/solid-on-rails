@@ -20,6 +20,7 @@ export * from './http/output/error/RedirectingErrorHandler';
 export * from './http/output/error/SafeErrorHandler';
 
 // Http/Output/Response
+export * from './http/output/response/OkResponseDescription';
 export * from './http/output/response/RedirectResponseDescription';
 export * from './http/output/response/ResponseDescription';
 
@@ -83,6 +84,7 @@ export * from './server/middleware/HeaderHandler';
 export * from './server/middleware/StaticAssetHandler';
 
 // Server/Routing
+export * from './server/routing/IndexViewHandler';
 export * from './server/routing/RouteHandler';
 export * from './server/ParsedRequestHandler';
 
@@ -126,6 +128,11 @@ export * from './util/handlers/WaterfallHandler';
 // Util/Path
 export * from './util/path/PathResolver';
 export * from './util/path/PlaceholderPathResolver';
+
+// Util/Templates
+export * from './util/templates/ChainedTemplateEngine';
+export * from './util/templates/EjsTemplateEngine';
+export * from './util/templates/TemplateEngine';
 
 // Util
 export * from './util/ContentTypes';

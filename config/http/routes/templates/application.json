@@ -1,0 +1,23 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Renders the specific page and embeds it into the main HTML body.",
+      "@id": "urn:skl-app-server:default:ApplicationTemplateEngine",
+      "@type": "ChainedTemplateEngine",
+      "engines": [
+        {
+          "comment": "Will be called with specific templates to generate HTML snippets.",
+          "@type": "EjsTemplateEngine",
+          "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" }
+        },
+        {
+          "comment": "Will embed the result of the first engine into the main HTML template.",
+          "@type": "EjsTemplateEngine",
+          "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" },
+          "template": "@sklAppServer:assets/views/templates/application.html.ejs"
+        }
+      ]
+    }
+  ]
+}

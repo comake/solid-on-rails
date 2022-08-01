@@ -36,9 +36,15 @@ describe('A OriginalUrlExtractor', (): void => {
       .resolves.toEqual(new URL('http://test.com/url'));
   });
 
+  it('includes query strings by default.', async(): Promise<void> => {
+    extractor = new OriginalUrlExtractor({});
+    await expect(extractor.handle({ request: { url: '/url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
+      .resolves.toEqual(new URL('http://test.com/url?abc=def&xyz'));
+  });
+
   it('returns an input URL with multiple leading slashes.', async(): Promise<void> => {
-    const noQuery = new OriginalUrlExtractor({ includeQueryString: true });
-    await expect(noQuery.handle({ request: { url: '///url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
+    extractor = new OriginalUrlExtractor({ includeQueryString: true });
+    await expect(extractor.handle({ request: { url: '///url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
       .resolves.toEqual(new URL('http://test.com///url?abc=def&xyz'));
   });
 

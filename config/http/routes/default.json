@@ -4,6 +4,7 @@
     "files-sklas:config/http/error-handler.json",
     "files-sklas:config/http/response-writer.json",
     "files-sklas:config/http/request-parser.json",
+    "files-sklas:config/http/routes/templates/application.json",
   ],
   "@graph": [
     {
@@ -36,8 +37,9 @@
         "method": "GET"
       },
       "handler": {
-        "@type": "StaticHandler",
-        "value": "do nothing"
+        "@type": "IndexViewHandler",
+        "template": "@sklAppServer:assets/views/index.html.ejs",
+        "templateEngine": { "@id": "urn:skl-app-server:default:ApplicationTemplateEngine" }
       }
     }
   ]

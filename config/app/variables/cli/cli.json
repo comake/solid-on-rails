@@ -10,7 +10,7 @@
           "alias": "c",
           "requiresArg": true,
           "type": "string",
-          "describe": "The configuration for the server. The default only stores data in memory; to persist to your filesystem, use @css:config/file.json."
+          "describe": "The configuration for the server. The default only stores data in memory; to persist to your filesystem, use @sklAppServer:config/file.json."
         },
         "mainModulePath": {
           "alias": "m",
