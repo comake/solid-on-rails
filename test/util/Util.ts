@@ -4,24 +4,8 @@ import type { SystemError } from '../../src/util/errors/SystemError';
 
 const portNames = [
   // Integration
-  'Conditions',
-  'ContentNegotiation',
-  'ExpiringDataCleanup',
-  'FileBackendEncodedSlashHandling',
-  'GlobalQuota',
-  'Identity',
-  'LpdHandlerWithAuth',
-  'LpdHandlerWithoutAuth',
+  'Job',
   'Middleware',
-  'N3Patch',
-  'PermissionTable',
-  'RedisLocker',
-  'RestrictedIdentity',
-  'SeedingPods',
-  'ServerFetch',
-  'SetupMemory',
-  'SparqlStorage',
-  'Subdomains',
   // Unit
   'BaseHttpServerFactory',
 ] as const;
