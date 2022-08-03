@@ -1,0 +1,19 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "@id": "urn:skl-app-server:default:JobScheduler",
+      "@type": "ConfigJobScheduler",
+      "scheduler": {
+        "@type": "AdapterBasedScheduler",
+        "adapter": "urn:skl-app-server:default:QueueAdapter"
+      },
+      "schedules": [
+        {
+          "jobName": "Void",
+          "cron": "0 1 * * *"
+        }
+      ]
+    }
+  ]
+}

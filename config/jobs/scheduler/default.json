@@ -3,7 +3,7 @@
   "@graph": [
     {
       "@id": "urn:skl-app-server:default:JobScheduler",
-      "@type": "JobScheduler",
+      "@type": "AdapterBasedScheduler",
       "adapter": "urn:skl-app-server:default:QueueAdapter"
     }
   ]
