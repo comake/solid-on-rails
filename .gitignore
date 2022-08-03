@@ -2,6 +2,7 @@
 componentsjs-error-state.json
 tsconfig.tsbuildinfo
 .DS_Store
+.npmrc
 
 /coverage
 /data
