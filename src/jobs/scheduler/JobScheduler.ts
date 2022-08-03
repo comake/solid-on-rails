@@ -14,6 +14,10 @@ export interface JobOptions {
    * Can either be specified as a Cron string or a number in milliseconds.
    */
   every?: Cron | number;
+  /**
+   * The name of a queue to run the job on instead of the job's default queue.
+   */
+  queue?: string;
 }
 
 export interface JobScheduler {

@@ -63,6 +63,18 @@ export * from './init/App';
 export * from './init/AppRunner';
 export * from './init/CliResolver';
 
+// Jobs/Adapter
+export * from './jobs/adapter/BullQueueAdapter';
+export * from './jobs/adapter/QueueAdapter';
+
+// Jobs/Scheduler
+export * from './jobs/scheduler/AdapterBasedScheduler';
+export * from './jobs/scheduler/JobScheduler';
+
+// Jobs
+export * from './jobs/Job';
+export * from './jobs/VoidJob';
+
 // Logging
 export * from './logging/LazyLoggerFactory';
 export * from './logging/Logger';
@@ -140,3 +152,5 @@ export * from './util/GuardedStream';
 export * from './util/HeaderUtil';
 export * from './util/PathUtil';
 export * from './util/StreamUtil';
+export * from './util/StringUtil';
+export * from './util/TimerUtil';

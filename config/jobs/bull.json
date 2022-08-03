@@ -6,6 +6,15 @@
       "@type": "BullQueueAdapter",
       "queues": [
         "default"
+      ],
+      "jobs": [
+        {
+          "JobScheduler:_jobs_key": "Void",
+          "JobScheduler:_jobs_value": {
+            "@type": "VoidJob",
+            "queue": "default"
+          }
+        }
       ]
     }
   ]

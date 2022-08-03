@@ -1,9 +1,9 @@
-import type { Job } from './Job';
+import { Job } from './Job';
 
 /**
  * A job that does nothing.
  */
-export class VoidJob implements Job {
+export class VoidJob extends Job {
   public async perform(): Promise<void> {
     // Do nothing
   }
