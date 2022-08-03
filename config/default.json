@@ -21,7 +21,7 @@
     "files-sklas:config/storage/key-value/memory.json",
 
     "files-sklas:config/jobs/scheduler/default.json",
-    "files-sklas:config/jobs/adapter/bull.json",
+    "files-sklas:config/jobs/bull.json",
 
     "files-sklas:config/util/variables/default.json",
     "files-sklas:config/util/logging/winston.json",

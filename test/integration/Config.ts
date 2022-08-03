@@ -45,6 +45,7 @@ export async function removeFolder(folder: string): Promise<void> {
 
 export function getDefaultVariables(port: number, baseUrl?: string): Record<string, any> {
   return {
+    'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:',
     'urn:skl-app-server:default:variable:baseUrl': baseUrl ?? `http://localhost:${port}/`,
     'urn:skl-app-server:default:variable:port': port,
     'urn:skl-app-server:default:variable:loggingLevel': 'off',

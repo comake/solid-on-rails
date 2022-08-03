@@ -4,13 +4,13 @@
     {
       "@id": "urn:skl-app-server:default:QueueAdapter",
       "@type": "BullQueueAdapter",
-      "queues": [
+      "args_queues": [
         "default"
       ],
-      "jobs": [
+      "args_jobs": [
         {
-          "JobScheduler:_jobs_key": "Void",
-          "JobScheduler:_jobs_value": {
+          "BullQueueAdapter:_args_jobs_key": "Void",
+          "BullQueueAdapter:_args_jobs_value": {
             "@type": "VoidJob",
             "queue": "default"
           }

@@ -44,6 +44,7 @@ export * from './init/finalize/ParallelFinalizer';
 // Init/Initialize
 export * from './init/initialize/BaseUrlVerifier';
 export * from './init/initialize/Initializer';
+export * from './init/initialize/JobSchedulesInitializer';
 export * from './init/initialize/LoggerInitializer';
 export * from './init/initialize/ModuleVersionVerifier';
 export * from './init/initialize/ServerInitializer';
@@ -151,6 +152,7 @@ export * from './util/ContentTypes';
 export * from './util/GuardedStream';
 export * from './util/HeaderUtil';
 export * from './util/PathUtil';
+export * from './util/RecordObject';
 export * from './util/StreamUtil';
 export * from './util/StringUtil';
 export * from './util/TimerUtil';
