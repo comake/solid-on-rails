@@ -1,0 +1,18 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "@id": "urn:skl-app-server:auth:password:IndexRouteHandler",
+      "@type": "RouteHandler",
+      "route": {
+        "path": "/",
+        "method": "GET"
+      },
+      "handler": {
+        "@type": "IndexViewHandler",
+        "template": "@sklAppServer:assets/views/index.html.ejs",
+        "templateEngine": { "@id": "urn:skl-app-server:default:ApplicationTemplateEngine" }
+      }
+    }
+  ]
+}

@@ -4,7 +4,8 @@
     "files-sklas:config/app/initialize/initializers/base-url.json",
     "files-sklas:config/app/initialize/initializers/logger.json",
     "files-sklas:config/app/initialize/initializers/server.json",
-    "files-sklas:config/app/initialize/initializers/version.json"
+    "files-sklas:config/app/initialize/initializers/version.json",
+    "files-sklas:config/app/initialize/initializers/job-schedules.json"
   ],
   "@graph": [
     {
@@ -16,7 +17,8 @@
         { "@id": "urn:skl-app-server:default:BaseUrlVerifier" },
         { "@id": "urn:skl-app-server:default:ParallelInitializer" },
         { "@id": "urn:skl-app-server:default:ServerInitializer" },
-        { "@id": "urn:skl-app-server:default:ModuleVersionVerifier" }
+        { "@id": "urn:skl-app-server:default:ModuleVersionVerifier" },
+        { "@id": "urn:skl-app-server:default:JobSchedulesInitializer" }
       ]
     },
     {

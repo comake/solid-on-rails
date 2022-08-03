@@ -44,6 +44,7 @@ export * from './init/finalize/ParallelFinalizer';
 // Init/Initialize
 export * from './init/initialize/BaseUrlVerifier';
 export * from './init/initialize/Initializer';
+export * from './init/initialize/JobSchedulesInitializer';
 export * from './init/initialize/LoggerInitializer';
 export * from './init/initialize/ModuleVersionVerifier';
 export * from './init/initialize/ServerInitializer';
@@ -62,6 +63,18 @@ export * from './init/variables/SettingsResolver';
 export * from './init/App';
 export * from './init/AppRunner';
 export * from './init/CliResolver';
+
+// Jobs/Adapter
+export * from './jobs/adapter/BullQueueAdapter';
+export * from './jobs/adapter/QueueAdapter';
+
+// Jobs/Scheduler
+export * from './jobs/scheduler/AdapterBasedScheduler';
+export * from './jobs/scheduler/JobScheduler';
+
+// Jobs
+export * from './jobs/Job';
+export * from './jobs/VoidJob';
 
 // Logging
 export * from './logging/LazyLoggerFactory';
@@ -139,4 +152,7 @@ export * from './util/ContentTypes';
 export * from './util/GuardedStream';
 export * from './util/HeaderUtil';
 export * from './util/PathUtil';
+export * from './util/RecordObject';
 export * from './util/StreamUtil';
+export * from './util/StringUtil';
+export * from './util/TimerUtil';

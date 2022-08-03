@@ -4,24 +4,8 @@ import type { SystemError } from '../../src/util/errors/SystemError';
 
 const portNames = [
   // Integration
-  'Conditions',
-  'ContentNegotiation',
-  'ExpiringDataCleanup',
-  'FileBackendEncodedSlashHandling',
-  'GlobalQuota',
-  'Identity',
-  'LpdHandlerWithAuth',
-  'LpdHandlerWithoutAuth',
+  'Job',
   'Middleware',
-  'N3Patch',
-  'PermissionTable',
-  'RedisLocker',
-  'RestrictedIdentity',
-  'SeedingPods',
-  'ServerFetch',
-  'SetupMemory',
-  'SparqlStorage',
-  'Subdomains',
   // Unit
   'BaseHttpServerFactory',
 ] as const;
@@ -299,4 +283,27 @@ export function mockFileSystem(rootFilepath?: string, time?: Date): { data: any 
   Object.assign(fsExtra, mockFsExtra);
 
   return cache;
+}
+
+export async function executeSequentially(
+  arrayOfFnWrappedPromises: (() => Promise<any>)[],
+  returnedValues: any[] = [],
+): Promise<any[]> {
+  const firstPromise = arrayOfFnWrappedPromises.shift();
+  if (firstPromise) {
+    return firstPromise()
+      .then((returnValue: any): Promise<any[]> => {
+        returnedValues.push(returnValue);
+        return executeSequentially(arrayOfFnWrappedPromises, returnedValues);
+      });
+  }
+
+  return Promise.resolve(returnedValues);
+}
+
+export async function advanceTimersByTimeAndFlushPromises(flush: boolean, time: number): Promise<void> {
+  jest.advanceTimersByTime(time);
+  if (flush) {
+    await flushPromises();
+  }
 }
