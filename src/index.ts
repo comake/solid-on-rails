@@ -155,4 +155,3 @@ export * from './util/PathUtil';
 export * from './util/RecordObject';
 export * from './util/StreamUtil';
 export * from './util/StringUtil';
-export * from './util/TimerUtil';

@@ -16,13 +16,14 @@ describe('An http server with preconfigured jobs', (): void => {
   let jobValue = '';
   let process: any;
   let add: any;
+  let on: any;
   let bullConstructor: any;
   let registeredJobs: Record<string, (data: any) => Promise<void>>;
 
   beforeEach(async(): Promise<void> => {
     registeredJobs = {};
     process = jest.fn().mockImplementation(
-      async(jobName: string, processFn: (bullJob: any) => Promise<void>): Promise<void> => {
+      (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
       },
     );
@@ -33,7 +34,9 @@ describe('An http server with preconfigured jobs', (): void => {
       },
     );
 
-    bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add } as any));
+    on = jest.fn();
+
+    bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add, on } as any));
     (Bull as jest.Mock).mockImplementation(bullConstructor);
 
     const adapter = new BullQueueAdapter({

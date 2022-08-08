@@ -1,6 +1,6 @@
 import type { Queue } from 'bull';
 import Bull from 'bull';
-import { wait } from '../../util/TimerUtil';
+import { getLoggerFor } from '../../logging/LogUtil';
 import type { Job } from '../Job';
 import type { JobOptions } from '../scheduler/JobScheduler';
 import type { QueueAdapter } from './QueueAdapter';
@@ -24,10 +24,7 @@ export interface BullQueueAdapterArgs {
  * distributed job processing library.
  */
 export class BullQueueAdapter implements QueueAdapter {
-  public static readonly maxInitializationTimeout = 500;
-  public static readonly initializationCheckPeriod = 50;
-  private hasInitializedQueues = false;
-  private isInitializingQueues = false;
+  protected readonly logger = getLoggerFor(this);
   private readonly jobs: Record<string, Job>;
   private readonly queues: Record<string, Queue> = {};
 
@@ -35,25 +32,14 @@ export class BullQueueAdapter implements QueueAdapter {
     this.jobs = args.jobs;
     for (const queue of args.queues) {
       this.queues[queue] = new Bull(queue, { redis: args.redisConfig });
-    }
-    this.ensureQueuesAreInitialized()
-      .catch((): void => {
-        // Do nothing?
-      });
-  }
-
-  private async initializeQueues(): Promise<void> {
-    this.isInitializingQueues = true;
-    const bullQueues = Object.values(this.queues);
-    // Register every job to be processable on every queue
-    const processPromises = Object.keys(this.jobs).flatMap((jobName: string): Promise<void>[] =>
-      bullQueues.map((queue): Promise<void> =>
-        queue.process(jobName, async(bullJob): Promise<void> => {
+      // Register every job to be processable on every queue
+      for (const jobName of Object.keys(this.jobs)) {
+        this.queues[queue].process(jobName, async(bullJob): Promise<void> => {
           await this.jobs[jobName].perform(bullJob.data);
-        })));
-    await Promise.all(processPromises);
-    this.hasInitializedQueues = true;
-    this.isInitializingQueues = false;
+        }) as any;
+      }
+      this.initializeQueueEvents(this.queues[queue]);
+    }
   }
 
   public async performLater(
@@ -61,7 +47,6 @@ export class BullQueueAdapter implements QueueAdapter {
     data: Record<string, any> = {},
     options: JobOptions = {},
   ): Promise<void> {
-    await this.ensureQueuesAreInitialized();
     const job = this.jobs[jobName];
     if (!job) {
       throw new Error(`Job '${jobName}' is not defined`);
@@ -75,19 +60,6 @@ export class BullQueueAdapter implements QueueAdapter {
 
     const bullOptions = this.jobOptionsToBullOptions(options);
     await queue.add(jobName, data, bullOptions);
-  }
-
-  private async ensureQueuesAreInitialized(waitTime = 0): Promise<void> {
-    if (!this.hasInitializedQueues && !this.isInitializingQueues) {
-      await this.initializeQueues();
-    } else if (!this.hasInitializedQueues && this.isInitializingQueues &&
-      waitTime <= BullQueueAdapter.maxInitializationTimeout
-    ) {
-      await wait(BullQueueAdapter.initializationCheckPeriod);
-      await this.ensureQueuesAreInitialized(waitTime + BullQueueAdapter.initializationCheckPeriod);
-    } else if (!this.hasInitializedQueues) {
-      throw new Error('Failed to initialize Bull queues.');
-    }
   }
 
   private jobOptionsToBullOptions(options: JobOptions): Bull.JobOptions {
@@ -119,5 +91,27 @@ export class BullQueueAdapter implements QueueAdapter {
     } else if (delayValue && typeof delayValue === 'number') {
       object[fieldName] = delayValue;
     }
+  }
+
+  private initializeQueueEvents(queue: Queue): void {
+    queue.on('error', (error): void => {
+      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}`);
+    });
+
+    queue.on('active', (job): void => {
+      this.logger.info(`Job ${job.name} has started on queue ${queue.name}`);
+    });
+
+    queue.on('stalled', (job): void => {
+      this.logger.info(`Job ${job.name} has been marked as stalled on queue ${queue.name}`);
+    });
+
+    queue.on('completed', (job): void => {
+      this.logger.info(`Job ${job.name} successfully completed on queue ${queue.name}`);
+    });
+
+    queue.on('failed', (job, error): void => {
+      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}`);
+    });
   }
 }

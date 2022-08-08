@@ -5,3 +5,4 @@ A template for SKL applications
 # TODO
  - [ ] Break up BaseHttpServerFactory createServer function
  - [ ] UiEnabledConverter?
+ - [ ] log info about jobs

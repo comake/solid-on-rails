@@ -1,7 +1,6 @@
 import Bull from 'bull';
 import { BullQueueAdapter } from '../../../../src/jobs/adapter/BullQueueAdapter';
 import type { Job } from '../../../../src/jobs/Job';
-import { advanceTimersByTimeAndFlushPromises, executeSequentially } from '../../../util/Util';
 
 jest.mock('bull');
 
@@ -18,6 +17,7 @@ describe('A BullQueueAdapter', (): void => {
   let jobs: Record<string, Job>;
   let process: any;
   let add: any;
+  let on: any;
   let bullConstructor: any;
   const redisConfig = { port: 6379, host: '127.0.0.1' };
   let adapter: BullQueueAdapter;
@@ -26,15 +26,14 @@ describe('A BullQueueAdapter', (): void => {
   beforeEach(async(): Promise<void> => {
     queues = [ queue ];
     registeredJobs = {};
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    perform = jest.fn().mockImplementation(async(data): Promise<void> => {
+    perform = jest.fn().mockImplementation(async(): Promise<void> => {
       // Do nothing
     });
     job = { perform, queue };
     jobs = { example: job };
 
     process = jest.fn().mockImplementation(
-      async(jobName: string, processFn: (bullJob: any) => Promise<void>): Promise<void> => {
+      (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
       },
     );
@@ -46,7 +45,10 @@ describe('A BullQueueAdapter', (): void => {
         }
       },
     );
-    bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add } as any));
+
+    on = jest.fn();
+
+    bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add, on } as any));
     (Bull as jest.Mock).mockImplementation(bullConstructor);
   });
 
@@ -69,33 +71,6 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { queue: 'critical' }))
       .rejects.toThrow('Queue \'critical\' is not defined');
-  });
-
-  it('errors when queues are not initialized within the max initialization timeout.', async(): Promise<void> => {
-    jest.useFakeTimers();
-    // Make the queue process function take a long time
-    process.mockImplementation(
-      async(): Promise<void> => new Promise((resolve): void => {
-        setTimeout(resolve, 1000);
-      }),
-    );
-
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
-    const promise = adapter.performLater('example');
-    const retries = (BullQueueAdapter.maxInitializationTimeout / BullQueueAdapter.initializationCheckPeriod) + 1;
-    await executeSequentially(
-      [ ...Array.from({ length: retries }).keys() ]
-        .map((index): () => Promise<void> =>
-          advanceTimersByTimeAndFlushPromises.bind(
-            this,
-            index !== retries - 1,
-            BullQueueAdapter.initializationCheckPeriod,
-          )),
-    );
-
-    await expect(promise).rejects.toThrow('Failed to initialize Bull queues.');
-    jest.runAllTimers();
-    jest.useRealTimers();
   });
 
   it('adds the job to the queue if the job and queue are defined.', async(): Promise<void> => {
