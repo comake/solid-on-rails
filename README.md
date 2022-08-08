@@ -1,7 +1,8 @@
-# Standard Knowledge Language Sync Server
+# Standard Knowledge Language Application Server
 
-Syncs data from various data sources using SKL.
+A template for SKL applications
 
 # TODO
  - [ ] Break up BaseHttpServerFactory createServer function
  - [ ] UiEnabledConverter?
+ - [ ] log info about jobs
