@@ -5,7 +5,7 @@ import { BullQueueAdapter } from '../../src/jobs/adapter/BullQueueAdapter';
 import { getPort } from '../util/Util';
 import { getTestConfigPath, instantiateFromConfig, getDefaultVariables } from './Config';
 
-const port = getPort('Middleware');
+const port = getPort('Job');
 const baseUrl = `http://localhost:${port}`;
 
 jest.mock('bull');

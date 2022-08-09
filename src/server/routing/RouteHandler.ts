@@ -54,6 +54,7 @@ export class RouteHandler extends ParsedRequestHandler {
   }
 
   public async handle(input: ParsedRequestHandlerInput): Promise<ResponseDescription> {
+    input.request.pathParams = this.getPathParams(input.request.url.pathname);
     return await this.handler.handle(input);
   }
 
@@ -77,5 +78,20 @@ export class RouteHandler extends ParsedRequestHandler {
 
   private getSubdomainFromUrl(url: URL): string {
     return url.host.split('.').slice(0, -2).join('.');
+  }
+
+  private getPathParams(path: string): Record<string, string> {
+    const pathVars = this.pathRegex.exec(path);
+    if (pathVars) {
+      return this.pathKeys.reduce((
+        obj: Record<string, string>,
+        key: Key,
+        index: number,
+      ): Record<string, string> => {
+        obj[key.name] = pathVars[index + 1];
+        return obj;
+      }, {});
+    }
+    return {};
   }
 }
