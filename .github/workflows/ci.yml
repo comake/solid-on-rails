@@ -82,7 +82,10 @@ jobs:
       - name: Install dependencies and run build scripts
         run: npm ci
       - name: Run deploy tests
-        run: npm run test:deploy
+        run: |
+          # make file runnable, might not be necessary
+          chmod +x "./test/deploy/validate-package.sh"
+          ./test/deploy/validate-package.sh
   test-integration:
     runs-on: ubuntu-latest
     strategy:

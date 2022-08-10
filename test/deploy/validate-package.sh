@@ -6,8 +6,8 @@ TEST_NAME="Deployment test: packaged module"
 
 echo "$TEST_NAME - Building and installing package"
 npm pack --loglevel warn
-npm install -g skl-app-server-*.tgz --loglevel warn
-rm skl-app-server-*.tgz
+npm install -g comake-skl-app-server-*.tgz --loglevel warn
+rm comake-skl-app-server-*.tgz
 
 echo "$TEST_NAME - Starting the server"
 skl-app-server -p 8888 -l warn &
