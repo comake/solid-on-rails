@@ -3,6 +3,9 @@
     "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
     { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
   ],
+  "import": [
+    "files-sklas:config/storage/data-mapper/init/initializer.json",
+  ],
   "@graph": [
     {
       "@id": "urn:skl-app-server:default:DataMapper",
@@ -18,24 +21,6 @@
         "password": "abc123",
         "database": "development"
       }
-    },
-    {
-      "comment": "Logs a warning if the base URL changes.",
-      "@id": "urn:skl-app-server:default:DataMapperInitializer",
-      "@type": "DataMapperInitializer",
-      "dataMapper": { "@id": "urn:skl-app-server:default:DataMapper" }
-    },
-    {
-      "comment": "Ensure the preconfigured Job schedules get initialized.",
-      "@id": "urn:skl-app-server:default:ParallelInitializer",
-      "ParallelHandler:_handlers": [
-        { "@id": "urn:skl-app-server:default:DataMapperInitializer" }
-      ]
-    },
-    {
-      "comment": "Makes sure the data mapper disconnects from it's database when the application needs to stop.",
-      "@id": "urn:solid-server:default:Finalizer",
-      "ParallelFinalizer:_finalizers": [ { "@id": "urn:solid-server:default:ExpiringForgotPasswordStorage" } ]
     }
   ]
 }
