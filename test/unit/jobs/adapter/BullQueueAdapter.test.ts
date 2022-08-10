@@ -1,8 +1,16 @@
 import Bull from 'bull';
 import { BullQueueAdapter } from '../../../../src/jobs/adapter/BullQueueAdapter';
 import type { Job } from '../../../../src/jobs/Job';
+import type { Logger } from '../../../../src/logging/Logger';
+import { getLoggerFor } from '../../../../src/logging/LogUtil';
 
 jest.mock('bull');
+
+jest.mock('../../../../src/logging/LogUtil', (): any => {
+  const logger: Logger = { info: jest.fn() } as any;
+  return { getLoggerFor: (): Logger => logger };
+});
+const logger: jest.Mocked<Logger> = getLoggerFor('StreamUtil') as any;
 
 Date.now = jest.fn((): number => 1659490735295);
 const dayInMs = 1000 * 60 * 60 * 24;
@@ -22,8 +30,13 @@ describe('A BullQueueAdapter', (): void => {
   const redisConfig = { port: 6379, host: '127.0.0.1' };
   let adapter: BullQueueAdapter;
   let registeredJobs: Record<string, (data: any) => Promise<void>>;
+  let registeredEvents: Record<string, (...args: any[]) => void>;
+  let error: Error | undefined;
+  let stalled: boolean;
 
   beforeEach(async(): Promise<void> => {
+    jest.clearAllMocks();
+
     queues = [ queue ];
     registeredJobs = {};
     perform = jest.fn().mockImplementation(async(): Promise<void> => {
@@ -38,17 +51,33 @@ describe('A BullQueueAdapter', (): void => {
       },
     );
 
+    error = undefined;
+    stalled = false;
     add = jest.fn().mockImplementation(
       async(jobName: string, data: any, options: any): Promise<void> => {
         if (!options.repeat && !options.delay) {
-          await registeredJobs[jobName]({ data });
+          const jobDetails = { name: jobName };
+          registeredEvents.active(jobDetails);
+          if (error) {
+            registeredEvents.failed(jobDetails, error);
+            registeredEvents.error(error);
+          } else {
+            if (stalled) {
+              registeredEvents.stalled(jobDetails);
+            }
+            await registeredJobs[jobName]({ data });
+            registeredEvents.completed(jobDetails);
+          }
         }
       },
     );
 
-    on = jest.fn();
+    registeredEvents = {};
+    on = jest.fn().mockImplementation((event: string, handler: () => void): void => {
+      registeredEvents[event] = handler;
+    });
 
-    bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add, on } as any));
+    bullConstructor = jest.fn().mockImplementation((name: string): Bull.Queue => ({ process, add, on, name } as any));
     (Bull as jest.Mock).mockImplementation(bullConstructor);
   });
 
@@ -59,6 +88,9 @@ describe('A BullQueueAdapter', (): void => {
     expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
   });
 
   it('errors when attempting to perform a job which has not been defined.', async(): Promise<void> => {
@@ -164,5 +196,54 @@ describe('A BullQueueAdapter', (): void => {
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { delay: 1000 });
     expect(perform).toHaveReturnedTimes(0);
+  });
+
+  it('logs message about a job starting then erroring.', async(): Promise<void> => {
+    error = new Error('Job failed');
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await adapter.performLater('example');
+    expect(bullConstructor).toHaveBeenCalledTimes(1);
+    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(1);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
+    expect(logger.info).toHaveBeenCalledTimes(3);
+    expect(logger.info).toHaveBeenNthCalledWith(1, 'Job example has started on queue default');
+    expect(logger.info).toHaveBeenNthCalledWith(2, 'Job example on queue default failed with reason: Job failed');
+    expect(logger.info).toHaveBeenNthCalledWith(3, 'An error occured in queue default: Job failed');
+  });
+
+  it('logs a message about a job starting then completing.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await adapter.performLater('example');
+    expect(bullConstructor).toHaveBeenCalledTimes(1);
+    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(1);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
+    expect(logger.info).toHaveBeenCalledTimes(2);
+    expect(logger.info).toHaveBeenNthCalledWith(1, 'Job example has started on queue default');
+    expect(logger.info).toHaveBeenNthCalledWith(2, 'Job example successfully completed on queue default');
+  });
+
+  it('logs a message about a job starting then becoming stalled then completing.', async(): Promise<void> => {
+    stalled = true;
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await adapter.performLater('example');
+    expect(bullConstructor).toHaveBeenCalledTimes(1);
+    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(1);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
+    expect(logger.info).toHaveBeenCalledTimes(3);
+    expect(logger.info).toHaveBeenNthCalledWith(1, 'Job example has started on queue default');
+    expect(logger.info).toHaveBeenNthCalledWith(2, 'Job example has been marked as stalled on queue default');
+    expect(logger.info).toHaveBeenNthCalledWith(3, 'Job example successfully completed on queue default');
   });
 });

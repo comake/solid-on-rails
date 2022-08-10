@@ -1,0 +1,17 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "@id": "urn:skl-app-server:default:CreateUserHandler",
+      "@type": "RouteHandler",
+      "route": {
+        "path": "/users",
+        "method": "POST"
+      },
+      "handler": {
+        "@type": "CreateUserHandler",
+        "dataMapper": { "@id": "urn:skl-app-server:default:DataMapper" }
+      }
+    }
+  ]
+}

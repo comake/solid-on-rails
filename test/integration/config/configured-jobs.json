@@ -10,9 +10,8 @@
     "files-sklas:config/app/variables/default.json",
     "files-sklas:config/app/path/default.json",
 
-    "files-sklas:config/http/handler/default.json",
+    "files-sklas:config/http/handler/no-routes.json",
     "files-sklas:config/http/static/default.json",
-    "files-sklas:config/http/routes/default.json",
 
     "files-sklas:config/http/error-handler.json",
     "files-sklas:config/http/response-writer.json",
