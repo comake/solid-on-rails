@@ -1,4 +1,4 @@
-import { OkResponseDescription } from '../../http/output/response/OkResponseDescription';
+import { CreatedResponseDescription } from '../../http/output/response/CreatedResponseDescription';
 import type { ResponseDescription } from '../../http/output/response/ResponseDescription';
 import type { DataMapper } from '../../storage/data-mapper/DataMapper';
 import type { User } from '../../storage/data-mapper/schemas/UserEntitySchemaFactory';
@@ -27,9 +27,10 @@ export class CreateUserHandler extends ParsedRequestHandler {
     }
     const userRepository = this.dataMapper.getRepository('User');
     const user: User = await userRepository.create(params.user);
+    await userRepository.save(user);
     const data = guardedStreamFromJson(user);
 
     addHeader(input.response, 'Content-Type', APPLICATION_JSON);
-    return new OkResponseDescription(data);
+    return new CreatedResponseDescription(data);
   }
 }

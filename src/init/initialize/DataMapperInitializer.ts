@@ -4,7 +4,7 @@ import { Initializer } from './Initializer';
 /**
  * Sets up the global data source.
  */
-export class DataSourceInitializer extends Initializer {
+export class DataMapperInitializer extends Initializer {
   private readonly dataMapper: DataMapper;
 
   public constructor(dataMapper: DataMapper) {

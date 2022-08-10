@@ -13,7 +13,7 @@ export class TypeOrmRepository<T> implements Repository {
   }
 
   public async find(options: any): Promise<any> {
-    return this.repository.find(options);
+    return this.repository.findOneBy(options);
   }
 
   public async query(query: string, parameters?: any[]): Promise<any> {

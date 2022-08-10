@@ -2,12 +2,13 @@
 // tsdoc/syntax cannot handle `@range`
 import type { EntitySchema, DataSourceOptions } from 'typeorm';
 import { DataSource } from 'typeorm';
+import type { Finalizable } from '../../init/finalize/Finalizable';
 import type { DataMapper } from './DataMapper';
 import type { Repository } from './Repository';
 import type { TypeOrmEntitySchemaFactory } from './schemas/TypeOrmEntitySchemaFactory';
 import { TypeOrmRepository } from './TypeOrmRepository';
 
-export class TypeOrmDataMapper implements DataMapper {
+export class TypeOrmDataMapper implements DataMapper, Finalizable {
   private readonly entitySchemaFactories: TypeOrmEntitySchemaFactory<any>[];
   private readonly options: DataSourceOptions;
   private entitySchemas: Record<string, EntitySchema> = {};
@@ -32,10 +33,18 @@ export class TypeOrmDataMapper implements DataMapper {
       ...this.options,
       entities: entitySchemas,
     });
+    await this.dataSource.initialize();
+    await this.dataSource.synchronize();
+  }
+
+  public async finalize(): Promise<void> {
+    if (this.dataSource) {
+      await this.dataSource.destroy();
+    }
   }
 
   public getRepository<T>(entityType: string): Repository {
-    if (!this.dataSource) {
+    if (!this.dataSource || !this.dataSource.isInitialized) {
       throw new Error('The Data Source has not been initialized yet.');
     }
     const entitySchema = this.entitySchemas[entityType];

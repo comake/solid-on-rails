@@ -40,7 +40,6 @@ export class RouteHandler extends ParsedRequestHandler {
 
   public async canHandle(input: ParsedRequestHandlerInput): Promise<void> {
     const { request: { url, method }} = input;
-
     if (this.method !== method) {
       throw new MethodNotAllowedHttpError([ method ], `${method} is not allowed.`);
     }

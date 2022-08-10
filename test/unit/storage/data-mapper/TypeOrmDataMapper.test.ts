@@ -33,7 +33,15 @@ describe('A TypeOrmDataMapper', (): void => {
       { generate: generateUsers, schema: { name: 'Users', columns: {}}},
       { generate: generateBooks, schema: { name: 'Books', columns: {}}},
     ] as any;
-    dataSource = { getRepository: jest.fn() } as any;
+    dataSource = {
+      getRepository: jest.fn(),
+      initialize: jest.fn().mockImplementation(async(): Promise<void> => {
+        (dataSource as any).isInitialized = true;
+      }),
+      synchronize: jest.fn(),
+      destroy: jest.fn(),
+      isInitialized: false,
+    } as any;
     dataSourceConstructor = jest.fn()
       .mockImplementation((): DataSource => (dataSource as any));
     (DataSource as jest.Mock).mockImplementation(dataSourceConstructor);
@@ -81,5 +89,11 @@ describe('A TypeOrmDataMapper', (): void => {
     await mapper.initialize();
     expect(mapper.getRepository('Users')).toBeInstanceOf(TypeOrmRepository);
     expect(dataSource.getRepository).toHaveBeenCalledTimes(1);
+  });
+
+  it('destroys the data source when finalized.', async(): Promise<void> => {
+    await mapper.initialize();
+    await expect(mapper.finalize()).resolves.toBeUndefined();
+    expect(dataSource.destroy).toHaveBeenCalledTimes(1);
   });
 });

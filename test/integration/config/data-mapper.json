@@ -1,8 +1,5 @@
 {
-  "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
-    { "JobSchedulesInitializer:_schedules": { "@type": "@json" } }
-  ],
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
   "import": [
     "files-sklas:config/app/main/default.json",
     "files-sklas:config/app/initialize/default.json",
@@ -10,8 +7,9 @@
     "files-sklas:config/app/variables/default.json",
     "files-sklas:config/app/path/default.json",
 
-    "files-sklas:config/http/handler/no-routes.json",
+    "files-sklas:config/http/handler/default.json",
     "files-sklas:config/http/static/default.json",
+    "files-sklas:config/http/routes/default.json",
 
     "files-sklas:config/http/error-handler.json",
     "files-sklas:config/http/response-writer.json",
@@ -20,18 +18,13 @@
     "files-sklas:config/server/middleware/default.json",
     "files-sklas:config/server/server-factory/default.json",
 
-    "files-sklas:config/jobs/scheduler/default.json",
-
     "files-sklas:config/storage/key-value/memory.json",
+    "files-sklas:config/storage/data-mapper/type-orm.json",
 
     "files-sklas:config/util/variables/default.json",
     "files-sklas:config/util/logging/winston.json",
   ],
   "@graph": [
-    {
-      "@id": "urn:skl-app-server:default:QueueAdapter",
-      "@type": "Variable"
-    },
     {
       "@id": "urn:skl-app-server:test:Instances",
       "@type": "RecordObject",
@@ -41,18 +34,6 @@
           "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:App" }
         }
       ]
-    },
-    {
-      "@id": "urn:skl-app-server:default:JobSchedulesInitializer",
-      "JobSchedulesInitializer:_schedules": {
-        "Void": {
-          "jobName": "Void",
-          "cron": "0 1 * * *",
-          "data": {
-            "value": "test value"
-          }
-        }
-      }
     }
   ]
 }
