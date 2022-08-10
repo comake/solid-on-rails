@@ -16,6 +16,10 @@ export class TypeOrmRepository<T> implements Repository {
     return this.repository.findOneBy(options);
   }
 
+  public async findAll(options: any): Promise<any> {
+    return this.repository.find(options);
+  }
+
   public async query(query: string, parameters?: any[]): Promise<any> {
     return this.repository.query(query, parameters);
   }
