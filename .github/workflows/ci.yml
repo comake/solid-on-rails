@@ -85,7 +85,7 @@ jobs:
         run: |
           # make file runnable, might not be necessary
           chmod +x "./test/deploy/validate-package.sh"
-          ./test/deploy/validate-package.sh
+          npm run test:deploy
   test-integration:
     runs-on: ubuntu-latest
     strategy:
