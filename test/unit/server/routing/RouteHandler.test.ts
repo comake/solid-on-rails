@@ -108,4 +108,17 @@ describe('A RouteHandler', (): void => {
       request: { ...input.request, pathParams: { id: '1' }},
     });
   });
+
+  it('defaults the path params to an empty object.', async(): Promise<void> => {
+    subHandler = { handle: jest.fn().mockReturnValue('response') } as any;
+    route.path = '/notusers';
+    input.request.url = new URL('https://example.com/users/1');
+    const handler = new RouteHandler(route, subHandler);
+    await expect(handler.handle(input)).resolves.toBe('response');
+    expect(subHandler.handle).toHaveBeenCalledTimes(1);
+    expect(subHandler.handle).toHaveBeenCalledWith({
+      ...input,
+      request: { ...input.request, pathParams: {}},
+    });
+  });
 });

@@ -95,6 +95,7 @@ describe('AppRunner', (): void => {
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenCalledWith();
     });
+
     it('errors when app instantiation fails.', async(): Promise<void> => {
       manager.instantiate.mockRejectedValueOnce(new Error('Componentsjs failed to instantiate.'));
 
@@ -240,6 +241,50 @@ describe('AppRunner', (): void => {
       expect(write).toHaveBeenCalledTimes(0);
 
       expect(exit).toHaveBeenCalledTimes(0);
+    });
+
+    it('uses the default process.argv in case none are provided.', async(): Promise<void> => {
+      const { argv } = process;
+      const argvParameters = [
+        'node', 'script',
+        '-b', 'http://example.com/',
+        '-c', 'myconfig.json',
+        '-f', '/root',
+        '-l', 'debug',
+        '-m', 'module/path',
+        '-p', '4000',
+        '-t',
+      ];
+      process.argv = argvParameters;
+
+      await expect(new AppRunner().runCli()).resolves.toBeUndefined();
+
+      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
+      expect(ComponentsManager.build).toHaveBeenCalledWith({
+        dumpErrorState: true,
+        logLevel: 'debug',
+        mainModulePath: '/var/cwd/module/path',
+      });
+      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
+      expect(manager.configRegistry.register)
+        .toHaveBeenCalledWith('/var/cwd/myconfig.json');
+      expect(manager.instantiate).toHaveBeenCalledTimes(2);
+      expect(manager.instantiate).toHaveBeenNthCalledWith(
+        1,
+        'urn:skl-app-server-setup:default:CliResolver',
+        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+      );
+      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
+      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: argvParameters, envVarPrefix: '' });
+      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
+      expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
+      expect(manager.instantiate).toHaveBeenNthCalledWith(2,
+        'urn:skl-app-server:default:App',
+        { variables: defaultVariables });
+      expect(app.start).toHaveBeenCalledTimes(1);
+      expect(app.start).toHaveBeenLastCalledWith();
+
+      process.argv = argv;
     });
   });
 
