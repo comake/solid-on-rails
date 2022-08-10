@@ -6,6 +6,8 @@
     "files-sklas:config/http/request-parser.json",
     "files-sklas:config/http/routes/templates/application.json",
     "files-sklas:config/http/routes/handlers/index.json",
+    "files-sklas:config/http/routes/handlers/get-user.json",
+    "files-sklas:config/http/routes/handlers/post-user.json",
   ],
   "@graph": [
     {
@@ -26,7 +28,9 @@
             ],
             "@type": "UnsupportedAsyncHandler"
           },
-          { "@id": "urn:skl-app-server:auth:password:IndexRouteHandler" }
+          { "@id": "urn:skl-app-server:default:IndexRouteHandler" },
+          { "@id": "urn:skl-app-server:default:GetUserHandler" },
+          { "@id": "urn:skl-app-server:default:CreateUserHandler" }
         ]
       }
     }

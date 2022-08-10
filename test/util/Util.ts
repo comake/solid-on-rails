@@ -4,6 +4,7 @@ import type { SystemError } from '../../src/util/errors/SystemError';
 
 const portNames = [
   // Integration
+  'DataMapper',
   'Job',
   'Middleware',
   // Unit
@@ -17,6 +18,13 @@ export function getPort(name: typeof portNames[number]): number {
     throw new Error(`Unknown port name ${name}`);
   }
   return 6000 + idx;
+}
+
+export function describeIf(envFlag: string, name: string, fn: () => void): void {
+  const flag = `TEST_${envFlag.toUpperCase()}`;
+  const enabled = !/^(|0|false)$/iu.test(process.env[flag] ?? '');
+  // eslint-disable-next-line jest/valid-describe-callback, jest/valid-title, jest/no-disabled-tests
+  return enabled ? describe(name, fn) : describe.skip(name, fn);
 }
 
 /**

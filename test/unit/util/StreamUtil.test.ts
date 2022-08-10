@@ -6,6 +6,7 @@ import { getLoggerFor } from '../../../src/logging/LogUtil';
 import {
   guardedStreamFrom, pipeSafely, transformSafely,
   readableToString, readJsonStream, getSingleItem,
+  guardedStreamFromJson,
 } from '../../../src/util/StreamUtil';
 import { flushPromises } from '../../util/Util';
 
@@ -258,6 +259,13 @@ describe('StreamUtil', (): void => {
     it('converts data to a guarded stream.', async(): Promise<void> => {
       await expect(readableToString(guardedStreamFrom([ 'a', 'b' ]))).resolves.toBe('ab');
       await expect(readableToString(guardedStreamFrom('ab'))).resolves.toBe('ab');
+    });
+  });
+
+  describe('#guardedStreamFromJson', (): void => {
+    it('converts json data to a guarded stream.', async(): Promise<void> => {
+      await expect(readableToString(guardedStreamFromJson([ 'a', 'b' ]))).resolves.toBe('["a","b"]');
+      await expect(readableToString(guardedStreamFromJson({ abc: 123 }))).resolves.toBe('{"abc":123}');
     });
   });
 });

@@ -20,6 +20,7 @@ export * from './http/output/error/RedirectingErrorHandler';
 export * from './http/output/error/SafeErrorHandler';
 
 // Http/Output/Response
+export * from './http/output/response/CreatedResponseDescription';
 export * from './http/output/response/OkResponseDescription';
 export * from './http/output/response/RedirectResponseDescription';
 export * from './http/output/response/ResponseDescription';
@@ -43,6 +44,7 @@ export * from './init/finalize/ParallelFinalizer';
 
 // Init/Initialize
 export * from './init/initialize/BaseUrlVerifier';
+export * from './init/initialize/DataMapperInitializer';
 export * from './init/initialize/Initializer';
 export * from './init/initialize/JobSchedulesInitializer';
 export * from './init/initialize/LoggerInitializer';
@@ -97,6 +99,8 @@ export * from './server/middleware/HeaderHandler';
 export * from './server/middleware/StaticAssetHandler';
 
 // Server/Routing
+export * from './server/routing/CreateUserHandler';
+export * from './server/routing/GetUserHandler';
 export * from './server/routing/IndexViewHandler';
 export * from './server/routing/RouteHandler';
 export * from './server/ParsedRequestHandler';
@@ -105,6 +109,16 @@ export * from './server/ParsedRequestHandler';
 export * from './storage/keyvalue/EncodingNamespaceStorage';
 export * from './storage/keyvalue/KeyValueStorage';
 export * from './storage/keyvalue/MemoryMapStorage';
+
+// Storage/Data Source
+export * from './storage/data-mapper/schemas/BaseColumnSchemaPart';
+export * from './storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
+export * from './storage/data-mapper/schemas/UserEntitySchemaFactory';
+
+export * from './storage/data-mapper/DataMapper';
+export * from './storage/data-mapper/Repository';
+export * from './storage/data-mapper/TypeOrmDataMapper';
+export * from './storage/data-mapper/TypeOrmRepository';
 
 // Util/Errors
 export * from './util/errors/BadRequestHttpError';

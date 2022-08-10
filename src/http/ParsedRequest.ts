@@ -21,4 +21,8 @@ export interface ParsedRequest {
    * The raw data stream for this request.
    */
   data: Guarded<Readable>;
+  /**
+   * Named parameters from the path of the URL.
+   */
+  pathParams?: Record<string, string>;
 }

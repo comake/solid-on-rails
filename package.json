@@ -1,6 +1,6 @@
 {
   "name": "@comake/skl-app-server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Runs a Node.js server using componentsjs preset with configurations for SKL.",
   "repository": {
     "type": "git",
@@ -52,12 +52,13 @@
     "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore --typeScopedContexts",
     "build:ts": "tsc",
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
-    "jest": "jest --coverage --passWithNoTests",
+    "jest": "jest --coverageReporters text-summary --",
     "test": "npm run test:ts && npm run jest",
+    "test:deploy": "chmod +x ./test/deploy/validate-package.sh && ./test/deploy/validate-package.sh",
     "test:ts": "tsc -p test --noEmit",
     "test:integration": "jest --coverageReporters text-summary -- test/integration",
     "test:unit": "jest --config=./jest.coverage.config.js test/unit",
-    "prepare": "husky install"
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
@@ -78,6 +79,7 @@
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "componentsjs-generator": "^2.6.1",
+    "cross-fetch": "^3.1.5",
     "eslint": "^8.18.0",
     "eslint-config-es": "^3.26.13",
     "eslint-plugin-import": "^2.26.0",
@@ -101,8 +103,10 @@
     "mime-types": "^2.1.35",
     "node-mocks-http": "^1.11.0",
     "path-to-regexp": "^6.2.1",
+    "pg": "^8.7.3",
     "pump": "^3.0.0",
     "supertest": "^6.2.4",
+    "typeorm": "^0.3.7",
     "url-join": "^4.0.1",
     "winston": "^3.8.1",
     "winston-transport": "^4.5.0",
