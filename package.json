@@ -54,6 +54,7 @@
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
     "jest": "jest --coverage --passWithNoTests",
     "test": "npm run test:ts && npm run jest",
+    "test:deploy": "test/deploy/validate-package.sh",
     "test:ts": "tsc -p test --noEmit",
     "test:integration": "jest --coverageReporters text-summary -- test/integration",
     "test:unit": "jest --config=./jest.coverage.config.js test/unit",
