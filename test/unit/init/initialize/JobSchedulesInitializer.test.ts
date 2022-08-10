@@ -33,4 +33,10 @@ describe('A JobSchedulesInitializer', (): void => {
     expect(scheduler.performLater)
       .toHaveBeenNthCalledWith(2, 'scheduledExample2', { alpha: 1 }, { every: '* * * 1 *' });
   });
+
+  it('does not schedule any jobs when none are supplied.', async(): Promise<void> => {
+    const initializer = new JobSchedulesInitializer(scheduler);
+    await expect(initializer.handle()).resolves.toBeUndefined();
+    expect(scheduler.performLater).toHaveBeenCalledTimes(0);
+  });
 });

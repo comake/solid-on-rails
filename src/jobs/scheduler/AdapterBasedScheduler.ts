@@ -11,7 +11,7 @@ export class AdapterBasedScheduler implements JobScheduler {
   public async performLater(
     jobName: string,
     data?: Record<string, any>,
-    options: JobOptions = {},
+    options?: JobOptions,
   ): Promise<void> {
     await this.adapter.performLater(jobName, data, options);
   }

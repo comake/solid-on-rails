@@ -10,7 +10,7 @@ jest.mock('../../../src/logging/LogUtil', (): any => {
 });
 const logger: jest.Mocked<Logger> = getLoggerFor('GuardedStream') as any;
 
-jest.useFakeTimers();
+jest.useFakeTimers({ doNotFake: [ 'performance' ]});
 
 describe('GuardedStream', (): void => {
   beforeEach((): void => {

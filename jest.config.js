@@ -13,6 +13,7 @@ module.exports = {
     'js'
   ],
   testEnvironment: 'node',
+  setupFilesAfterEnv: [ '<rootDir>/test/util/SetupTests.ts' ],
   collectCoverage: true,
   coverageReporters: [ 'text', 'lcov' ],
   coveragePathIgnorePatterns: [
@@ -20,5 +21,5 @@ module.exports = {
     '/node_modules/',
     '/test/',
   ],
-  testTimeout: 60000,
+  testTimeout: 60000
 };

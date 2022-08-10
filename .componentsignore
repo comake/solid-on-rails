@@ -2,5 +2,6 @@
   "BaseHttpError",
   "Error",
   "HttpErrorOptions",
-  "WinstonLogger"
+  "WinstonLogger",
+  "TypeOrmRepository"
 ]

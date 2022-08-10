@@ -5,6 +5,19 @@
       "@id": "urn:skl-app-server:default:JobScheduler",
       "@type": "AdapterBasedScheduler",
       "adapter": { "@id": "urn:skl-app-server:default:QueueAdapter" }
+    },
+    {
+      "comment": "Logs a warning if the base URL changes.",
+      "@id": "urn:skl-app-server:default:JobSchedulesInitializer",
+      "@type": "JobSchedulesInitializer",
+      "scheduler": { "@id": "urn:skl-app-server:default:JobScheduler" }
+    },
+    {
+      "comment": "Ensure the preconfigured Job schedules get initialized.",
+      "@id": "urn:skl-app-server:default:ParallelInitializer",
+      "ParallelHandler:_handlers": [
+        { "@id": "urn:skl-app-server:default:JobSchedulesInitializer" }
+      ]
     }
   ]
 }

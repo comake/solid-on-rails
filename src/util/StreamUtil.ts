@@ -159,3 +159,8 @@ export function transformSafely<T = any>(
 export function guardedStreamFrom(contents: string | Iterable<any>, options?: ReadableOptions): Guarded<Readable> {
   return guardStream(Readable.from(typeof contents === 'string' ? [ contents ] : contents, options));
 }
+
+export function guardedStreamFromJson(json: NodeJS.Dict<any>, options?: ReadableOptions): Guarded<Readable> {
+  const jsonString = JSON.stringify(json);
+  return guardedStreamFrom(jsonString, options);
+}
