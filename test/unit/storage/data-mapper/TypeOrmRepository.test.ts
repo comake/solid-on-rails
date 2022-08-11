@@ -9,6 +9,7 @@ describe('A TypeOrmRepository', (): void => {
     innerRepository = {
       create: jest.fn(),
       findOneBy: jest.fn(),
+      find: jest.fn(),
       query: jest.fn(),
       save: jest.fn(),
       delete: jest.fn(),
@@ -29,6 +30,12 @@ describe('A TypeOrmRepository', (): void => {
     await expect(repository.find({ foo: 'bar' })).resolves.toBeUndefined();
     expect(innerRepository.findOneBy).toHaveBeenCalledTimes(1);
     expect(innerRepository.findOneBy).toHaveBeenCalledWith({ foo: 'bar' });
+  });
+
+  it('delegates calls to findAll to the inner repository.', async(): Promise<void> => {
+    await expect(repository.findAll({ foo: 'bar' })).resolves.toBeUndefined();
+    expect(innerRepository.find).toHaveBeenCalledTimes(1);
+    expect(innerRepository.find).toHaveBeenCalledWith({ foo: 'bar' });
   });
 
   it('delegates calls to query to the inner repository.', async(): Promise<void> => {
