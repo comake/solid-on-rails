@@ -12,4 +12,9 @@ export interface DataMapper {
    * Gets a Repository from the Data Mapper.
    */
   getRepository: (repositoryName: string) => Repository;
+  /**
+   * Drops the database and all its data. Be careful!
+   * This method will erase all your database tables and their data.
+   */
+  dropDatabase: () => Promise<void>;
 }

@@ -1,3 +1,4 @@
+import type { QueueAdapter } from './adapter/QueueAdapter';
 /**
  * A single asyncronous Job.
  */
@@ -15,5 +16,5 @@ export abstract class Job {
    * The function that will be executed when this job is run by a worker.
    * @param data - the data which can be used by the job.
    */
-  public abstract perform(data: Record<string, any>): Promise<void>;
+  public abstract perform(data: Record<string, any>, queueAdapter: QueueAdapter): Promise<void>;
 }

@@ -116,8 +116,8 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', data, {});
-    expect(perform).toHaveReturnedTimes(1);
-    expect(perform).toHaveBeenCalledWith(data);
+    expect(perform).toHaveBeenCalledTimes(1);
+    expect(perform).toHaveBeenCalledWith(data, adapter);
   });
 
   it('adds the job on a cron schedule.', async(): Promise<void> => {
@@ -130,7 +130,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *' }});
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('adds the job on a cron schedule with a start time at a specific date.', async(): Promise<void> => {
@@ -143,7 +143,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *', startDate: dayInMs }});
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('adds the job on a cron schedule with a start time after a delay.', async(): Promise<void> => {
@@ -156,7 +156,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *', startDate: 1000 }});
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('adds the job on a certain millisecond schedule.', async(): Promise<void> => {
@@ -169,7 +169,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { every: 1000 }});
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('adds the job to be run at a specific date.', async(): Promise<void> => {
@@ -182,7 +182,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { delay: dayInMs });
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('adds the job to be run after a delay.', async(): Promise<void> => {
@@ -195,7 +195,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { delay: 1000 });
-    expect(perform).toHaveReturnedTimes(0);
+    expect(perform).toHaveBeenCalledTimes(0);
   });
 
   it('logs message about a job starting then erroring.', async(): Promise<void> => {
@@ -211,8 +211,10 @@ describe('A BullQueueAdapter', (): void => {
     expect(on).toHaveBeenCalledTimes(5);
     expect(logger.info).toHaveBeenCalledTimes(3);
     expect(logger.info).toHaveBeenNthCalledWith(1, 'Job example has started on queue default');
-    expect(logger.info).toHaveBeenNthCalledWith(2, 'Job example on queue default failed with reason: Job failed');
-    expect(logger.info).toHaveBeenNthCalledWith(3, 'An error occured in queue default: Job failed');
+    expect(logger.info.mock.calls[1][0].startsWith('Job example on queue default failed with reason: Job failed'))
+      .toBe(true);
+    expect(logger.info.mock.calls[2][0].startsWith('An error occured in queue default: Job failed'))
+      .toBe(true);
   });
 
   it('logs a message about a job starting then completing.', async(): Promise<void> => {

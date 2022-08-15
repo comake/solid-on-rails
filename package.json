@@ -52,7 +52,7 @@
     "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore --typeScopedContexts",
     "build:ts": "tsc",
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
-    "jest": "jest --coverageReporters text-summary --",
+    "jest": "jest --coverage",
     "test": "npm run test:ts && npm run jest",
     "test:deploy": "chmod +x ./test/deploy/validate-package.sh && ./test/deploy/validate-package.sh",
     "test:ts": "tsc -p test --noEmit",

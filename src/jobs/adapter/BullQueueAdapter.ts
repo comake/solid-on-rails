@@ -35,7 +35,7 @@ export class BullQueueAdapter implements QueueAdapter {
       // Register every job to be processable on every queue
       for (const jobName of Object.keys(this.jobs)) {
         this.queues[queue].process(jobName, async(bullJob): Promise<void> => {
-          await this.jobs[jobName].perform(bullJob.data);
+          await this.jobs[jobName].perform(bullJob.data, this);
         }) as any;
       }
       this.initializeQueueEvents(this.queues[queue]);
@@ -95,7 +95,7 @@ export class BullQueueAdapter implements QueueAdapter {
 
   private initializeQueueEvents(queue: Queue): void {
     queue.on('error', (error): void => {
-      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}`);
+      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}\n${error.stack}`);
     });
 
     queue.on('active', (job): void => {
@@ -111,7 +111,7 @@ export class BullQueueAdapter implements QueueAdapter {
     });
 
     queue.on('failed', (job, error): void => {
-      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}`);
+      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}\n${error.stack}`);
     });
   }
 }

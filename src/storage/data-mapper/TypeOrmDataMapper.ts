@@ -44,14 +44,24 @@ export class TypeOrmDataMapper implements DataMapper, Finalizable {
   }
 
   public getRepository<T>(entityType: string): Repository {
-    if (!this.dataSource || !this.dataSource.isInitialized) {
-      throw new Error('The Data Source has not been initialized yet.');
-    }
+    this.ensureDatabaseIsInitialised();
+
     const entitySchema = this.entitySchemas[entityType];
     if (!entitySchema) {
       throw new Error(`No entity schema called ${entityType} found.`);
     }
-    const typeOrmRepository = this.dataSource.getRepository<T>(entitySchema);
+    const typeOrmRepository = this.dataSource!.getRepository<T>(entitySchema);
     return new TypeOrmRepository<T>(typeOrmRepository);
+  }
+
+  public async dropDatabase(): Promise<void> {
+    this.ensureDatabaseIsInitialised();
+    await this.dataSource!.dropDatabase();
+  }
+
+  private ensureDatabaseIsInitialised(): void {
+    if (!this.dataSource || !this.dataSource.isInitialized) {
+      throw new Error('The Data Source has not been initialized yet.');
+    }
   }
 }

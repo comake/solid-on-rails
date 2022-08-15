@@ -35,6 +35,7 @@ describe('A TypeOrmDataMapper', (): void => {
     ] as any;
     dataSource = {
       getRepository: jest.fn(),
+      dropDatabase: jest.fn(),
       initialize: jest.fn().mockImplementation(async(): Promise<void> => {
         (dataSource as any).isInitialized = true;
       }),
@@ -63,7 +64,7 @@ describe('A TypeOrmDataMapper', (): void => {
       });
     });
 
-  it('throws an error when getting a repository before the data maooer has been initialized.',
+  it('throws an error when getting a repository before the data mapper has been initialized.',
     async(): Promise<void> => {
       expect((): void => {
         mapper.getRepository('Users');
@@ -95,5 +96,11 @@ describe('A TypeOrmDataMapper', (): void => {
     await mapper.initialize();
     await expect(mapper.finalize()).resolves.toBeUndefined();
     expect(dataSource.destroy).toHaveBeenCalledTimes(1);
+  });
+
+  it('drops the database.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.dropDatabase();
+    expect(dataSource.dropDatabase).toHaveBeenCalledTimes(1);
   });
 });
