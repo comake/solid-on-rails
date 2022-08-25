@@ -22,7 +22,7 @@
     "files-sklas:config/storage/data-mapper/type-orm.json",
 
     "files-sklas:config/util/variables/default.json",
-    "files-sklas:config/util/logging/winston.json",
+    "files-sklas:config/util/logging/winston.json"
   ],
   "@graph": [
     {

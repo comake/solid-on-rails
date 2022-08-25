@@ -24,9 +24,9 @@ describe('A BullQueueAdapter', (): void => {
   let job: Job;
   let jobs: Record<string, Job>;
   let process: any;
+  let close: any;
   let add: any;
   let on: any;
-  let bullConstructor: any;
   const redisConfig = { port: 6379, host: '127.0.0.1' };
   let adapter: BullQueueAdapter;
   let registeredJobs: Record<string, (data: any) => Promise<void>>;
@@ -45,6 +45,7 @@ describe('A BullQueueAdapter', (): void => {
     job = { perform, queue };
     jobs = { example: job };
 
+    close = jest.fn();
     process = jest.fn().mockImplementation(
       (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
@@ -77,20 +78,35 @@ describe('A BullQueueAdapter', (): void => {
       registeredEvents[event] = handler;
     });
 
-    bullConstructor = jest.fn().mockImplementation((name: string): Bull.Queue => ({ process, add, on, name } as any));
-    (Bull as jest.Mock).mockImplementation(bullConstructor);
+    (Bull as jest.Mock).mockImplementation(
+      (name: string): Bull.Queue => ({ process, add, on, name, close } as any),
+    );
   });
 
   it('initializes bull queues.', async(): Promise<void> => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await adapter.performLater('example');
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, {});
     expect(on).toHaveBeenCalledTimes(5);
+  });
+
+  it('closes all queues when finalized.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await adapter.performLater('example');
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(1);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
+    await adapter.finalize();
+    expect(close).toHaveBeenCalledTimes(1);
   });
 
   it('errors when attempting to perform a job which has not been defined.', async(): Promise<void> => {
@@ -110,8 +126,8 @@ describe('A BullQueueAdapter', (): void => {
     const data = { alpha: 1 };
     await expect(adapter.performLater('example', data))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -124,8 +140,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { every: '5 4 * * *' }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -137,8 +153,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { at: tomorrow, every: '5 4 * * *' }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -150,8 +166,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { in: 1000, every: '5 4 * * *' }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -163,8 +179,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { every: 1000 }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -176,8 +192,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { at: tomorrow }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -189,8 +205,8 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await expect(adapter.performLater('example', {}, { in: 1000 }))
       .resolves.toBeUndefined();
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -202,8 +218,8 @@ describe('A BullQueueAdapter', (): void => {
     error = new Error('Job failed');
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await adapter.performLater('example');
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -220,8 +236,8 @@ describe('A BullQueueAdapter', (): void => {
   it('logs a message about a job starting then completing.', async(): Promise<void> => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await adapter.performLater('example');
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);
@@ -236,8 +252,8 @@ describe('A BullQueueAdapter', (): void => {
     stalled = true;
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await adapter.performLater('example');
-    expect(bullConstructor).toHaveBeenCalledTimes(1);
-    expect(bullConstructor).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
     expect(add).toHaveBeenCalledTimes(1);

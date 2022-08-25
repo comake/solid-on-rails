@@ -16,6 +16,11 @@
           }
         }
       ]
+    },
+    {
+      "comment": "Makes sure the queue adapter shuts down when the application needs to stop.",
+      "@id": "urn:skl-app-server:default:Finalizer",
+      "ParallelFinalizer:_finalizers": [ { "@id": "urn:skl-app-server:default:QueueAdapter" } ]
     }
   ]
 }

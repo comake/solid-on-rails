@@ -2,13 +2,12 @@
 // tsdoc/syntax cannot handle `@range`
 import type { EntitySchema, DataSourceOptions } from 'typeorm';
 import { DataSource } from 'typeorm';
-import type { Finalizable } from '../../init/finalize/Finalizable';
 import type { DataMapper } from './DataMapper';
 import type { Repository } from './Repository';
 import type { TypeOrmEntitySchemaFactory } from './schemas/TypeOrmEntitySchemaFactory';
 import { TypeOrmRepository } from './TypeOrmRepository';
 
-export class TypeOrmDataMapper implements DataMapper, Finalizable {
+export class TypeOrmDataMapper implements DataMapper {
   private readonly entitySchemaFactories: TypeOrmEntitySchemaFactory<any>[];
   private readonly options: DataSourceOptions;
   private entitySchemas: Record<string, EntitySchema> = {};

@@ -9,10 +9,7 @@ describe('An AdapterBasedScheduler', (): void => {
   let adapter: QueueAdapter;
 
   beforeEach(async(): Promise<void> => {
-    adapter = {
-      performLater: jest.fn(),
-    };
-
+    adapter = { performLater: jest.fn() } as any;
     scheduler = new AdapterBasedScheduler(adapter);
   });
 

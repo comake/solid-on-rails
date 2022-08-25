@@ -42,6 +42,13 @@ export class BullQueueAdapter implements QueueAdapter {
     }
   }
 
+  public async finalize(): Promise<void> {
+    await Promise.all(
+      Object.values(this.queues)
+        .map((queue: Queue): Promise<void> => queue.close()),
+    );
+  }
+
   public async performLater(
     jobName: string,
     data: Record<string, any> = {},
