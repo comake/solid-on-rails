@@ -4,7 +4,7 @@
     { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
   ],
   "import": [
-    "files-sklas:config/storage/data-mapper/init/initializer.json",
+    "files-sklas:config/storage/data-mapper/init/initializer.json"
   ],
   "@graph": [
     {

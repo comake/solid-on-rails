@@ -1,6 +1,6 @@
 {
   "name": "@comake/skl-app-server",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Runs a Node.js server using componentsjs preset with configurations for SKL.",
   "repository": {
     "type": "git",
