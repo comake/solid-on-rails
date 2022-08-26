@@ -39,7 +39,9 @@
     "assets"
   ],
   "bin": {
-    "skl-app-server": "bin/server.js"
+    "skl-app-server": "bin/server.js",
+    "skl-app-server-storages-drop": "bin/drop-storages.js",
+    "skl-app-server-storages-seed": "bin/seed-storages.js"
   },
   "commitlint": {
     "extends": [
@@ -87,17 +89,18 @@
     "eslint-plugin-tsdoc": "^0.2.16",
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.0",
-    "ts-jest": "^28.0.7",
-    "typescript": "^4.7.4",
     "jest": "^28.1.3",
+    "node-mocks-http": "^1.11.0",
     "supertest": "^6.2.4",
-    "node-mocks-http": "^1.11.0"
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "arrayify-stream": "^2.0.0",
     "bull": "^4.8.5",
     "componentsjs": "^4.5.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "end-of-stream": "^1.4.4",
     "escape-string-regexp": "^4.0.0",

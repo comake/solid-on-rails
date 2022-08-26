@@ -1,4 +1,4 @@
-import { assertError, createErrorMessage, isError } from '../../../../src/util/errors/ErrorUtil';
+import { assertError, createErrorMessage, isError, resolveError } from '../../../../src/util/errors/ErrorUtil';
 
 describe('ErrorUtil', (): void => {
   describe('#isError', (): void => {
@@ -36,6 +36,32 @@ describe('ErrorUtil', (): void => {
 
     it('tries to put the object in a string .', async(): Promise<void> => {
       expect(createErrorMessage('apple')).toBe('Unknown error: apple');
+    });
+  });
+
+  describe('#resolveError', (): void => {
+    it('throws and error with a cause and stack appended.', async(): Promise<void> => {
+      let caughtError: Error = new Error('should disappear');
+      try {
+        resolveError('Something bad happened', new Error('Original error message'));
+      } catch (error: unknown) {
+        caughtError = error as Error;
+      }
+      expect(caughtError.message).toMatch(/^Something bad happened/mu);
+      expect(caughtError.message).toMatch(/^Cause: Original error message/mu);
+      expect(caughtError.message.split('\n')).toHaveLength(14);
+    });
+
+    it('does not append the stack if the error is not an Error instance.', async(): Promise<void> => {
+      let caughtError: Error = new Error('should disappear');
+      try {
+        resolveError('Something bad happened', 'Failure');
+      } catch (error: unknown) {
+        caughtError = error as Error;
+      }
+      expect(caughtError.message).toMatch(/^Something bad happened/mu);
+      expect(caughtError.message).toMatch(/^Cause: Unknown error: Failure/mu);
+      expect(caughtError.message.split('\n')).toHaveLength(3);
     });
   });
 });

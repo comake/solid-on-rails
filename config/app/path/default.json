@@ -5,7 +5,7 @@
       "comment": "This is the entry point to the application. It can be used to both start and stop the server.",
       "@id": "urn:skl-app-server:default:PathResolver",
       "@type": "PlaceholderPathResolver",
-      "modulePathPlaceholder": { "@id": "urn:skl-app-server:default:variable:modulePathPlaceholder" },
+      "modulePathPlaceholder": { "@id": "urn:skl-app-server:default:variable:modulePathPlaceholder" }
     }
   ]
 }
