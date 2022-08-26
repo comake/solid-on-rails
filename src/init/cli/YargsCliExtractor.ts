@@ -32,8 +32,11 @@ export class YargsCliExtractor extends CliExtractor {
    * @param extendedParameters - The same as @parameters. Separate variable so in Components.js
    *                          we can have both a default set and a user-added version. @range {json}
    */
-  public constructor(parameters: YargsArgOptions = {}, options: CliOptions = {},
-    extendedParameters: YargsArgOptions = {}) {
+  public constructor(
+    parameters: YargsArgOptions = {},
+    options: CliOptions = {},
+    extendedParameters: YargsArgOptions = {},
+  ) {
     super();
     this.yargsArgOptions = { ...parameters, ...extendedParameters };
     this.yargvOptions = options;

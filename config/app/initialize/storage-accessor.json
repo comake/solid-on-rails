@@ -1,0 +1,35 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sklas:config/app/initialize/initializers/base-url.json",
+    "files-sklas:config/app/initialize/initializers/logger.json",
+    "files-sklas:config/app/initialize/initializers/version.json"
+  ],
+  "@graph": [
+    {
+      "comment": "These initializers will be all be executed sequentially when starting the data mapper accessor script.",
+      "@id": "urn:skl-app-server:default:Initializer",
+      "@type": "SequenceHandler",
+      "handlers": [
+        { "@id": "urn:skl-app-server:default:LoggerInitializer" },
+        { "@id": "urn:skl-app-server:default:BaseUrlVerifier" },
+        { "@id": "urn:skl-app-server:default:ParallelInitializer" },
+        { "@id": "urn:skl-app-server:default:ModuleVersionVerifier" }
+      ]
+    },
+    {
+      "comment": [
+        "These handlers are called whenever the server is started,",
+        "and can be used to ensure that all necessary resources for booting are available."
+      ],
+      "@id": "urn:skl-app-server:default:ParallelInitializer",
+      "@type": "ParallelHandler",
+      "handlers": [
+        {
+          "comment": "This handler is here because having this array empty gives Components.js errors.",
+          "@type": "StaticHandler"
+        }
+      ]
+    }
+  ]
+}

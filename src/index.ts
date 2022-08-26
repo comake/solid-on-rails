@@ -41,6 +41,7 @@ export * from './init/cli/YargsCliExtractor';
 // Init/Finalize
 export * from './init/finalize/Finalizable';
 export * from './init/finalize/ParallelFinalizer';
+export * from './init/finalize/StaticFinalizer';
 
 // Init/Initialize
 export * from './init/initialize/BaseUrlVerifier';
@@ -65,6 +66,7 @@ export * from './init/variables/SettingsResolver';
 export * from './init/App';
 export * from './init/AppRunner';
 export * from './init/CliResolver';
+export * from './init/StorageAccessorRunner';
 
 // Jobs/Adapter
 export * from './jobs/adapter/BullQueueAdapter';

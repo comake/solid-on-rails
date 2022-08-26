@@ -1,0 +1,37 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sklas:config/app/main/default.json",
+    "files-sklas:config/app/initialize/storage-accessor.json",
+    "files-sklas:config/app/finalize/storage-accessor.json",
+    "files-sklas:config/app/variables/default.json",
+    "files-sklas:config/app/path/default.json",
+
+    "files-sklas:config/storage/key-value/memory.json",
+    "files-sklas:config/storage/data-mapper/type-orm.json",
+
+    "files-sklas:config/util/variables/default.json",
+    "files-sklas:config/util/logging/winston.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Access to the Data Mapper and Key Value storages.",
+      "@id": "urn:skl-app-server:storage-accessor:Instances",
+      "@type": "RecordObject",
+      "record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "dataMapper",
+          "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:DataMapper" }
+        },
+        {
+          "RecordObject:_record_key": "keyValue",
+          "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:KeyValueStorage" }
+        }
+      ]
+    }
+  ]
+}

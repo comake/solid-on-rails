@@ -11,6 +11,8 @@ export interface Repository {
 
   findAll: (...args: any[]) => Promise<any>;
 
+  buildQuery: (...args: any[]) => Promise<any>;
+
   query: (...args: any[]) => Promise<any>;
 
   save: (...args: any[]) => Promise<any>;

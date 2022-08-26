@@ -4,12 +4,15 @@ import { TypeOrmRepository } from '../../../../src/storage/data-mapper/TypeOrmRe
 describe('A TypeOrmRepository', (): void => {
   let innerRepository: TypeOrmInnerRepository<any>;
   let repository: TypeOrmRepository<any>;
+  let where: any;
 
   beforeEach(async(): Promise<void> => {
+    where = jest.fn();
     innerRepository = {
       create: jest.fn(),
       findOneBy: jest.fn(),
-      find: jest.fn(),
+      findBy: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue({ where }),
       query: jest.fn(),
       save: jest.fn(),
       delete: jest.fn(),
@@ -34,8 +37,16 @@ describe('A TypeOrmRepository', (): void => {
 
   it('delegates calls to findAll to the inner repository.', async(): Promise<void> => {
     await expect(repository.findAll({ foo: 'bar' })).resolves.toBeUndefined();
-    expect(innerRepository.find).toHaveBeenCalledTimes(1);
-    expect(innerRepository.find).toHaveBeenCalledWith({ foo: 'bar' });
+    expect(innerRepository.findBy).toHaveBeenCalledTimes(1);
+    expect(innerRepository.findBy).toHaveBeenCalledWith({ foo: 'bar' });
+  });
+
+  it('delegates calls to buildQuery to the inner repository.', async(): Promise<void> => {
+    await expect(repository.buildQuery('user', 'user.id = :id', { id: 1 })).resolves.toBeUndefined();
+    expect(innerRepository.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(innerRepository.createQueryBuilder).toHaveBeenCalledWith('user');
+    expect(where).toHaveBeenCalledTimes(1);
+    expect(where).toHaveBeenCalledWith('user.id = :id', { id: 1 });
   });
 
   it('delegates calls to query to the inner repository.', async(): Promise<void> => {

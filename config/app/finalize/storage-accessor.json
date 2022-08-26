@@ -1,0 +1,19 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": [
+        "This is the list of finalizers that need to be called.",
+        "These should be added in the configs where such classes are configured."
+      ],
+      "@id": "urn:skl-app-server:default:Finalizer",
+      "@type": "ParallelFinalizer",
+      "finalizers": [
+        {
+          "comment": "This finalizer is here because having this array empty gives Components.js errors.",
+          "@type": "StaticFinalizer"
+        }
+      ]
+    }
+  ]
+}

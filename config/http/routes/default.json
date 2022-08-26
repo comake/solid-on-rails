@@ -7,7 +7,7 @@
     "files-sklas:config/http/routes/templates/application.json",
     "files-sklas:config/http/routes/handlers/index.json",
     "files-sklas:config/http/routes/handlers/get-user.json",
-    "files-sklas:config/http/routes/handlers/post-user.json",
+    "files-sklas:config/http/routes/handlers/post-user.json"
   ],
   "@graph": [
     {

@@ -1,20 +1,40 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ComponentsManager } from 'componentsjs';
 import type { App } from '../../../src/init/App';
-import { AppRunner } from '../../../src/init/AppRunner';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
+import { StorageAccessorRunner } from '../../../src/init/StorageAccessorRunner';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
+import type { DataMapper } from '../../../src/storage/data-mapper/DataMapper';
+import type { KeyValueStorage } from '../../../src/storage/keyvalue/KeyValueStorage';
 import { joinFilePath } from '../../../src/util/PathUtil';
-import { flushPromises } from '../../util/Util';
 
 const app: jest.Mocked<App> = {
   start: jest.fn(),
 } as any;
 
+const dataMapper: jest.Mocked<DataMapper> = {
+  initialize: jest.fn(),
+} as any;
+
+const keyValue: jest.Mocked<KeyValueStorage<any, any>> = {
+  get: jest.fn(),
+  has: jest.fn(),
+  set: jest.fn(),
+  entries: jest.fn(),
+} as any;
+
+const instances = {
+  app,
+  dataMapper,
+  keyValue,
+  env: {},
+};
+
 const defaultParameters = {
   port: 3000,
   logLevel: 'info',
 };
+
 const cliExtractor: jest.Mocked<CliExtractor> = {
   handleSafe: jest.fn().mockResolvedValue(defaultParameters),
 } as any;
@@ -23,15 +43,16 @@ const defaultVariables = {
   'urn:skl-app-server:default:variable:port': 3000,
   'urn:skl-app-server:default:variable:loggingLevel': 'info',
 };
+
 const settingsResolver: jest.Mocked<SettingsResolver> = {
   handleSafe: jest.fn().mockResolvedValue(defaultVariables),
 } as any;
 
-const manager: jest.Mocked<ComponentsManager<App>> = {
+const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
       case 'urn:skl-app-server-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:skl-app-server:default:App': return app;
+      case 'urn:skl-app-server:storage-accessor:Instances': return instances;
       default: throw new Error('unknown iri');
     }
   }),
@@ -42,7 +63,7 @@ const manager: jest.Mocked<ComponentsManager<App>> = {
 
 jest.mock('componentsjs', (): any => ({
   ComponentsManager: {
-    build: jest.fn(async(): Promise<ComponentsManager<App>> => manager),
+    build: jest.fn(async(): Promise<ComponentsManager<Record<string, any>>> => manager),
   },
 }));
 
@@ -50,31 +71,18 @@ jest.spyOn(process, 'cwd').mockReturnValue('/var/cwd');
 const write = jest.spyOn(process.stderr, 'write').mockImplementation(jest.fn());
 const exit = jest.spyOn(process, 'exit').mockImplementation(jest.fn() as any);
 
-describe('AppRunner', (): void => {
+describe('StorageAccessorRunner', (): void => {
   afterEach((): void => {
     jest.clearAllMocks();
   });
 
   describe('run', (): void => {
-    let variables: Record<string, any>;
-    beforeEach(async(): Promise<void> => {
-      variables = {
-        'urn:skl-app-server:default:variable:port': 3000,
-        'urn:skl-app-server:default:variable:loggingLevel': 'info',
-        'urn:skl-app-server:default:variable:rootFilePath': '/var/cwd/',
-        'urn:skl-app-server:default:variable:showStackTrace': false,
-      };
-    });
-
-    it('starts the server with provided settings.', async(): Promise<void> => {
-      await new AppRunner().run(
-        {
-          mainModulePath: joinFilePath(__dirname, '../../../'),
-          dumpErrorState: true,
-          logLevel: 'info',
-        },
-        joinFilePath(__dirname, '../../../config/default.json'),
-        variables,
+    it('runs the server.', async(): Promise<void> => {
+      await expect(new StorageAccessorRunner().run({ argv: [ 'node', 'script' ]})).resolves.toEqual(
+        expect.objectContaining({
+          ...instances,
+          env: expect.any(Object),
+        }),
       );
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
@@ -85,29 +93,7 @@ describe('AppRunner', (): void => {
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
       expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
-      expect(manager.instantiate).toHaveBeenCalledTimes(1);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:skl-app-server:default:App', { variables });
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(0);
-      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(0);
-      expect(app.start).toHaveBeenCalledTimes(1);
-      expect(app.start).toHaveBeenCalledWith();
-    });
-  });
-
-  describe('runCli', (): void => {
-    it('runs the server.', async(): Promise<void> => {
-      await expect(new AppRunner().runCli([ 'node', 'script' ])).resolves.toBeUndefined();
-
-      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
-      expect(ComponentsManager.build).toHaveBeenCalledWith({
-        dumpErrorState: true,
-        logLevel: 'info',
-        mainModulePath: joinFilePath(__dirname, '../../../'),
-      });
-      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
+        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default-storage-accessor.json'));
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
@@ -119,7 +105,7 @@ describe('AppRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:default:App',
+        'urn:skl-app-server:storage-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -131,8 +117,13 @@ describe('AppRunner', (): void => {
       const OLD_STATE = env.CUSTOM_ENV_PREFIX_LOGGING_LEVEL;
       env.CUSTOM_ENV_PREFIX_LOGGING_LEVEL = 'debug';
       await expect(
-        new AppRunner().runCli([ 'node', 'script', '--envVarPrefix=CUSTOM_ENV_PREFIX' ]),
-      ).resolves.toBeUndefined();
+        new StorageAccessorRunner().run({ argv: [ 'node', 'script', '--envVarPrefix=CUSTOM_ENV_PREFIX' ]}),
+      ).resolves.toEqual(
+        expect.objectContaining({
+          ...instances,
+          env: expect.any(Object),
+        }),
+      );
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       // Check logLevel to be set to debug instead of default `info`
@@ -143,7 +134,7 @@ describe('AppRunner', (): void => {
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
       expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
+        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default-storage-accessor.json'));
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
@@ -158,7 +149,7 @@ describe('AppRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:default:App',
+        'urn:skl-app-server:storage-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -169,25 +160,6 @@ describe('AppRunner', (): void => {
       } else {
         delete env.CUSTOM_ENV_PREFIX_LOGGING_LEVEL;
       }
-    });
-
-    it('throws an error if the server could not start.', async(): Promise<void> => {
-      app.start.mockRejectedValueOnce(new Error('Fatal'));
-
-      let caughtError: Error = new Error('should disappear');
-      try {
-        await new AppRunner().runCli([ 'node', 'script' ]);
-      } catch (error: unknown) {
-        caughtError = error as Error;
-      }
-      expect(caughtError.message).toMatch(/^Could not start the server/mu);
-      expect(caughtError.message).toMatch(/^Cause: Fatal/mu);
-
-      expect(app.start).toHaveBeenCalledTimes(1);
-
-      expect(write).toHaveBeenCalledTimes(0);
-
-      expect(exit).toHaveBeenCalledTimes(0);
     });
 
     it('uses the default process.argv in case none are provided.', async(): Promise<void> => {
@@ -204,7 +176,12 @@ describe('AppRunner', (): void => {
       ];
       process.argv = argvParameters;
 
-      await expect(new AppRunner().runCli()).resolves.toBeUndefined();
+      await expect(new StorageAccessorRunner().run({})).resolves.toEqual(
+        expect.objectContaining({
+          ...instances,
+          env: expect.any(Object),
+        }),
+      );
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
@@ -226,59 +203,21 @@ describe('AppRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:default:App',
+        'urn:skl-app-server:storage-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
 
       process.argv = argv;
     });
-  });
-
-  describe('runCliSync', (): void => {
-    it('starts the server.', async(): Promise<void> => {
-      // eslint-disable-next-line no-sync
-      new AppRunner().runCliSync({ argv: [ 'node', 'script' ]});
-
-      // Wait until app.start has been called, because we can't await AppRunner.run.
-      await flushPromises();
-
-      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
-      expect(ComponentsManager.build).toHaveBeenCalledWith({
-        dumpErrorState: true,
-        logLevel: 'info',
-        mainModulePath: joinFilePath(__dirname, '../../../'),
-      });
-      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
-      expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(
-        1,
-        'urn:skl-app-server-setup:default:CliResolver',
-        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
-      );
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
-      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
-      expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:default:App',
-        { variables: defaultVariables });
-      expect(app.start).toHaveBeenCalledTimes(1);
-      expect(app.start).toHaveBeenLastCalledWith();
-    });
 
     it('exits the process and writes to stderr if there was an error.', async(): Promise<void> => {
-      manager.instantiate.mockRejectedValueOnce(new Error('Fatal'));
+      app.start.mockRejectedValueOnce(new Error('Fatal'));
 
-      // eslint-disable-next-line no-sync
-      new AppRunner().runCliSync({ argv: [ 'node', 'script' ]});
-
-      // Wait until app.start has been called, because we can't await AppRunner.runCli.
-      await flushPromises();
+      await new StorageAccessorRunner().run({ argv: [ 'node', 'script' ]});
 
       expect(write).toHaveBeenCalledTimes(1);
+      expect(write).toHaveBeenLastCalledWith(expect.stringMatching(/^Could not create the storages/mu));
       expect(write).toHaveBeenLastCalledWith(expect.stringMatching(/Cause: Fatal/mu));
 
       expect(exit).toHaveBeenCalledTimes(1);

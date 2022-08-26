@@ -5,7 +5,7 @@ A template for SKL applications
 # TODO
  - [ ] Break up BaseHttpServerFactory createServer function
  - [ ] UiEnabledConverter?
- - [ ] log info about jobs
+ - [ ] Add integration tests for Storage Accessor
 
 # Note
 There's a bug with typeorm and componentsjs-generator
