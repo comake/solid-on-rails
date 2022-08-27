@@ -1,5 +1,6 @@
 import type { QueueAdapter } from '../adapter/QueueAdapter';
-import type { JobScheduler, JobOptions } from './JobScheduler';
+import type { JobOptions } from '../JobOptions';
+import type { JobScheduler } from './JobScheduler';
 
 export class AdapterBasedScheduler implements JobScheduler {
   private readonly adapter: QueueAdapter;
@@ -11,8 +12,8 @@ export class AdapterBasedScheduler implements JobScheduler {
   public async performLater(
     jobName: string,
     data?: Record<string, any>,
-    options?: JobOptions,
+    overrideOptions?: Partial<JobOptions>,
   ): Promise<void> {
-    await this.adapter.performLater(jobName, data, options);
+    await this.adapter.performLater(jobName, data, overrideOptions);
   }
 }

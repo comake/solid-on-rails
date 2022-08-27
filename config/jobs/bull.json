@@ -11,8 +11,7 @@
         {
           "BullQueueAdapter:_args_jobs_key": "Void",
           "BullQueueAdapter:_args_jobs_value": {
-            "@type": "VoidJob",
-            "queue": "default"
+            "@type": "VoidJob"
           }
         }
       ]

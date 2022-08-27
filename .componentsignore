@@ -3,5 +3,6 @@
   "Error",
   "HttpErrorOptions",
   "WinstonLogger",
-  "TypeOrmRepository"
+  "TypeOrmRepository",
+  "ConfiguredJobOptions"
 ]

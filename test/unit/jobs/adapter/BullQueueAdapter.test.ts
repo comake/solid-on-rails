@@ -43,7 +43,7 @@ describe('A BullQueueAdapter', (): void => {
     perform = jest.fn().mockImplementation(async(): Promise<void> => {
       // Do nothing
     });
-    job = { perform, queue };
+    job = { perform, options: { queue }};
     jobs = { example: job };
 
     close = jest.fn();
@@ -216,7 +216,21 @@ describe('A BullQueueAdapter', (): void => {
     expect(perform).toHaveBeenCalledTimes(0);
   });
 
-  it('logs message about a job starting then erroring.', async(): Promise<void> => {
+  it('adds the job with a backoff setting.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await expect(adapter.performLater('example', {}, { retry: true }))
+      .resolves.toBeUndefined();
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(1);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(add).toHaveBeenCalledTimes(1);
+    expect(add).toHaveBeenCalledWith('example', {}, { backoff: { type: 'exponential', delay: 2000 }});
+    expect(perform).toHaveBeenCalledTimes(1);
+    expect(perform).toHaveBeenCalledWith({}, adapter);
+  });
+
+  it('logs a message about a job starting then erroring.', async(): Promise<void> => {
     error = new Error('Job failed');
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
     await adapter.performLater('example');

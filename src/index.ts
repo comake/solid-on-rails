@@ -79,6 +79,7 @@ export * from './jobs/scheduler/JobScheduler';
 
 // Jobs
 export * from './jobs/Job';
+export * from './jobs/JobOptions';
 export * from './jobs/VoidJob';
 
 // Logging
