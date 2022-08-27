@@ -17,7 +17,7 @@
   "@graph": [
     {
       "comment": "Access to the Data Mapper and Key Value storages.",
-      "@id": "urn:skl-app-server:storage-accessor:Instances",
+      "@id": "urn:skl-app-server:queue-accessor:Instances",
       "@type": "RecordObject",
       "record": [
         {

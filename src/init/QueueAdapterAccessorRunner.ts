@@ -16,7 +16,7 @@ dotenv.config();
 
 const INSTANTIATION_ERROR_MESSAGE = 'Could not create the queue adapter';
 const DEFAULT_CONFIG = resolveModulePath('config/default-queue-accessor.json');
-const DEFAULT_INSTANCES = 'urn:skl-app-server:storage-accessor:Instances';
+const DEFAULT_INSTANCES = 'urn:skl-app-server:queue-accessor:Instances';
 
 const QUEUE_ADAPTER_ACCESSOR_CLI_PARAMETERS = {
   ...CORE_CLI_PARAMETERS,

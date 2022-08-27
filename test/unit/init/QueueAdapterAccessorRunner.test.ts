@@ -52,7 +52,7 @@ const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
       case 'urn:skl-app-server-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:skl-app-server:storage-accessor:Instances': return instances;
+      case 'urn:skl-app-server:queue-accessor:Instances': return instances;
       default: throw new Error('unknown iri');
     }
   }),
@@ -105,7 +105,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:storage-accessor:Instances',
+        'urn:skl-app-server:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -149,7 +149,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:storage-accessor:Instances',
+        'urn:skl-app-server:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -203,7 +203,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:storage-accessor:Instances',
+        'urn:skl-app-server:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
