@@ -5,7 +5,6 @@ import { Initializer } from './Initializer';
 export interface JobSchedule {
   cron: string;
   jobName: string;
-  queue?: string;
   data?: Record<string, any>;
 }
 
@@ -35,10 +34,7 @@ export class JobSchedulesInitializer extends Initializer {
     await Promise.all(
       Object.values(this.schedules).map(
         async(schedule: JobSchedule): Promise<void> => {
-          const options = {
-            every: schedule.cron,
-            queue: schedule.queue,
-          };
+          const options = { every: schedule.cron };
           await this.scheduler.performLater(
             schedule.jobName,
             schedule.data,

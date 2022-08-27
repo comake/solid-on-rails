@@ -43,7 +43,7 @@ describe('An http server with preconfigured jobs', (): void => {
       queues: [ 'default' ],
       jobs: {
         Void: {
-          queue: 'default',
+          options: { queue: 'default' },
           perform: jest.fn().mockImplementation(async({ value }: { value: string }): Promise<void> => {
             jobValue = value;
           }),

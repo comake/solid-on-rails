@@ -2,7 +2,7 @@ import type { Queue } from 'bull';
 import Bull from 'bull';
 import { getLoggerFor } from '../../logging/LogUtil';
 import type { Job } from '../Job';
-import type { JobOptions } from '../scheduler/JobScheduler';
+import type { JobOptions } from '../JobOptions';
 import type { QueueAdapter } from './QueueAdapter';
 
 export interface RedisConfig {
@@ -18,6 +18,8 @@ export interface BullQueueAdapterArgs {
   queues: string[];
   redisConfig: RedisConfig;
 }
+
+const DEFAULT_BACKOFF_DELAY = 2000;
 
 /**
  * A BullQueueAdapter implements the {@link QueueAdapter} interface using the Bull
@@ -74,14 +76,15 @@ export class BullQueueAdapter implements QueueAdapter {
   public async performLater(
     jobName: string,
     data: Record<string, any> = {},
-    options: JobOptions = {},
+    overrideOptions: Partial<JobOptions> = {},
   ): Promise<void> {
     const job = this.jobs[jobName];
     if (!job) {
       throw new Error(`Job '${jobName}' is not defined`);
     }
 
-    const queueName = options?.queue ?? job.queue;
+    const options = { ...job.options, ...overrideOptions };
+    const queueName = options.queue;
     const queue = this.queues[queueName];
     if (!queue) {
       throw new Error(`Queue '${queueName}' is not defined`);
@@ -101,6 +104,13 @@ export class BullQueueAdapter implements QueueAdapter {
       bullOptions.repeat = { every: options.every };
     } else {
       this.addDelayFieldToObject(bullOptions, 'delay', options.at ?? options.in);
+    }
+
+    if (options.retry) {
+      bullOptions.backoff = {
+        type: 'exponential',
+        delay: DEFAULT_BACKOFF_DELAY,
+      };
     }
 
     return bullOptions;
