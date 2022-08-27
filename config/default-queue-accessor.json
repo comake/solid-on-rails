@@ -1,0 +1,60 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sklas:config/app/main/default.json",
+    "files-sklas:config/app/initialize/no-server.json",
+    "files-sklas:config/app/finalize/no-server.json",
+    "files-sklas:config/app/variables/default.json",
+    "files-sklas:config/app/path/default.json",
+
+    "files-sklas:config/storage/key-value/memory.json",
+
+    "files-sklas:config/jobs/bull.json",
+
+    "files-sklas:config/util/variables/default.json",
+    "files-sklas:config/util/logging/winston.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Access to the Data Mapper and Key Value storages.",
+      "@id": "urn:skl-app-server:storage-accessor:Instances",
+      "@type": "RecordObject",
+      "record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "queueAdapter",
+          "RecordObject:_record_value": { "@id": "urn:skl-app-server:default:QueueAdapter" }
+        }
+      ]
+    },
+    {
+      "@id": "urn:skl-app-server-setup:default:CliExtractor",
+      "@type": "YargsCliExtractor",
+      "extendedParameters": {
+        "queueName": {
+          "demandOption": false,
+          "requiresArg": true,
+          "type": "string",
+          "describe": "A specific queue to perform an action on."
+        }
+      }
+    },
+    {
+      "comment": "Adds resolvers to assign the CLI values to the Components.js variables.",
+      "@id": "urn:skl-app-server-setup:default:SettingsResolver",
+      "@type": "CombinedSettingsResolver",
+      "resolvers": [
+        {
+          "CombinedSettingsResolver:_resolvers_key": "urn:skl-sync-server:custom:variable:queueName",
+          "CombinedSettingsResolver:_resolvers_value": {
+            "@type": "KeyExtractor",
+            "key": "queueName"
+          }
+        }
+      ]
+    }
+  ]
+}

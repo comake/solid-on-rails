@@ -27,6 +27,7 @@ describe('A BullQueueAdapter', (): void => {
   let close: any;
   let add: any;
   let on: any;
+  let obliterate: any;
   const redisConfig = { port: 6379, host: '127.0.0.1' };
   let adapter: BullQueueAdapter;
   let registeredJobs: Record<string, (data: any) => Promise<void>>;
@@ -46,6 +47,7 @@ describe('A BullQueueAdapter', (): void => {
     jobs = { example: job };
 
     close = jest.fn();
+    obliterate = jest.fn();
     process = jest.fn().mockImplementation(
       (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
@@ -79,7 +81,7 @@ describe('A BullQueueAdapter', (): void => {
     });
 
     (Bull as jest.Mock).mockImplementation(
-      (name: string): Bull.Queue => ({ process, add, on, name, close } as any),
+      (name: string): Bull.Queue => ({ process, add, on, name, close, obliterate } as any),
     );
   });
 
@@ -263,5 +265,26 @@ describe('A BullQueueAdapter', (): void => {
     expect(logger.info).toHaveBeenNthCalledWith(1, 'Job example has started on queue default');
     expect(logger.info).toHaveBeenNthCalledWith(2, 'Job example has been marked as stalled on queue default');
     expect(logger.info).toHaveBeenNthCalledWith(3, 'Job example successfully completed on queue default');
+  });
+
+  it('deletes a queue.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await expect(adapter.deleteQueue('default')).resolves.toBeUndefined();
+    expect(obliterate).toHaveBeenCalledTimes(1);
+    expect(obliterate).toHaveBeenCalledWith({ force: true });
+  });
+
+  it('throws an error when deleting a queue that does not exist.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await expect(adapter.deleteQueue('otherQueue')).rejects.toThrow('No queue named otherQueue found');
+    expect(obliterate).toHaveBeenCalledTimes(0);
+  });
+
+  it('deletes all queues.', async(): Promise<void> => {
+    queues = [ queue, 'secondQueue' ];
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    await expect(adapter.deleteAllQueues()).resolves.toBeUndefined();
+    expect(obliterate).toHaveBeenCalledTimes(2);
+    expect(obliterate).toHaveBeenCalledWith({ force: true });
   });
 });

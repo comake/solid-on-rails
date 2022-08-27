@@ -10,4 +10,8 @@ export interface QueueAdapter extends Finalizable {
     data?: Record<string, any>,
     options?: JobOptions,
   ) => Promise<void>;
+
+  deleteQueue: (queueName: string) => Promise<void>;
+
+  deleteAllQueues: () => Promise<void>;
 }
