@@ -66,6 +66,7 @@ export * from './init/variables/SettingsResolver';
 export * from './init/App';
 export * from './init/AppRunner';
 export * from './init/CliResolver';
+export * from './init/QueueAdapterAccessorRunner';
 export * from './init/StorageAccessorRunner';
 
 // Jobs/Adapter

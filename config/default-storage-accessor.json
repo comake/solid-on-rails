@@ -2,8 +2,8 @@
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
   "import": [
     "files-sklas:config/app/main/default.json",
-    "files-sklas:config/app/initialize/storage-accessor.json",
-    "files-sklas:config/app/finalize/storage-accessor.json",
+    "files-sklas:config/app/initialize/no-server.json",
+    "files-sklas:config/app/finalize/no-server.json",
     "files-sklas:config/app/variables/default.json",
     "files-sklas:config/app/path/default.json",
 

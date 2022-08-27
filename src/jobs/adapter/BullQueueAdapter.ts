@@ -42,6 +42,28 @@ export class BullQueueAdapter implements QueueAdapter {
     }
   }
 
+  private initializeQueueEvents(queue: Queue): void {
+    queue.on('error', (error): void => {
+      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}\n${error.stack}`);
+    });
+
+    queue.on('active', (job): void => {
+      this.logger.info(`Job ${job.name} has started on queue ${queue.name}`);
+    });
+
+    queue.on('stalled', (job): void => {
+      this.logger.info(`Job ${job.name} has been marked as stalled on queue ${queue.name}`);
+    });
+
+    queue.on('completed', (job): void => {
+      this.logger.info(`Job ${job.name} successfully completed on queue ${queue.name}`);
+    });
+
+    queue.on('failed', (job, error): void => {
+      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}\n${error.stack}`);
+    });
+  }
+
   public async finalize(): Promise<void> {
     await Promise.all(
       Object.values(this.queues)
@@ -100,25 +122,19 @@ export class BullQueueAdapter implements QueueAdapter {
     }
   }
 
-  private initializeQueueEvents(queue: Queue): void {
-    queue.on('error', (error): void => {
-      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}\n${error.stack}`);
-    });
+  public async deleteQueue(queueName: string): Promise<void> {
+    const queue = this.queues[queueName];
+    if (!queue) {
+      throw new Error(`No queue named ${queueName} found`);
+    }
 
-    queue.on('active', (job): void => {
-      this.logger.info(`Job ${job.name} has started on queue ${queue.name}`);
-    });
+    await queue.obliterate({ force: true });
+  }
 
-    queue.on('stalled', (job): void => {
-      this.logger.info(`Job ${job.name} has been marked as stalled on queue ${queue.name}`);
-    });
-
-    queue.on('completed', (job): void => {
-      this.logger.info(`Job ${job.name} successfully completed on queue ${queue.name}`);
-    });
-
-    queue.on('failed', (job, error): void => {
-      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}\n${error.stack}`);
-    });
+  public async deleteAllQueues(): Promise<void> {
+    await Promise.allSettled(
+      Object.keys(this.queues)
+        .map((queueName: string): Promise<void> => this.deleteQueue(queueName)),
+    );
   }
 }

@@ -40,8 +40,10 @@
   ],
   "bin": {
     "skl-app-server": "bin/server.js",
-    "skl-app-server-storages-drop": "bin/drop-storages.js",
-    "skl-app-server-storages-seed": "bin/seed-storages.js"
+    "skl-app-server-drop-storages": "bin/drop-storages.js",
+    "skl-app-server-seed-storages": "bin/seed-storages.js",
+    "skl-app-server-delete-queue": "bin/delete-queue.js",
+    "skl-app-server-delete-all-queues": "bin/delete-all-queues.js"
   },
   "commitlint": {
     "extends": [
