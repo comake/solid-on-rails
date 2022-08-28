@@ -5,9 +5,17 @@ describe('A TypeOrmRepository', (): void => {
   let innerRepository: TypeOrmInnerRepository<any>;
   let repository: TypeOrmRepository<any>;
   let where: any;
+  let orderBy: any;
+  let offset: any;
+  let limit: any;
+  let getMany: any;
 
   beforeEach(async(): Promise<void> => {
-    where = jest.fn();
+    orderBy = jest.fn();
+    offset = jest.fn();
+    limit = jest.fn();
+    getMany = jest.fn();
+    where = jest.fn().mockReturnValue({ orderBy, offset, limit, getMany });
     innerRepository = {
       create: jest.fn(),
       findOneBy: jest.fn(),
@@ -47,6 +55,29 @@ describe('A TypeOrmRepository', (): void => {
     expect(innerRepository.createQueryBuilder).toHaveBeenCalledWith('user');
     expect(where).toHaveBeenCalledTimes(1);
     expect(where).toHaveBeenCalledWith('user.id = :id', { id: 1 });
+    expect(getMany).toHaveBeenCalledTimes(1);
+  });
+
+  it('delegates builds queries with order, offset, and limit.', async(): Promise<void> => {
+    await expect(repository.buildQuery(
+      'user',
+      'user.id = :id',
+      { id: 1 },
+      'user.id',
+      100,
+      200,
+    )).resolves.toBeUndefined();
+    expect(innerRepository.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(innerRepository.createQueryBuilder).toHaveBeenCalledWith('user');
+    expect(where).toHaveBeenCalledTimes(1);
+    expect(where).toHaveBeenCalledWith('user.id = :id', { id: 1 });
+    expect(orderBy).toHaveBeenCalledTimes(1);
+    expect(orderBy).toHaveBeenCalledWith('user.id');
+    expect(offset).toHaveBeenCalledTimes(1);
+    expect(offset).toHaveBeenCalledWith(100);
+    expect(limit).toHaveBeenCalledTimes(1);
+    expect(limit).toHaveBeenCalledWith(200);
+    expect(getMany).toHaveBeenCalledTimes(1);
   });
 
   it('delegates calls to query to the inner repository.', async(): Promise<void> => {

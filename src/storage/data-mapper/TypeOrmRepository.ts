@@ -20,9 +20,26 @@ export class TypeOrmRepository<T> implements Repository {
     return this.repository.findBy(options);
   }
 
-  public async buildQuery(alias: string, query: string, variables?: Record<string, any>): Promise<any | any[]> {
-    return this.repository.createQueryBuilder(alias)
+  public async buildQuery(
+    alias: string,
+    query: string,
+    variables?: Record<string, any>,
+    order?: string,
+    offset?: number,
+    limit?: number,
+  ): Promise<any | any[]> {
+    const builder = this.repository.createQueryBuilder(alias)
       .where(query, variables);
+    if (order) {
+      builder.orderBy(order);
+    }
+    if (offset) {
+      builder.offset(offset);
+    }
+    if (limit) {
+      builder.limit(limit);
+    }
+    return await builder.getMany();
   }
 
   public async query(query: string, parameters?: any[]): Promise<any> {
