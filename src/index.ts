@@ -114,15 +114,12 @@ export * from './storage/keyvalue/EncodingNamespaceStorage';
 export * from './storage/keyvalue/KeyValueStorage';
 export * from './storage/keyvalue/MemoryMapStorage';
 
-// Storage/Data Source
+// Storage/Data Mapper
 export * from './storage/data-mapper/schemas/BaseColumnSchemaPart';
 export * from './storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
 export * from './storage/data-mapper/schemas/UserEntitySchemaFactory';
 
-export * from './storage/data-mapper/DataMapper';
-export * from './storage/data-mapper/Repository';
 export * from './storage/data-mapper/TypeOrmDataMapper';
-export * from './storage/data-mapper/TypeOrmRepository';
 
 // Util/Errors
 export * from './util/errors/BadRequestHttpError';

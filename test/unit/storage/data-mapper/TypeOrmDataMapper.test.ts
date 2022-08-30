@@ -4,7 +4,6 @@ import type {
   TypeOrmEntitySchemaFactory,
 } from '../../../../src/storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
 import { TypeOrmDataMapper } from '../../../../src/storage/data-mapper/TypeOrmDataMapper';
-import { TypeOrmRepository } from '../../../../src/storage/data-mapper/TypeOrmRepository';
 
 jest.mock('typeorm');
 
@@ -87,8 +86,10 @@ describe('A TypeOrmDataMapper', (): void => {
   });
 
   it('gets a repository that has been initialized.', async(): Promise<void> => {
+    const respository = {} as any;
+    (dataSource.getRepository as jest.Mock).mockReturnValue(respository);
     await mapper.initialize();
-    expect(mapper.getRepository('Users')).toBeInstanceOf(TypeOrmRepository);
+    expect(mapper.getRepository('Users')).toBe(respository);
     expect(dataSource.getRepository).toHaveBeenCalledTimes(1);
   });
 
