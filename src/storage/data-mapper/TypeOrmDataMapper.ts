@@ -1,13 +1,11 @@
 /* eslint-disable tsdoc/syntax */
 // tsdoc/syntax cannot handle `@range`
-import type { EntitySchema, DataSourceOptions } from 'typeorm';
+import type { EntitySchema, DataSourceOptions, Repository } from 'typeorm';
 import { DataSource } from 'typeorm';
-import type { DataMapper } from './DataMapper';
-import type { Repository } from './Repository';
+import type { Finalizable } from '../../init/finalize/Finalizable';
 import type { TypeOrmEntitySchemaFactory } from './schemas/TypeOrmEntitySchemaFactory';
-import { TypeOrmRepository } from './TypeOrmRepository';
 
-export class TypeOrmDataMapper implements DataMapper {
+export class TypeOrmDataMapper implements Finalizable {
   private readonly entitySchemaFactories: TypeOrmEntitySchemaFactory<any>[];
   private readonly options: DataSourceOptions;
   private entitySchemas: Record<string, EntitySchema> = {};
@@ -42,15 +40,14 @@ export class TypeOrmDataMapper implements DataMapper {
     }
   }
 
-  public getRepository<T>(entityType: string): Repository {
+  public getRepository<T>(entityType: string): Repository<T> {
     this.ensureDatabaseIsInitialised();
 
     const entitySchema = this.entitySchemas[entityType];
     if (!entitySchema) {
       throw new Error(`No entity schema called ${entityType} found.`);
     }
-    const typeOrmRepository = this.dataSource!.getRepository<T>(entitySchema);
-    return new TypeOrmRepository<T>(typeOrmRepository);
+    return this.dataSource!.getRepository<T>(entitySchema);
   }
 
   public async dropDatabase(): Promise<void> {

@@ -4,7 +4,7 @@ import type { App } from '../../../src/init/App';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
 import { QueueAdapterAccessorRunner } from '../../../src/init/QueueAdapterAccessorRunner';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
-import type { DataMapper } from '../../../src/storage/data-mapper/DataMapper';
+import type { TypeOrmDataMapper } from '../../../src/storage/data-mapper/TypeOrmDataMapper';
 import type { KeyValueStorage } from '../../../src/storage/keyvalue/KeyValueStorage';
 import { joinFilePath } from '../../../src/util/PathUtil';
 
@@ -12,7 +12,7 @@ const app: jest.Mocked<App> = {
   start: jest.fn(),
 } as any;
 
-const dataMapper: jest.Mocked<DataMapper> = {
+const dataMapper: jest.Mocked<TypeOrmDataMapper> = {
   initialize: jest.fn(),
 } as any;
 
