@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome to SKL on Rails](README.md)
+* [Welcome to Solid on Rails](README.md)
 
 ## Guides
 
