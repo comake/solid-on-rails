@@ -10,9 +10,8 @@
   </p>
   <p>
     <a href="#bull-features"><strong>Features</strong></a> ·
-    <a href="#install"><strong>Requirements</strong></a> ·
-    <a href="#install"><strong>Install</strong></a> ·
-    <a href="#quick-guide"><strong>Quick Start</strong></a> ·
+    <a href="#requirements"><strong>Requirements</strong></a> ·
+    <a href="#quick-start"><strong>Quick Start</strong></a> ·
     <a href="https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/"><strong>Documentation</strong></a>
   </p>
   <p>
@@ -82,7 +81,7 @@ If your application doesn't need background job processing, you don't need to ru
 If your application doesn't need to store applicaton data, you don't need to run a database (See [How to remove application data storage](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/storage#remove)).
 {% endhint %}
 
-## 🚀 Quick Start
+## Quick Start
 
 Create a Node.js application (if you haven't already):
 ```
@@ -104,9 +103,9 @@ Add the required npm commands to `scripts` and the required Components.js config
 {
   "scripts": {
     "start": "npx skl-app-server -c ./your-custom-config.json -m .",
-    "build": "npm run build:ts && npm run build:components", // Remove npm run build:ts if you don't use Typescript
-    "build:ts": "tsc", // If you are using Typescript
-    "build:components": "componentsjs-generator -s src -c dist/components -r my-app -i .componentsignore --typeScopedContexts"
+    "build": "npm run build:ts && npm run build:components", # Remove npm run build:ts if you don't use Typescript
+    "build:ts": "tsc", # If you are using Typescript
+    "build:components": "componentsjs-generator -s src -c dist/components -r my-app --typeScopedContexts"
   },
   "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/my-application",
   "lsd:components": "dist/components/components.jsonld",
@@ -121,9 +120,9 @@ Add the required npm commands to `scripts` and the required Components.js config
 }
 ```
 
-Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json)!
+Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and reference it in the `start` command (the -c option).
 
-Start the server!
+Start the server! 🚀
 ```
 npm run start
 ```

@@ -104,7 +104,7 @@ Add the required npm commands to `scripts` and the required Components.js config
 }
 ```
 
-Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json)!
+Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and reference it in the `start` command (the `-c` option).
 
 Start the server!
 ```
