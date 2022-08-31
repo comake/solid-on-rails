@@ -1,32 +1,4 @@
-<div align="center">
-  <a href="https://github.com/comake/skl-app-server">
-    <img src="./resources/skl.svg" width="150" height="150">
-  </a>
-  <br/>
-  <br/>
-  <h2>SKL on Rails</h2>
-  <p>
-    A web-application framework for building highly configurable & decentralized apps <br/> using <a href="https://nodejs.org/">Node.js</a>, <a href="https://www.comake.io/skl">SKL</a>, and <a href="https://solidproject.org/">Solid</a>.
-  </p>
-  <p>
-    <a href="#bull-features"><strong>Features</strong></a> ·
-    <a href="#install"><strong>Install</strong></a> ·
-    <a href="#quick-guide"><strong>Quick Start</strong></a> ·
-    <a href="https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/"><strong>Documentation</strong></a>
-  </p>
-  <p>
-    <a href="https://github.com/comake/skl-app-server/actions/workflows/ci.yml">
-      <img src="https://github.com/comake/skl-app-server/actions/workflows/ci.yml/badge.svg">
-    </a>
-  </p>
-  <br>
-  <br>
-</div>
-
----
-<br/>
-
-SKL on Rails was created to make it easy for developers to get up an running with [SKL](https://www.comake.io/skl) and [Solid](https://solidproject.org/). It is pre-configured with everything to create an application that needs to:
+Solid on Rails is a web-application framework for building highly configurable & decentralized apps <br/> using <a href="https://nodejs.org/">Node.js</a>, <a href="https://solidproject.org/">Solid</a>, and <a href="https://www.comake.io/skl">SKL</a>. It is pre-configured with everything needed to create an application that can:
 
 - Store application data in a database (relational or key-value)
 - Expose an API (REST, GraphQL, etc.)
@@ -58,16 +30,3 @@ The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/).
 
 ## Quick Start
 
----
-
-### TODO
- - [ ] Break up BaseHttpServerFactory createServer function
- - [ ] UiEnabledConverter?
- - [ ] Add integration tests for Storage Accessor
-
-# Note
-There's a bug with typeorm and componentsjs-generator
-You have to add `"./package.json": "./package.json",` to the exports of `node_modules/typeorm/package.json`.
-See:
-- https://github.com/typeorm/typeorm/issues/9178
-- https://github.com/LinkedSoftwareDependencies/Components-Generator.js/issues/83
