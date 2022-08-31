@@ -9,7 +9,7 @@
     A web-application framework for building highly configurable & decentralized apps <br/> using <a href="https://nodejs.org/">Node.js</a>, <a href="https://www.comake.io/skl">SKL</a>, and <a href="https://solidproject.org/">Solid</a>.
   </p>
   <p>
-    <a href="#bull-features"><strong>Features</strong></a> ·
+    <a href="#features"><strong>Features</strong></a> ·
     <a href="#requirements"><strong>Requirements</strong></a> ·
     <a href="#quick-start"><strong>Quick Start</strong></a> ·
     <a href="https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/"><strong>Documentation</strong></a>
@@ -90,42 +90,27 @@ cd my-application
 npm init
 ```
 
-Install the latest server version from the npm package repository along with Components.js:
+Install the latest server version from the npm package repository:
 
 ```
-npm install --save @comake/skl-app-server componentsjs
-npm install --save-dev componentsjs-generator
+npm install --save @comake/skl-app-server
 ```
 
-Add the required npm commands to `scripts` and the required Components.js configuration in your `package.json`
+Add the start command to `scripts` in your `package.json`
 
 ```json
-{
-  "scripts": {
-    "start": "npx skl-app-server -c ./your-custom-config.json -m .",
-    "build": "npm run build:ts && npm run build:components", # Remove npm run build:ts if you don't use Typescript
-    "build:ts": "tsc", # If you are using Typescript
-    "build:components": "componentsjs-generator -s src -c dist/components -r my-app --typeScopedContexts"
-  },
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/my-application",
-  "lsd:components": "dist/components/components.jsonld",
-  "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
-  },
-  "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/dist/": "dist/"
-  },
+"scripts": {
+  "start": "npx skl-app-server"
 }
 ```
-
-Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and reference it in the `start` command (the -c option).
 
 Start the server! 🚀
 ```
 npm run start
 ```
+
+Read the [Dependency Injection Documentation](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/dependency-injection) to create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and use it in the `start` command (via the `--config` option).
+
 ---
 
 ### TODO
@@ -133,7 +118,7 @@ npm run start
  - [ ] UiEnabledConverter?
  - [ ] Add integration tests for Storage Accessor
 
-# Note
+### Note
 There's a bug with typeorm and componentsjs-generator
 You have to add `"./package.json": "./package.json",` to the exports of `node_modules/typeorm/package.json`.
 See:

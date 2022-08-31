@@ -65,7 +65,7 @@ If your application doesn't need background job processing, you don't need to ru
 If your application doesn't need to store applicaton data, you don't need to run a database (See [How to remove Application Data Storage](guides/storage.md#remove)).
 {% endhint %}
 
-## 🚀 Quick Start
+## Quick Start
 
 Create a Node.js application (if you haven't already):
 ```
@@ -74,39 +74,23 @@ cd my-application
 npm init
 ```
 
-Install the latest server version from the npm package repository along with Components.js:
+Install the latest server version from the npm package repository:
 
 ```
-npm install --save @comake/skl-app-server componentsjs
-npm install --save-dev componentsjs-generator
+npm install --save @comake/skl-app-server
 ```
 
-Add the required npm commands to `scripts` and the required Components.js configuration in your `package.json`
+Add the start command to `scripts` in your `package.json`
 
 ```json
-{
-  "scripts": {
-    "start": "npx skl-app-server -c ./your-custom-config.json -m .",
-    "build": "npm run build:ts && npm run build:components", // Remove npm run build:ts if you don't use Typescript
-    "build:ts": "tsc", // If you are using Typescript
-    "build:components": "componentsjs-generator -s src -c dist/components -r my-app -i .componentsignore --typeScopedContexts"
-  },
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/my-application",
-  "lsd:components": "dist/components/components.jsonld",
-  "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
-  },
-  "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/my-application/^0.0.0/dist/": "dist/"
-  },
+"scripts": {
+  "start": "npx skl-app-server"
 }
 ```
 
-Create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and reference it in the `start` command (the `-c` option).
-
-Start the server!
+Start the server! 🚀
 ```
 npm run start
 ```
+
+Read the [Dependency Injection documentation](guides/dependency-injection.md) to create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and use it in the `start` command (via the `--config` option).
