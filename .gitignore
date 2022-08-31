@@ -7,5 +7,4 @@ tsconfig.tsbuildinfo
 /coverage
 /data
 /dist
-/docs
 /node_modules
