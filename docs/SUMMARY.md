@@ -1,10 +1,10 @@
 # Table of contents
 
-* [Welcome to SKL on Rails](./README.md)
+* [Welcome to SKL on Rails](README.md)
 
 ## Guides
 
-* [Dependency Injection](quides/dependency-injection.md)
-* [Storage](quides/storage.md)
-* [Routes](quides/routes.md)
-* [Background Jobs](quides/background-jobs.md)
+* [Dependency Injection](guides/dependency-injection.md)
+* [Storage](guides/storage.md)
+* [Routes](guides/routes.md)
+* [Background Jobs](guides/background-jobs.md)
