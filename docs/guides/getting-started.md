@@ -1,5 +1,3 @@
-# Getting Started
-
 {% hint style="info" %}
 This section of the documentation (and in fact a lot about Solid on Rails) is heavily borrowed from the [Community Solid Server](https://github.com/CommunitySolidServer/CommunitySolidServer). Huge thanks to them for writing great open source code and documentation!
 {% endhint %}
