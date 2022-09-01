@@ -103,6 +103,8 @@ Any parameter can be defined using a variable that is set before calling Compone
 You can now create your own configuration file and startup settings for your application.
 A good place to start is by copying [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) configuration and start modifying it. 
 
+For more examples on how to configure, checkout the [example application](https://github.com/comake/example-solid-on-rails-application) build using Solid on Rails, and continue reading the [Storage](guides/storage.md), [Routes](guides/routes.md), and [Background Jobs](guides/background-jobs.md) guides.
+
 When you're ready, change the `start` command in your `package.json` to use your config:
 ```json
 "scripts": {
