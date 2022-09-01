@@ -17,8 +17,8 @@ The Solid on Rails framework is designed to be flexible such that people can eas
 
 Components.js allows components to be instantiated and wired together declaratively using semantic configuration files. Solid on Rails also uses [Components-Generator.js](https://github.com/LinkedSoftwareDependencies/Components-Generator.js) to automatically generate the necessary description configurations of all classes. Components are configured in JSON files, which makes it so that changing the configuration does not require any changes to the code.
 
-{% content-ref url="guides/dependency-injection.md" %}
-[Learn more about Dependency Injection](guides/dependency-injection.md)
+{% content-ref url="guides/getting-started.md" %}
+[Learn more about Dependency Injection](guides/getting-started.md)
 {% endcontent-ref %}
 
 ### Storage
@@ -33,7 +33,7 @@ The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/).
 
 ### Routes
 
-Like in Rails, routes to connect URLs to code for the application's API or web pages are defined in a configuration file. Each route matches a URL pattern and HTTP method to a specific handler (or a chain of handlers). These handlers are defined in JSON using the [dependency injection framework Components.js](guides/dependency-injection.md).
+Like in Rails, routes to connect URLs to code for the application's API or web pages are defined in a configuration file. Each route matches a URL pattern and HTTP method to a specific handler (or a chain of handlers). These handlers are defined in JSON using the dependency injection framework Components.js.
 
 {% content-ref url="guides/routes.md" %}
 [Learn more about Routes](guides/routes.md)
@@ -93,4 +93,4 @@ Start the server! 🚀
 npm run start
 ```
 
-Read the [Dependency Injection documentation](guides/dependency-injection.md) to create your own custom [Components.js](https://componentsjs.readthedocs.io/) configuration based on [the default](https://github.com/comake/skl-app-server/blob/main/config/default.json) and use it in the `start` command (via the `--config` option).
+Continue to the Getting Started guide below to learn how to create your own [Components.js](https://componentsjs.readthedocs.io/) configuration to customize your application with your own routes, plugins, background jobs, and more.

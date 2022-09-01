@@ -61,7 +61,6 @@ describe('AppRunner', (): void => {
       variables = {
         'urn:skl-app-server:default:variable:port': 3000,
         'urn:skl-app-server:default:variable:loggingLevel': 'info',
-        'urn:skl-app-server:default:variable:rootFilePath': '/var/cwd/',
         'urn:skl-app-server:default:variable:showStackTrace': false,
       };
     });

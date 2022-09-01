@@ -35,7 +35,7 @@ export class AppRunner {
    * Starts the server with a given config.
    * This method can be used to start the server from within another JavaScript application.
    * Keys of the `variableBindings` object should be Components.js variables.
-   * E.g.: `{ 'urn:skl-app-server:default:variable:rootFilePath': '.data' }`.
+   * E.g.: `{ 'urn:skl-app-server:default:variable:loggingLevel': 'info', }`.
    *
    * @param componentsManagerOptions - Components.js manager options.
    * @param configFile - Path to the server config file.

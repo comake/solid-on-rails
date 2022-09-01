@@ -29,15 +29,6 @@
           }
         },
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:rootFilePath",
-          "CombinedSettingsResolver:_resolvers_value": {
-            "@type": "AssetPathExtractor",
-            "key": "rootFilePath",
-            "defaultPath": "./",
-            "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" }
-          }
-        },
-        {
           "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:showStackTrace",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "KeyExtractor",
