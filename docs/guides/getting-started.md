@@ -70,7 +70,7 @@ To do this in your application, assuming you've already installed [`@comake/skl-
 
 # Configuration files
 
-Configuration files are how we tell Components.js which classes to instantiate and link together. All the Solid on Rails configurations can be found in the [config folder](https://github.com/comake/skl-app-server/tree/feat/docs/config). It is advised that you mirror this folder structure in your application.
+Configuration files are how we tell Components.js which classes to instantiate and link together. The default Solid on Rails configuration can be found in the [config folder](https://github.com/comake/skl-app-server/tree/feat/docs/config). It is advised that you mirror this folder structure in your application.
 
 A single component in such a configuration file might look as follows:
 ```json
@@ -94,7 +94,7 @@ The important elements here are the following:
 * `"@id"` - A unique identifier of this component, which allows it to be used as parameter values in different places (optional).
 * `"@type"` - The class name of the component. This must be a TypeScript class name that is exported via `index.ts`.
 
-As you can see from the constructor, the other fields are direct mappings from the constructor parameters. `initializer` and `finalizable` both reference other objects, which we refer to using their identifiers `(eg. `urn:skl-app-server:default:Initializer`). Parameters can also be literals like strings and numbers.
+As you can see from the constructor, the other fields are direct mappings from the constructor parameters. `initializer` and `finalizable` both reference other objects, which we refer to using their identifiers (eg. `urn:skl-app-server:default:Initializer`). Parameters can also be literals like strings and numbers.
 
 Any parameter can be defined using a variable that is set before calling Components.js. These variables are set when starting up the server, based on the command line parameters.
 
@@ -106,7 +106,7 @@ A good place to start is by copying [the default](https://github.com/comake/skl-
 When you're ready, change the `start` command in your `package.json` to use your config:
 ```json
 "scripts": {
-  "start": "npx skl-app-server -config ./config/my-custom-config.json --mainModulePath ."
+  "start": "npx skl-app-server --config ./config/my-custom-config.json --mainModulePath ."
 }
 ```
 
@@ -128,9 +128,9 @@ An easy way to customize your application is by passing parameters to the `skl-a
 
 As noted about the `envVarPrefix` parameter above, the parameters can also be passed through environment variables.
 
-When an `envVarPrefix` is set (eg. `APP_`), they must start with it and are converted from `camelCase` to `CAMEL_CASE`.
+When `envVarPrefix` is set (eg. `APP_`), a parameter supplied through an environment variable must start with it and will be converted from `CAMEL_CASE` to `camelCase`.
 
-> eg. `--baseUrl` => `APP_BASE_URL`
+> eg. `APP_BASE_URL` => `--baseUrl`
 
 {% hint style="warning" %}
 Command-line arguments will always override environment variables!
