@@ -1,22 +1,20 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/http/error-handler.json",
-    "files-sklas:config/http/response-writer.json",
-    "files-sklas:config/http/request-parser.json",
-    "files-sklas:config/http/routes/templates/application.json",
-    "files-sklas:config/http/routes/handlers/index.json",
-    "files-sklas:config/http/routes/handlers/get-user.json",
-    "files-sklas:config/http/routes/handlers/post-user.json"
+    "files-sor:config/http/error-handler.json",
+    "files-sor:config/http/response-writer.json",
+    "files-sor:config/http/request-parser.json",
+    "files-sor:config/http/routes/templates/application.json",
+    "files-sor:config/http/routes/handlers/index.json"
   ],
   "@graph": [
     {
       "comment": "Handles input parsing.",
-      "@id": "urn:skl-app-server:default:RoutesHandler",
+      "@id": "urn:solid-on-rails:default:RoutesHandler",
       "@type": "ParsingHttpHandler",
-      "args_requestParser": { "@id": "urn:skl-app-server:default:RequestParser" },
-      "args_errorHandler": { "@id": "urn:skl-app-server:default:ErrorHandler" },
-      "args_responseWriter": { "@id": "urn:skl-app-server:default:ResponseWriter" },
+      "args_requestParser": { "@id": "urn:solid-on-rails:default:RequestParser" },
+      "args_errorHandler": { "@id": "urn:solid-on-rails:default:ErrorHandler" },
+      "args_responseWriter": { "@id": "urn:solid-on-rails:default:ResponseWriter" },
       "args_requestHandler": {
         "comment": "Routes all requests to the proper handlers.",
         "@type": "WaterfallHandler",
@@ -28,9 +26,7 @@
             ],
             "@type": "UnsupportedAsyncHandler"
           },
-          { "@id": "urn:skl-app-server:default:IndexRouteHandler" },
-          { "@id": "urn:skl-app-server:default:GetUserHandler" },
-          { "@id": "urn:skl-app-server:default:CreateUserHandler" }
+          { "@id": "urn:solid-on-rails:default:IndexRouteHandler" }
         ]
       }
     }

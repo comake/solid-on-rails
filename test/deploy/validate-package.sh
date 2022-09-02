@@ -6,11 +6,11 @@ TEST_NAME="Deployment test: packaged module"
 
 echo "$TEST_NAME - Building and installing package"
 npm pack --loglevel warn
-npm install -g comake-skl-app-server-*.tgz --loglevel warn
-rm comake-skl-app-server-*.tgz
+npm install -g comake-solid-on-rails-*.tgz --loglevel warn
+rm comake-solid-on-rails-*.tgz
 
 echo "$TEST_NAME - Starting the server"
-skl-app-server -p 8888 -l warn &
+solid-on-rails -p 8888 -l warn &
 PID=$!
 
 FAILURE=1
@@ -33,6 +33,6 @@ else
 fi
 
 echo "$TEST_NAME - Cleanup"
-npm uninstall -g @comake/skl-app-server
+npm uninstall -g @comake/solid-on-rails
 
 exit $FAILURE

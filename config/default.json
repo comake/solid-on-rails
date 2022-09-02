@@ -1,35 +1,29 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/app/main/default.json",
-    "files-sklas:config/app/initialize/default.json",
-    "files-sklas:config/app/finalize/default.json",
-    "files-sklas:config/app/variables/default.json",
-    "files-sklas:config/app/path/default.json",
-
-    "files-sklas:config/http/handler/default.json",
-    "files-sklas:config/http/static/default.json",
-    "files-sklas:config/http/routes/default.json",
-
-    "files-sklas:config/http/error-handler.json",
-    "files-sklas:config/http/response-writer.json",
-    "files-sklas:config/http/request-parser.json",
-
-    "files-sklas:config/server/middleware/default.json",
-    "files-sklas:config/server/server-factory/default.json",
-
-    "files-sklas:config/storage/key-value/memory.json",
-    "files-sklas:config/storage/data-mapper/type-orm.json",
-
-    "files-sklas:config/jobs/scheduler/default.json",
-    "files-sklas:config/jobs/bull.json",
-
-    "files-sklas:config/util/variables/default.json",
-    "files-sklas:config/util/logging/winston.json"
+    "files-sor:config/app/main/default.json",
+    "files-sor:config/app/initialize/default.json",
+    "files-sor:config/app/finalize/default.json",
+    "files-sor:config/app/variables/default.json",
+    "files-sor:config/app/path/default.json",
+    "files-sor:config/http/handler/default.json",
+    "files-sor:config/http/static/default.json",
+    "files-sor:config/http/routes/default.json",
+    "files-sor:config/http/error-handler.json",
+    "files-sor:config/http/response-writer.json",
+    "files-sor:config/http/request-parser.json",
+    "files-sor:config/server/middleware/default.json",
+    "files-sor:config/server/server-factory/default.json",
+    "files-sor:config/storage/key-value/memory.json",
+    "files-sor:config/storage/data-mapper/type-orm.json",
+    "files-sor:config/jobs/scheduler/default.json",
+    "files-sor:config/jobs/bull.json",
+    "files-sor:config/util/variables/default.json",
+    "files-sor:config/util/logging/winston.json"
   ],
   "@graph": [
     {
-      "comment": "An SKL application server."
+      "comment": "A Solid on Rails application server."
     }
   ]
 }

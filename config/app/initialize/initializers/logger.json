@@ -1,15 +1,15 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": [
         "Sets up the global logging factory which is necessary for logging.",
         "This needs to happen before any other activity takes places, since all other components depend on logging."
       ],
-      "@id": "urn:skl-app-server:default:LoggerInitializer",
+      "@id": "urn:solid-on-rails:default:LoggerInitializer",
       "@type": "LoggerInitializer",
       "loggerFactory": {
-        "@id": "urn:skl-app-server:default:LoggerFactory"
+        "@id": "urn:solid-on-rails:default:LoggerFactory"
       }
     }
   ]

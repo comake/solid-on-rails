@@ -13,14 +13,14 @@ const createReadStream = jest.spyOn(fs, 'createReadStream')
   .mockImplementation((): any => Readable.from([ 'file contents' ]));
 
 describe('A StaticAssetHandler', (): void => {
-  const pathResolver = new PlaceholderPathResolver('@sklAppServer:');
+  const pathResolver = new PlaceholderPathResolver('@SoR:');
   const handler = new StaticAssetHandler(
     {
       '/foo/bar/style': '/assets/styles/bar.css',
       '/foo/bar/main': '/assets/scripts/bar.js',
       '/foo/bar/unknown': '/assets/bar.unknown',
       '/foo/bar/cwd': 'paths/cwd.txt',
-      '/foo/bar/module': '@sklAppServer:paths/module.txt',
+      '/foo/bar/module': '@SoR:paths/module.txt',
       '/foo/bar/folder1/': '/assets/folders/1/',
       '/foo/bar/folder2/': '/assets/folders/2',
       '/foo/bar/folder2/subfolder/': '/assets/folders/3',

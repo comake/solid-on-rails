@@ -53,11 +53,11 @@ describe('An http server with preconfigured jobs', (): void => {
     });
 
     const instances = await instantiateFromConfig(
-      'urn:skl-app-server:test:Instances',
+      'urn:solid-on-rails:test:Instances',
       getTestConfigPath('configured-jobs.json'),
       {
         ...getDefaultVariables(port, baseUrl),
-        'urn:skl-app-server:default:QueueAdapter': adapter,
+        'urn:solid-on-rails:default:QueueAdapter': adapter,
       },
     ) as Record<string, any>;
     ({ app } = instances);

@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": [
         "This is the list of finalizers that need to be called.",
         "These should be added in the configs where such classes are configured."
       ],
-      "@id": "urn:skl-app-server:default:Finalizer",
+      "@id": "urn:solid-on-rails:default:Finalizer",
       "@type": "ParallelFinalizer",
       "finalizers": [
         {

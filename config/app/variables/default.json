@@ -1,16 +1,16 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/app/variables/cli/cli.json",
-    "files-sklas:config/app/variables/resolver/resolver.json"
+    "files-sor:config/app/variables/cli/cli.json",
+    "files-sor:config/app/variables/resolver/resolver.json"
   ],
   "@graph": [
     {
       "comment": "Combines a CliExtractor and SettingsResolver to be used by the AppRunner.",
-      "@id": "urn:skl-app-server-setup:default:CliResolver",
+      "@id": "urn:solid-on-rails-setup:default:CliResolver",
       "@type": "CliResolver",
-      "cliExtractor": { "@id": "urn:skl-app-server-setup:default:CliExtractor" },
-      "settingsResolver": { "@id": "urn:skl-app-server-setup:default:SettingsResolver" }
+      "cliExtractor": { "@id": "urn:solid-on-rails-setup:default:CliExtractor" },
+      "settingsResolver": { "@id": "urn:solid-on-rails-setup:default:SettingsResolver" }
     }
   ]
 }

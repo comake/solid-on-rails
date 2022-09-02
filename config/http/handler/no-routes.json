@@ -1,16 +1,16 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Attempt to resolve requests first as static assets, then as normal routes.",
-      "@id": "urn:skl-app-server:default:HttpHandler",
+      "@id": "urn:solid-on-rails:default:HttpHandler",
       "@type": "SequenceHandler",
       "handlers": [
-        { "@id": "urn:skl-app-server:default:Middleware" },
+        { "@id": "urn:solid-on-rails:default:Middleware" },
         {
           "@type": "WaterfallHandler",
           "handlers": [
-            { "@id": "urn:skl-app-server:default:StaticAssetHandler" }
+            { "@id": "urn:solid-on-rails:default:StaticAssetHandler" }
           ]
         }
       ]

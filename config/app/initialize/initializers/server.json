@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Creates the server that starts listening for requests.",
-      "@id": "urn:skl-app-server:default:ServerInitializer",
+      "@id": "urn:solid-on-rails:default:ServerInitializer",
       "@type": "ServerInitializer",
-      "serverFactory": { "@id": "urn:skl-app-server:default:ServerFactory" },
-      "port": { "@id": "urn:skl-app-server:default:variable:port" }
+      "serverFactory": { "@id": "urn:solid-on-rails:default:ServerFactory" },
+      "port": { "@id": "urn:solid-on-rails:default:variable:port" }
     }
   ]
 }

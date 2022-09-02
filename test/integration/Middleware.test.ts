@@ -22,13 +22,13 @@ describe('An http server with middleware', (): void => {
 
   beforeAll(async(): Promise<void> => {
     const factory = await instantiateFromConfig(
-      'urn:skl-app-server:default:ServerFactory',
+      'urn:solid-on-rails:default:ServerFactory',
       getTestConfigPath('server-middleware.json'),
       {
-        'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:',
-        'urn:skl-app-server:default:RoutesHandler': new SimpleHttpHandler(),
-        'urn:skl-app-server:default:variable:baseUrl': 'https://example.com/',
-        'urn:skl-app-server:default:variable:showStackTrace': true,
+        'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:',
+        'urn:solid-on-rails:default:RoutesHandler': new SimpleHttpHandler(),
+        'urn:solid-on-rails:default:variable:baseUrl': 'https://example.com/',
+        'urn:solid-on-rails:default:variable:showStackTrace': true,
       },
     ) as BaseHttpServerFactory;
     server = factory.startServer(port);

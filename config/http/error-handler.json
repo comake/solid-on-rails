@@ -1,11 +1,11 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Wraps around the main error handler as a fallback in case something goes wrong.",
-      "@id": "urn:skl-app-server:default:ErrorHandler",
+      "@id": "urn:solid-on-rails:default:ErrorHandler",
       "@type": "SafeErrorHandler",
-      "showStackTrace": { "@id": "urn:skl-app-server:default:variable:showStackTrace" },
+      "showStackTrace": { "@id": "urn:solid-on-rails:default:variable:showStackTrace" },
       "errorHandler": {
         "@type": "WaterfallHandler",
         "handlers": [

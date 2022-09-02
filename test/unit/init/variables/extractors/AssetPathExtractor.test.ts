@@ -7,7 +7,7 @@ describe('An AssetPathExtractor', (): void => {
   let extractor: AssetPathExtractor;
 
   beforeEach(async(): Promise<void> => {
-    pathResolver = new PlaceholderPathResolver('@sklAppServer:');
+    pathResolver = new PlaceholderPathResolver('@SoR:');
     extractor = new AssetPathExtractor('path', pathResolver);
   });
 
@@ -20,7 +20,7 @@ describe('An AssetPathExtractor', (): void => {
   });
 
   it('converts paths containing the module path placeholder.', async(): Promise<void> => {
-    await expect(extractor.handle({ path: '@sklAppServer:config/file.json' }))
+    await expect(extractor.handle({ path: '@SoR:config/file.json' }))
       .resolves.toEqual(joinFilePath(__dirname, '../../../../../config/file.json'));
   });
 

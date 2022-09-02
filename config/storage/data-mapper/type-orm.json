@@ -1,18 +1,19 @@
 {
   "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
     { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
   ],
   "import": [
-    "files-sklas:config/storage/data-mapper/init/initializer.json"
+    "files-sor:config/storage/data-mapper/init/initializer.json"
   ],
   "@graph": [
     {
-      "@id": "urn:skl-app-server:default:DataMapper",
-      "@type": "TypeOrmDataMapper",
-      "entitySchemaFactories": [
-        { "@type": "UserEntitySchemaFactory" }
+      "comment": [
+        "The default Data Mapper. No entity schemas are specified here.",
+        "Replace this config with one that includes the entitySchemaFactories parameter with your schemas."
       ],
+      "@id": "urn:solid-on-rails:default:DataMapper",
+      "@type": "TypeOrmDataMapper",
       "options": {
         "type": "postgres",
         "host": "0.0.0.0",

@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "This is the entry point to the application. It can be used to both start and stop the server.",
-      "@id": "urn:skl-app-server:default:App",
+      "@id": "urn:solid-on-rails:default:App",
       "@type": "App",
-      "initializer": { "@id": "urn:skl-app-server:default:Initializer" },
-      "finalizer": { "@id": "urn:skl-app-server:default:Finalizer" }
+      "initializer": { "@id": "urn:solid-on-rails:default:Initializer" },
+      "finalizer": { "@id": "urn:solid-on-rails:default:Finalizer" }
     }
   ]
 }

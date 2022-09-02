@@ -34,8 +34,8 @@ export interface IRunCliSyncOptions {
   stderr?: WriteStream;
 }
 
-export const DEFAULT_CLI_RESOLVER = 'urn:skl-app-server-setup:default:CliResolver';
-export const DEFAULT_MODULE_PATH_PLACEHOLDER = '@sklAppServer:';
+export const DEFAULT_CLI_RESOLVER = 'urn:solid-on-rails-setup:default:CliResolver';
+export const DEFAULT_MODULE_PATH_PLACEHOLDER = '@SoR:';
 export const DEFAULT_ENV_VAR_PREFIX = '';
 
 export const CORE_CLI_PARAMETERS = {
@@ -98,7 +98,7 @@ async function resolveVariables(
     const resolver = await componentsManager.instantiate(DEFAULT_CLI_RESOLVER, {
       variables: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        'urn:skl-app-server:default:variable:modulePathPlaceholder': parameters.modulePathPlaceholder,
+        'urn:solid-on-rails:default:variable:modulePathPlaceholder': parameters.modulePathPlaceholder,
       },
     });
     // Convert CLI args to CLI bindings
@@ -162,7 +162,6 @@ export async function createComponentsManagerSetupFromCliArgs(
 
   // Build the CLI components and use them to generate values for the Components.js variables
   const variables = await resolveVariables(componentsManager, argv, params);
-
   return { variables, parameters: params, componentsManager };
 }
 

@@ -4,7 +4,7 @@ import { getTemplateFilePath, readTemplate } from '../../../../src/util/template
 import { mockFileSystem } from '../../../util/Util';
 
 jest.mock('fs');
-const pathResolver = new PlaceholderPathResolver('@sklAppServer:');
+const pathResolver = new PlaceholderPathResolver('@SoR:');
 
 describe('TemplateEngine', (): void => {
   describe('#getTemplateFilePath', (): void => {

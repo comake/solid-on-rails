@@ -9,8 +9,11 @@ let cachedModuleState: IModuleState;
 /**
  * Returns a component instantiated from a Components.js configuration.
  */
-export async function instantiateFromConfig(componentUrl: string, configPaths: string | string[],
-  variables?: Record<string, any>): Promise<any> {
+export async function instantiateFromConfig(
+  componentUrl: string,
+  configPaths: string | string[],
+  variables?: Record<string, any>,
+): Promise<any> {
   // Initialize the Components.js loader
   const mainModulePath = joinFilePath(__dirname, '../../');
   const manager = await ComponentsManager.build({ mainModulePath, logLevel: 'error', moduleState: cachedModuleState });
@@ -45,10 +48,10 @@ export async function removeFolder(folder: string): Promise<void> {
 
 export function getDefaultVariables(port: number, baseUrl?: string): Record<string, any> {
   return {
-    'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:',
-    'urn:skl-app-server:default:variable:baseUrl': baseUrl ?? `http://localhost:${port}/`,
-    'urn:skl-app-server:default:variable:port': port,
-    'urn:skl-app-server:default:variable:loggingLevel': 'off',
-    'urn:skl-app-server:default:variable:showStackTrace': true,
+    'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:',
+    'urn:solid-on-rails:default:variable:baseUrl': baseUrl ?? `http://localhost:${port}/`,
+    'urn:solid-on-rails:default:variable:port': port,
+    'urn:solid-on-rails:default:variable:loggingLevel': 'off',
+    'urn:solid-on-rails:default:variable:showStackTrace': true,
   };
 }

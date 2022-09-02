@@ -1,19 +1,27 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Converts an input key/value object into an object mapping values to Components.js variables",
-      "@id": "urn:skl-app-server-setup:default:SettingsResolver",
+      "@id": "urn:solid-on-rails-setup:default:SettingsResolver",
       "@type": "CombinedSettingsResolver",
       "resolvers": [
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:baseUrl",
+          "CombinedSettingsResolver:_resolvers_key": "urn:solid-on-rails:default:variable:modulePathPlaceholder",
+          "CombinedSettingsResolver:_resolvers_value": {
+            "@type": "KeyExtractor",
+            "key": "mainModulePlaceholder",
+            "defaultValue": "@SoR:"
+          }
+        },
+        {
+          "CombinedSettingsResolver:_resolvers_key": "urn:solid-on-rails:default:variable:baseUrl",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "BaseUrlExtractor"
           }
         },
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:loggingLevel",
+          "CombinedSettingsResolver:_resolvers_key": "urn:solid-on-rails:default:variable:loggingLevel",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "KeyExtractor",
             "key": "loggingLevel",
@@ -21,7 +29,7 @@
           }
         },
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:port",
+          "CombinedSettingsResolver:_resolvers_key": "urn:solid-on-rails:default:variable:port",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "KeyExtractor",
             "key": "port",
@@ -29,16 +37,7 @@
           }
         },
         {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:rootFilePath",
-          "CombinedSettingsResolver:_resolvers_value": {
-            "@type": "AssetPathExtractor",
-            "key": "rootFilePath",
-            "defaultPath": "./",
-            "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" }
-          }
-        },
-        {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-app-server:default:variable:showStackTrace",
+          "CombinedSettingsResolver:_resolvers_key": "urn:solid-on-rails:default:variable:showStackTrace",
           "CombinedSettingsResolver:_resolvers_value": {
             "@type": "KeyExtractor",
             "key": "showStackTrace",

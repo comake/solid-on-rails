@@ -19,7 +19,7 @@ dotenv.config();
 
 const INSTANTIATION_ERROR_MESSAGE = 'Could not create the server';
 const DEFAULT_CONFIG = resolveModulePath('config/default.json');
-const DEFAULT_APP = 'urn:skl-app-server:default:App';
+const DEFAULT_APP = 'urn:solid-on-rails:default:App';
 
 const APP_RUNNER_CLI_PARAMETERS = {
   ...CORE_CLI_PARAMETERS,
@@ -35,7 +35,7 @@ export class AppRunner {
    * Starts the server with a given config.
    * This method can be used to start the server from within another JavaScript application.
    * Keys of the `variableBindings` object should be Components.js variables.
-   * E.g.: `{ 'urn:skl-app-server:default:variable:rootFilePath': '.data' }`.
+   * E.g.: `{ 'urn:solid-on-rails:default:variable:loggingLevel': 'info', }`.
    *
    * @param componentsManagerOptions - Components.js manager options.
    * @param configFile - Path to the server config file.
@@ -51,7 +51,7 @@ export class AppRunner {
       DEFAULT_APP,
       componentsManager,
       variableBindings,
-      'Could not create the server',
+      INSTANTIATION_ERROR_MESSAGE,
     );
     await app.start();
   }

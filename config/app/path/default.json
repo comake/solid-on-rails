@@ -1,11 +1,11 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "This is the entry point to the application. It can be used to both start and stop the server.",
-      "@id": "urn:skl-app-server:default:PathResolver",
+      "@id": "urn:solid-on-rails:default:PathResolver",
       "@type": "PlaceholderPathResolver",
-      "modulePathPlaceholder": { "@id": "urn:skl-app-server:default:variable:modulePathPlaceholder" }
+      "modulePathPlaceholder": { "@id": "urn:solid-on-rails:default:variable:modulePathPlaceholder" }
     }
   ]
 }

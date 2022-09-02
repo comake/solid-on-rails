@@ -103,8 +103,6 @@ export * from './server/middleware/HeaderHandler';
 export * from './server/middleware/StaticAssetHandler';
 
 // Server/Routing
-export * from './server/routing/CreateUserHandler';
-export * from './server/routing/GetUserHandler';
 export * from './server/routing/IndexViewHandler';
 export * from './server/routing/RouteHandler';
 export * from './server/ParsedRequestHandler';
@@ -117,7 +115,6 @@ export * from './storage/keyvalue/MemoryMapStorage';
 // Storage/Data Mapper
 export * from './storage/data-mapper/schemas/BaseColumnSchemaPart';
 export * from './storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
-export * from './storage/data-mapper/schemas/UserEntitySchemaFactory';
 
 export * from './storage/data-mapper/TypeOrmDataMapper';
 
