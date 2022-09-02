@@ -64,7 +64,8 @@
     "test:deploy": "chmod +x ./test/deploy/validate-package.sh && ./test/deploy/validate-package.sh",
     "test:ts": "tsc -p test --noEmit",
     "test:integration": "jest --coverageReporters text-summary -- test/integration",
-    "test:unit": "jest --config=./jest.coverage.config.js test/unit"
+    "test:unit": "jest --config=./jest.coverage.config.js test/unit",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
