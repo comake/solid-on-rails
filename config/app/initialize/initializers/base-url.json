@@ -1,13 +1,13 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Logs a warning if the base URL changes.",
-      "@id": "urn:skl-app-server:default:BaseUrlVerifier",
+      "@id": "urn:solid-on-rails:default:BaseUrlVerifier",
       "@type": "BaseUrlVerifier",
-      "baseUrl": { "@id": "urn:skl-app-server:default:variable:baseUrl" },
+      "baseUrl": { "@id": "urn:solid-on-rails:default:variable:baseUrl" },
       "storageKey": "current-base-url",
-      "storage": { "@id": "urn:skl-app-server:default:SetupStorage" }
+      "storage": { "@id": "urn:solid-on-rails:default:SetupStorage" }
     }
   ]
 }

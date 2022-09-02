@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/storage/key-value/storages/setup.json"
+    "files-sor:config/storage/key-value/storages/setup.json"
   ],
   "@graph": [
     {
       "comment": "Internal value storage.",
-      "@id": "urn:skl-app-server:default:KeyValueStorage",
+      "@id": "urn:solid-on-rails:default:KeyValueStorage",
       "@type": "MemoryMapStorage"
     }
   ]

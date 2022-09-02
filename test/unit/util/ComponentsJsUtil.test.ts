@@ -34,8 +34,8 @@ const settingsResolver: jest.Mocked<SettingsResolver> = {
 const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
-      case 'urn:skl-app-server-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:skl-app-server:test:Thing': return instantiatedThing;
+      case 'urn:solid-on-rails-setup:default:CliResolver': return { cliExtractor, settingsResolver };
+      case 'urn:solid-on-rails:test:Thing': return instantiatedThing;
       default: throw new Error('unknown iri');
     }
   }),
@@ -129,13 +129,13 @@ describe('ComponentsJsUtil', (): void => {
   describe('#instantiateWithManagerAndVariables', (): void => {
     it('returns the instantiated instance.', async(): Promise<void> => {
       await expect(instantiateWithManagerAndVariables(
-        'urn:skl-app-server:test:Thing',
+        'urn:solid-on-rails:test:Thing',
         manager,
         variables,
       )).resolves.toBe(instantiatedThing);
       expect(manager.instantiate).toHaveBeenCalledTimes(1);
       expect(manager.instantiate).toHaveBeenCalledWith(
-        'urn:skl-app-server:test:Thing',
+        'urn:solid-on-rails:test:Thing',
         { variables },
       );
     });
@@ -146,7 +146,7 @@ describe('ComponentsJsUtil', (): void => {
       let caughtError: Error = new Error('should disappear');
       try {
         await instantiateWithManagerAndVariables(
-          'urn:skl-app-server:test:Thing',
+          'urn:solid-on-rails:test:Thing',
           manager,
           variables,
           'Could not create the thing',
@@ -158,7 +158,7 @@ describe('ComponentsJsUtil', (): void => {
       expect(caughtError.message).toMatch(/^Cause: Componentsjs failed to instantiate/mu);
       expect(manager.instantiate).toHaveBeenCalledTimes(1);
       expect(manager.instantiate).toHaveBeenCalledWith(
-        'urn:skl-app-server:test:Thing',
+        'urn:solid-on-rails:test:Thing',
         { variables },
       );
     });

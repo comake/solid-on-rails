@@ -1,16 +1,16 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Extracts CLI arguments into a key/value object. Config and mainModulePath are only defined here so their description is returned.",
-      "@id": "urn:skl-app-server-setup:default:CliExtractor",
+      "@id": "urn:solid-on-rails-setup:default:CliExtractor",
       "@type": "YargsCliExtractor",
       "parameters": {
         "config": {
           "alias": "c",
           "requiresArg": true,
           "type": "string",
-          "describe": "The configuration for the server. The default only stores data in memory; to persist to your filesystem, use @sklAppServer:config/file.json."
+          "describe": "The configuration for the server."
         },
         "mainModulePath": {
           "alias": "m",

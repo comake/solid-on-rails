@@ -26,6 +26,7 @@ describe('A TypeOrmDataMapper', (): void => {
   let dataSourceConstructor: any;
 
   beforeEach(async(): Promise<void> => {
+    jest.resetAllMocks();
     generateUsers = jest.fn().mockReturnValue(usersEntitySchema);
     generateBooks = jest.fn().mockReturnValue(booksEntitySchema);
     entitySchemaFactories = [
@@ -61,6 +62,16 @@ describe('A TypeOrmDataMapper', (): void => {
           booksEntitySchema,
         ],
       });
+    });
+
+  it('initializes a typeORM DataSource with no entity schemas if no factories are provided.',
+    async(): Promise<void> => {
+      mapper = new TypeOrmDataMapper(options);
+      await expect(mapper.initialize()).resolves.toBeUndefined();
+      expect(generateUsers).toHaveBeenCalledTimes(0);
+      expect(generateBooks).toHaveBeenCalledTimes(0);
+      expect(DataSource).toHaveBeenCalledTimes(1);
+      expect(DataSource).toHaveBeenCalledWith({ ...options, entities: []});
     });
 
   it('throws an error when getting a repository before the data mapper has been initialized.',

@@ -1,8 +1,8 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
-      "@id": "urn:skl-app-server:default:IndexRouteHandler",
+      "@id": "urn:solid-on-rails:default:IndexRouteHandler",
       "@type": "RouteHandler",
       "route": {
         "path": "/",
@@ -10,8 +10,8 @@
       },
       "handler": {
         "@type": "IndexViewHandler",
-        "template": "@sklAppServer:assets/views/index.html.ejs",
-        "templateEngine": { "@id": "urn:skl-app-server:default:ApplicationTemplateEngine" }
+        "template": "@SoR:assets/views/index.html.ejs",
+        "templateEngine": { "@id": "urn:solid-on-rails:default:ApplicationTemplateEngine" }
       }
     }
   ]

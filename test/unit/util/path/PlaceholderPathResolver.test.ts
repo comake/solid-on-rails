@@ -2,7 +2,7 @@ import { PlaceholderPathResolver } from '../../../../src/util/path/PlaceholderPa
 import { joinFilePath, getModuleRoot } from '../../../../src/util/PathUtil';
 
 describe('A PlaceholderPathResolver', (): void => {
-  const modulePathPlaceholder = '@sklAppServer:';
+  const modulePathPlaceholder = '@SoR:';
   let resolver: PlaceholderPathResolver;
 
   beforeEach(async(): Promise<void> => {

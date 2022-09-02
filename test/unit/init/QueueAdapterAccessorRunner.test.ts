@@ -40,8 +40,8 @@ const cliExtractor: jest.Mocked<CliExtractor> = {
 } as any;
 
 const defaultVariables = {
-  'urn:skl-app-server:default:variable:port': 3000,
-  'urn:skl-app-server:default:variable:loggingLevel': 'info',
+  'urn:solid-on-rails:default:variable:port': 3000,
+  'urn:solid-on-rails:default:variable:loggingLevel': 'info',
 };
 
 const settingsResolver: jest.Mocked<SettingsResolver> = {
@@ -51,8 +51,8 @@ const settingsResolver: jest.Mocked<SettingsResolver> = {
 const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
-      case 'urn:skl-app-server-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:skl-app-server:queue-accessor:Instances': return instances;
+      case 'urn:solid-on-rails-setup:default:CliResolver': return { cliExtractor, settingsResolver };
+      case 'urn:solid-on-rails:queue-accessor:Instances': return instances;
       default: throw new Error('unknown iri');
     }
   }),
@@ -97,15 +97,15 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
-        'urn:skl-app-server-setup:default:CliResolver',
-        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+        'urn:solid-on-rails-setup:default:CliResolver',
+        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:queue-accessor:Instances',
+        'urn:solid-on-rails:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -138,8 +138,8 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
-        'urn:skl-app-server-setup:default:CliResolver',
-        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+        'urn:solid-on-rails-setup:default:CliResolver',
+        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
@@ -149,7 +149,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:queue-accessor:Instances',
+        'urn:solid-on-rails:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();
@@ -195,15 +195,15 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
-        'urn:skl-app-server-setup:default:CliResolver',
-        { variables: { 'urn:skl-app-server:default:variable:modulePathPlaceholder': '@sklAppServer:' }},
+        'urn:solid-on-rails-setup:default:CliResolver',
+        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: argvParameters, envVarPrefix: '' });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:skl-app-server:queue-accessor:Instances',
+        'urn:solid-on-rails:queue-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(app.start).toHaveBeenLastCalledWith();

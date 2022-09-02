@@ -1,32 +1,32 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Servers static files on fixed URLs.",
-      "@id": "urn:skl-app-server:default:StaticAssetHandler",
+      "@id": "urn:solid-on-rails:default:StaticAssetHandler",
       "@type": "StaticAssetHandler",
       "options_expires": 86400,
-      "pathResolver": { "@id": "urn:skl-app-server:default:PathResolver" },
+      "pathResolver": { "@id": "urn:solid-on-rails:default:PathResolver" },
       "assets": [
         {
           "StaticAssetHandler:_assets_key": "/favicon.ico",
-          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/favicon.ico"
+          "StaticAssetHandler:_assets_value": "@SoR:assets/images/favicon.ico"
         },
         {
           "StaticAssetHandler:_assets_key": "/styles/",
-          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/styles/"
+          "StaticAssetHandler:_assets_value": "@SoR:assets/styles/"
         },
         {
           "StaticAssetHandler:_assets_key": "/fonts/",
-          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/fonts/"
+          "StaticAssetHandler:_assets_value": "@SoR:assets/fonts/"
         },
         {
           "StaticAssetHandler:_assets_key": "/images/",
-          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/images/"
+          "StaticAssetHandler:_assets_value": "@SoR:assets/images/"
         },
         {
           "StaticAssetHandler:_assets_key": "/scripts/",
-          "StaticAssetHandler:_assets_value": "@sklAppServer:assets/scripts/"
+          "StaticAssetHandler:_assets_value": "@SoR:assets/scripts/"
         }
       ]
     }

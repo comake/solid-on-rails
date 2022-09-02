@@ -1,10 +1,10 @@
 {
-  "name": "@comake/skl-app-server",
-  "version": "0.5.0",
+  "name": "@comake/solid-on-rails",
+  "version": "0.0.0",
   "description": "Runs a Node.js server using componentsjs preset with configurations for SKL.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/comake/skl-app-server.git"
+    "url": "git+https://github.com/comake/solid-on-rails.git"
   },
   "keywords": [
     "skl",
@@ -17,18 +17,18 @@
     "email": "adler@comake.io"
   },
   "bugs": {
-    "url": "https://github.com/comake/skl-app-server/issues"
+    "url": "https://github.com/comake/solid-on-rails/issues"
   },
-  "homepage": "https://github.com/comake/skl-app-server#readme",
-  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server",
+  "homepage": "https://github.com/comake/solid-on-rails#readme",
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails",
   "lsd:components": "dist/components/components.jsonld",
   "lsd:contexts": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld": "dist/components/context.jsonld"
   },
   "lsd:importPaths": {
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/": "dist/components/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/config/": "config/",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/dist/": "dist/"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/": "dist/components/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/config/": "config/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/dist/": "dist/"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -39,11 +39,11 @@
     "assets"
   ],
   "bin": {
-    "skl-app-server": "bin/server.js",
-    "skl-app-server-drop-storages": "bin/drop-storages.js",
-    "skl-app-server-seed-storages": "bin/seed-storages.js",
-    "skl-app-server-delete-queue": "bin/delete-queue.js",
-    "skl-app-server-delete-all-queues": "bin/delete-all-queues.js"
+    "solid-on-rails": "bin/server.js",
+    "solid-on-rails-drop-storages": "bin/drop-storages.js",
+    "solid-on-rails-seed-storages": "bin/seed-storages.js",
+    "solid-on-rails-delete-queue": "bin/delete-queue.js",
+    "solid-on-rails-delete-all-queues": "bin/delete-all-queues.js"
   },
   "commitlint": {
     "extends": [
@@ -52,8 +52,11 @@
   },
   "scripts": {
     "start": "node ./bin/server.js",
+    "storages:drop": "node ./bin/drop-storages.js",
+    "queues:deleteAll": "bin/delete-all-queues.js",
+    "queues:delete": "node ./bin/delete-queue.js",
     "build": "npm run build:ts && npm run build:components",
-    "build:components": "componentsjs-generator -s src -c dist/components -r sklas -i .componentsignore --typeScopedContexts",
+    "build:components": "componentsjs-generator -s src -c dist/components -r sor -i .componentsignore --typeScopedContexts",
     "build:ts": "tsc",
     "lint": "eslint . --cache --ignore-path .gitignore --max-warnings 0",
     "jest": "jest --coverage",

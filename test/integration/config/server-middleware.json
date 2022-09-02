@@ -1,16 +1,16 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/http/handler/default.json",
-    "files-sklas:config/server/middleware/default.json",
-    "files-sklas:config/server/server-factory/default.json",
-    "files-sklas:config/http/static/default.json",
-    "files-sklas:config/util/variables/default.json",
-    "files-sklas:config/app/path/default.json"
+    "files-sor:config/http/handler/default.json",
+    "files-sor:config/server/middleware/default.json",
+    "files-sor:config/server/server-factory/default.json",
+    "files-sor:config/http/static/default.json",
+    "files-sor:config/util/variables/default.json",
+    "files-sor:config/app/path/default.json"
   ],
   "@graph": [
     {
-      "@id": "urn:skl-app-server:default:RoutesHandler",
+      "@id": "urn:solid-on-rails:default:RoutesHandler",
       "@type": "Variable"
     }
   ]

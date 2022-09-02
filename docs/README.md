@@ -77,14 +77,14 @@ npm init
 Install the latest server version from the npm package repository:
 
 ```
-npm install --save @comake/skl-app-server
+npm install --save @comake/solid-on-rails
 ```
 
 Add the start command to `scripts` in your `package.json`
 
 ```json
 "scripts": {
-  "start": "npx skl-app-server"
+  "start": "npx solid-on-rails"
 }
 ```
 

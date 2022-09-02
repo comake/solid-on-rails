@@ -77,7 +77,7 @@ describe('PathUtil', (): void => {
     it('returns the contents of the package.json file at the root of the module.', async(): Promise<void> => {
       const result = await readPackageJson();
       expect(result).toMatchObject({
-        name: '@comake/skl-app-server',
+        name: '@comake/solid-on-rails',
       });
     });
   });

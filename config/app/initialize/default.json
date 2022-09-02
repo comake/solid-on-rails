@@ -1,22 +1,22 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/app/initialize/initializers/base-url.json",
-    "files-sklas:config/app/initialize/initializers/logger.json",
-    "files-sklas:config/app/initialize/initializers/server.json",
-    "files-sklas:config/app/initialize/initializers/version.json"
+    "files-sor:config/app/initialize/initializers/base-url.json",
+    "files-sor:config/app/initialize/initializers/logger.json",
+    "files-sor:config/app/initialize/initializers/server.json",
+    "files-sor:config/app/initialize/initializers/version.json"
   ],
   "@graph": [
     {
       "comment": "These initializers will be all be executed sequentially when starting the server.",
-      "@id": "urn:skl-app-server:default:Initializer",
+      "@id": "urn:solid-on-rails:default:Initializer",
       "@type": "SequenceHandler",
       "handlers": [
-        { "@id": "urn:skl-app-server:default:LoggerInitializer" },
-        { "@id": "urn:skl-app-server:default:BaseUrlVerifier" },
-        { "@id": "urn:skl-app-server:default:ParallelInitializer" },
-        { "@id": "urn:skl-app-server:default:ServerInitializer" },
-        { "@id": "urn:skl-app-server:default:ModuleVersionVerifier" }
+        { "@id": "urn:solid-on-rails:default:LoggerInitializer" },
+        { "@id": "urn:solid-on-rails:default:BaseUrlVerifier" },
+        { "@id": "urn:solid-on-rails:default:ParallelInitializer" },
+        { "@id": "urn:solid-on-rails:default:ServerInitializer" },
+        { "@id": "urn:solid-on-rails:default:ModuleVersionVerifier" }
       ]
     },
     {
@@ -24,7 +24,7 @@
         "These handlers are called whenever the server is started,",
         "and can be used to ensure that all necessary resources for booting are available."
       ],
-      "@id": "urn:skl-app-server:default:ParallelInitializer",
+      "@id": "urn:solid-on-rails:default:ParallelInitializer",
       "@type": "ParallelHandler",
       "handlers": [
         {

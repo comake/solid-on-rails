@@ -1,8 +1,8 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
-      "@id": "urn:skl-app-server:default:GetUserHandler",
+      "@id": "urn:solid-on-rails:default:GetUserHandler",
       "@type": "RouteHandler",
       "route": {
         "path": "/users/:id",
@@ -10,7 +10,7 @@
       },
       "handler": {
         "@type": "GetUserHandler",
-        "dataMapper": { "@id": "urn:skl-app-server:default:DataMapper" }
+        "dataMapper": { "@id": "urn:solid-on-rails:default:DataMapper" }
       }
     }
   ]

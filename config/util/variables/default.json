@@ -1,31 +1,31 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "comment": "Variables used throughout the other configs. Can be set using the CLI.",
   "@graph": [
     {
       "comment": "Port of the server.",
-      "@id": "urn:skl-app-server:default:variable:port",
+      "@id": "urn:solid-on-rails:default:variable:port",
       "@type": "Variable"
     },
     {
       "comment": "Needs to be set to the base URL of the server for authentication and authorization to function.",
-      "@id": "urn:skl-app-server:default:variable:baseUrl",
+      "@id": "urn:solid-on-rails:default:variable:baseUrl",
       "@type": "Variable"
     },
     {
       "comment": "The max level of log messages that should be output.",
-      "@id": "urn:skl-app-server:default:variable:loggingLevel",
+      "@id": "urn:solid-on-rails:default:variable:loggingLevel",
       "@type": "Variable"
     },
     {
       "comment": "Whether error stack traces should be shown in the server responses.",
-      "@id": "urn:skl-app-server:default:variable:showStackTrace",
+      "@id": "urn:solid-on-rails:default:variable:showStackTrace",
       "@type": "Variable"
     },
     {
       "comment": "Whether error stack traces should be shown in the server responses.",
-      "@id": "urn:skl-app-server:default:variable:modulePathPlaceholder",
+      "@id": "urn:solid-on-rails:default:variable:modulePathPlaceholder",
       "@type": "Variable"
-    },
+    }
   ]
 }

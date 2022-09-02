@@ -1,47 +1,75 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { App } from '../../src/init/App';
-import type { User } from '../../src/storage/data-mapper/schemas/UserEntitySchemaFactory';
-import { APPLICATION_JSON } from '../../src/util/ContentTypes';
-import { postEntity, getEntity } from '../util/FetchUtil';
+import { baseColumnSchemaPart } from '../../src/storage/data-mapper/schemas/BaseColumnSchemaPart';
+import { TypeOrmEntitySchemaFactory } from '../../src/storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
+import type { TypeOrmDataMapper } from '../../src/storage/data-mapper/TypeOrmDataMapper';
 import { getPort, describeIf } from '../util/Util';
 import { getTestConfigPath, instantiateFromConfig, getDefaultVariables } from './Config';
 
 const port = getPort('DataMapper');
 const baseUrl = `http://localhost:${port}`;
 
-describeIf('docker', 'An http server with Postgres Data Mapper storage', (): void => {
-  let app: App;
-  let postedUser: User;
+interface User {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+}
 
-  beforeEach(async(): Promise<void> => {
+const userSchema = {
+  name: 'User',
+  columns: {
+    ...baseColumnSchemaPart,
+    name: { type: String },
+  },
+};
+
+class UserEntitySchemaFactory extends TypeOrmEntitySchemaFactory<User> {
+  protected readonly schema = userSchema;
+}
+
+describeIf('docker', 'An http server with Postgres Data Mapper storage', (): void => {
+  const unsavedUser = { name: 'Adler Faulkner' } as Partial<User>;
+  let app: App;
+  const userEntitySchemaFactory = new UserEntitySchemaFactory();
+  let savedUser: User;
+  let dataMapper: TypeOrmDataMapper;
+
+  beforeAll(async(): Promise<void> => {
     const instances = await instantiateFromConfig(
-      'urn:skl-app-server:test:Instances',
+      'urn:solid-on-rails:test:Instances',
       getTestConfigPath('data-mapper.json'),
-      getDefaultVariables(port, baseUrl),
+      {
+        ...getDefaultVariables(port, baseUrl),
+        'urn:solid-on-rails:test:UserEntitySchemaFactory': userEntitySchemaFactory,
+      },
     ) as Record<string, any>;
-    ({ app } = instances);
+    ({ app, dataMapper } = instances);
     await app.start();
   });
 
-  afterEach(async(): Promise<void> => {
+  afterAll(async(): Promise<void> => {
+    const userRepository = dataMapper.getRepository<User>('User');
+    await userRepository.clear();
     await app.stop();
   });
 
-  it('can post an entitiy.', async(): Promise<void> => {
-    const body = JSON.stringify({ user: { name: 'Adler' }});
-    const response = await postEntity(`${baseUrl}/users`, { contentType: APPLICATION_JSON, body });
-    postedUser = await response.json();
-    expect(postedUser.id).toEqual(expect.any(Number));
-    expect(postedUser.name).toBe('Adler');
-    expect(postedUser.createdAt).toEqual(expect.any(String));
-    expect(postedUser.updatedAt).toEqual(expect.any(String));
+  it('can create an entitiy.', async(): Promise<void> => {
+    const userRepository = dataMapper.getRepository<User>('User');
+    const user = userRepository.create(unsavedUser);
+    savedUser = await userRepository.save(user);
+    expect(savedUser).toMatchObject(
+      expect.objectContaining({
+        id: expect.any(Number),
+        name: 'Adler Faulkner',
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      }),
+    );
   });
 
   it('can get an entitiy.', async(): Promise<void> => {
-    const response = await getEntity(`${baseUrl}/users/${postedUser.id}`, undefined, { contentType: APPLICATION_JSON });
-    const retrievedUser = await response.json();
-    expect(retrievedUser.id).toEqual(expect.any(Number));
-    expect(retrievedUser.name).toBe('Adler');
-    expect(retrievedUser.createdAt).toEqual(expect.any(String));
-    expect(retrievedUser.updatedAt).toEqual(expect.any(String));
+    const userRepository = dataMapper.getRepository<User>('User');
+    await expect(userRepository.findOneBy({ name: unsavedUser.name })).resolves.toEqual(savedUser);
   });
 });

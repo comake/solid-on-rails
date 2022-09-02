@@ -3,8 +3,8 @@ import type { SettingsExtractor } from '../../../../src/init/variables/extractor
 
 describe('A CombinedSettingsResolver', (): void => {
   const values = { test: 'data' };
-  const varPort = 'urn:skl-app-server:default:variable:port';
-  const varLog = 'urn:skl-app-server:default:variable:loggingLevel';
+  const varPort = 'urn:solid-on-rails:default:variable:port';
+  const varLog = 'urn:solid-on-rails:default:variable:loggingLevel';
   let resolverPort: jest.Mocked<SettingsExtractor>;
   let resolverLog: jest.Mocked<SettingsExtractor>;
   let resolver: CombinedSettingsResolver;

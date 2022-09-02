@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/comake/skl-app-server">
+  <a href="https://github.com/comake/solid-on-rails">
     <img src="./resources/skl.svg" width="150" height="150">
   </a>
   <br/>
@@ -15,8 +15,8 @@
     <a href="https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/"><strong>Documentation</strong></a>
   </p>
   <p>
-    <a href="https://github.com/comake/skl-app-server/actions/workflows/ci.yml">
-      <img src="https://github.com/comake/skl-app-server/actions/workflows/ci.yml/badge.svg">
+    <a href="https://github.com/comake/solid-on-rails/actions/workflows/ci.yml">
+      <img src="https://github.com/comake/solid-on-rails/actions/workflows/ci.yml/badge.svg">
     </a>
   </p>
   <br>
@@ -94,14 +94,14 @@ npm init
 Install the latest server version from the npm package repository:
 
 ```
-npm install --save @comake/skl-app-server
+npm install --save @comake/solid-on-rails
 ```
 
 Add the start command to `scripts` in your `package.json`
 
 ```json
 "scripts": {
-  "start": "npx skl-app-server"
+  "start": "npx solid-on-rails"
 }
 ```
 

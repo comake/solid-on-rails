@@ -1,8 +1,8 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sklas:config/server/middleware/handlers/constant-headers.json",
-    "files-sklas:config/server/middleware/handlers/cors.json"
+    "files-sor:config/server/middleware/handlers/constant-headers.json",
+    "files-sor:config/server/middleware/handlers/cors.json"
   ],
   "@graph": [
     {
@@ -10,11 +10,11 @@
         "All of these middleware will always be executed on any incoming request.",
         "They are mostly used for adding response headers."
       ],
-      "@id": "urn:skl-app-server:default:Middleware",
+      "@id": "urn:solid-on-rails:default:Middleware",
       "@type": "SequenceHandler",
       "handlers": [
-        { "@id": "urn:skl-app-server:default:Middleware_Header" },
-        { "@id": "urn:skl-app-server:default:Middleware_Cors" }
+        { "@id": "urn:solid-on-rails:default:Middleware_Header" },
+        { "@id": "urn:solid-on-rails:default:Middleware_Cors" }
       ]
     }
   ]

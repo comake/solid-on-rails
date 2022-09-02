@@ -6,7 +6,7 @@ import type { Finalizable } from '../../init/finalize/Finalizable';
 import type { TypeOrmEntitySchemaFactory } from './schemas/TypeOrmEntitySchemaFactory';
 
 export class TypeOrmDataMapper implements Finalizable {
-  private readonly entitySchemaFactories: TypeOrmEntitySchemaFactory<any>[];
+  private readonly entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[];
   private readonly options: DataSourceOptions;
   private entitySchemas: Record<string, EntitySchema> = {};
   private dataSource?: DataSource;
@@ -15,13 +15,13 @@ export class TypeOrmDataMapper implements Finalizable {
  * @param options - JSON options for the TypeORM DataSource @range {json}
  * @param entitySchemaFactories - An array of factories to generate TypeORM Entity Schemas.
  */
-  public constructor(options: DataSourceOptions, entitySchemaFactories: TypeOrmEntitySchemaFactory<any>[]) {
+  public constructor(options: DataSourceOptions, entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[]) {
     this.entitySchemaFactories = entitySchemaFactories;
     this.options = options;
   }
 
   public async initialize(): Promise<void> {
-    const entitySchemas = this.entitySchemaFactories.map((factory): EntitySchema => factory.generate());
+    const entitySchemas = this.generateEntitySchemas();
     for (const entitySchema of entitySchemas) {
       this.entitySchemas[entitySchema.options.name] = entitySchema;
     }
@@ -32,6 +32,13 @@ export class TypeOrmDataMapper implements Finalizable {
     });
     await this.dataSource.initialize();
     await this.dataSource.synchronize();
+  }
+
+  private generateEntitySchemas(): EntitySchema[] {
+    if (this.entitySchemaFactories) {
+      return this.entitySchemaFactories.map((factory): EntitySchema => factory.generate());
+    }
+    return [];
   }
 
   public async finalize(): Promise<void> {

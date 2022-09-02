@@ -16,7 +16,7 @@ dotenv.config();
 
 const INSTANTIATION_ERROR_MESSAGE = 'Could not create the storages';
 const DEFAULT_CONFIG = resolveModulePath('config/default-storage-accessor.json');
-const DEFAULT_INSTANCES = 'urn:skl-app-server:storage-accessor:Instances';
+const DEFAULT_INSTANCES = 'urn:solid-on-rails:storage-accessor:Instances';
 
 const STORAGE_ACCESSOR_CLI_PARAMETERS = {
   ...CORE_CLI_PARAMETERS,

@@ -1,8 +1,8 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
-      "@id": "urn:skl-app-server:default:QueueAdapter",
+      "@id": "urn:solid-on-rails:default:QueueAdapter",
       "@type": "BullQueueAdapter",
       "args_queues": [
         "default"
@@ -18,8 +18,8 @@
     },
     {
       "comment": "Makes sure the queue adapter shuts down when the application needs to stop.",
-      "@id": "urn:skl-app-server:default:Finalizer",
-      "ParallelFinalizer:_finalizers": [ { "@id": "urn:skl-app-server:default:QueueAdapter" } ]
+      "@id": "urn:solid-on-rails:default:Finalizer",
+      "ParallelFinalizer:_finalizers": [ { "@id": "urn:solid-on-rails:default:QueueAdapter" } ]
     }
   ]
 }

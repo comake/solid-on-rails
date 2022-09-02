@@ -1,12 +1,12 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/skl-app-server/^0.0.0/components/context.jsonld",
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "comment": "Storage used by setup components.",
-      "@id": "urn:skl-app-server:default:SetupStorage",
+      "@id": "urn:solid-on-rails:default:SetupStorage",
       "@type": "EncodingNamespaceStorage",
       "namespace": "setup",
-      "source": { "@id": "urn:skl-app-server:default:KeyValueStorage" }
+      "source": { "@id": "urn:solid-on-rails:default:KeyValueStorage" }
     }
   ]
 }
