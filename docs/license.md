@@ -1,3 +1,7 @@
+---
+description: MIT License
+---
+
 # License
 
 Copyright 2022 Comake, Inc.
