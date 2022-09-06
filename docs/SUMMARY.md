@@ -8,3 +8,7 @@
 * [Storage](guides/storage.md)
 * [Routes](guides/routes.md)
 * [Background Jobs](guides/background-jobs.md)
+
+***
+
+* [License](license.md)
