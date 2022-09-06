@@ -68,7 +68,7 @@ To do this in your application, assuming you've already installed [`@comake/soli
   npm run build
   ```
 
-# Configuration files
+## Configuration files
 
 Configuration files are how we tell Components.js which classes to instantiate and link together. The default Solid on Rails configuration can be found in the [config folder](https://github.com/comake/solid-on-rails/tree/feat/docs/config). It is advised that you mirror this folder structure in your application.
 
@@ -98,7 +98,7 @@ As you can see from the constructor, the other fields are direct mappings from t
 
 Any parameter can be defined using a variable that is set before calling Components.js. These variables are set when starting up the server, based on the command line parameters.
 
-# Create your own configuration
+## Create your own configuration
 
 You can now create your own configuration file and startup settings for your application.
 A good place to start is by copying [the default](https://github.com/comake/solid-on-rails/blob/main/config/default.json) configuration and start modifying it. 
