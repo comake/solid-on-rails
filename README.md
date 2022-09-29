@@ -12,7 +12,7 @@
     <a href="#features"><strong>Features</strong></a> ·
     <a href="#requirements"><strong>Requirements</strong></a> ·
     <a href="#quick-start"><strong>Quick Start</strong></a> ·
-    <a href="https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/"><strong>Documentation</strong></a>
+    <a href="https://comake-1.gitbook.io/solid-on-rails/"><strong>Documentation</strong></a>
   </p>
   <p>
     <a href="https://github.com/comake/solid-on-rails/actions/workflows/ci.yml">
@@ -42,7 +42,7 @@ The Solid on Rails framework is designed to be flexible such that people can eas
 
 Components.js allows components to be instantiated and wired together declaratively using semantic configuration files. Solid on Rails also uses [Components-Generator.js](https://github.com/LinkedSoftwareDependencies/Components-Generator.js) to automatically generate the necessary description configurations of all classes. Components are configured in JSON files, which makes it so that changing the configuration does not require any changes to the code.
 
-[Get started configuring your application](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/getting-started)
+[Get started configuring your application](https://comake-1.gitbook.io/solid-on-rails/guides/getting-started)
 
 ### Storage
 
@@ -50,13 +50,13 @@ Solid on Rails utilizes the [Data Mapper Pattern](https://en.wikipedia.org/wiki/
 
 The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/).
 
-[Learn more about Storage](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/storage)
+[Learn more about Storage](https://comake-1.gitbook.io/solid-on-rails/guides/storage)
 
 ### Routes
 
 Like Rails, routes to connect URLs to code for the application's API or web pages are defined in a configuration file. Each route matches a URL pattern and HTTP method to a specific handler (or a chain of handlers). These handlers are defined in JSON using the dependency injection framework Components.js.
 
-[Learn more about Routes](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/routes)
+[Learn more about Routes](https://comake-1.gitbook.io/solid-on-rails/guides/routes)
 
 ### Background Jobs
 
@@ -64,7 +64,7 @@ Solid on Rails comes with a built in system for scheduling background jobs to be
 
 A variety of queuing backends can be used but the default configuration uses [Bull](https://optimalbits.github.io/bull/).
 
-[Learn more about Background Jobs](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/background-jobs)
+[Learn more about Background Jobs](https://comake-1.gitbook.io/solid-on-rails/guides/background-jobs)
 
 ## Requirements 
 
@@ -75,11 +75,11 @@ Please ensure your operating system has the following software installed:
 * A database - for storage of application data (if required). See [TypeORM's Data Source documentation](https://typeorm.io/data-source-options) for options that work out-of-the-box. Run your database as a service on your OS or with Docker.
 
 {% hint style="info" %}
-If your application doesn't need background job processing, you don't need to run Redis (See [How to remove Background Jobs](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/background-jobs#remove)).
+If your application doesn't need background job processing, you don't need to run Redis (See [How to remove Background Jobs](https://comake-1.gitbook.io/solid-on-rails/guides/background-jobs#remove)).
 {% endhint %}
 
 {% hint style="info" %}
-If your application doesn't need to store applicaton data, you don't need to run a database (See [How to remove application data storage](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/storage#remove)).
+If your application doesn't need to store applicaton data, you don't need to run a database (See [How to remove application data storage](https://comake-1.gitbook.io/solid-on-rails/guides/storage#remove)).
 {% endhint %}
 
 ## Quick Start
@@ -110,7 +110,7 @@ Start the server! 🚀
 npm run start
 ```
 
-Continue to the [Getting Started guide](https://app.gitbook.com/s/Dbvw06OMs2fMDmC8CZep/guides/getting-started) to learn how to create your own [Components.js](https://componentsjs.readthedocs.io/) configuration to customize your application with your own routes, plugins, background jobs, and more.
+Continue to the [Getting Started guide](https://comake-1.gitbook.io/solid-on-rails/guides/getting-started) to learn how to create your own [Components.js](https://componentsjs.readthedocs.io/) configuration to customize your application with your own routes, plugins, background jobs, and more.
 
 ---
 
