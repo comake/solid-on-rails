@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/comake/solid-on-rails">
-    <img src="./resources/skl.svg" width="150" height="150">
+    <img src="./resources/solid-on-rails.png" width="150" height="150">
   </a>
   <br/>
   <br/>
