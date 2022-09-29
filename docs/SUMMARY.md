@@ -11,5 +11,5 @@
 
 ***
 
-* [Contributing](contributing.md)
-* [License](license.md)
+* [Contributing](../CONTRIBUTING.md)
+* [License](../LICENSE.md)
