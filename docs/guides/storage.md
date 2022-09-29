@@ -103,4 +103,4 @@ After adding the Entity Schemas and configurations, you can access repositories 
 
   ## User Data
 
-  Coming soon!
+  Solid integration coming soon!
