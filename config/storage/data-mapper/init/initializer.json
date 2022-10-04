@@ -16,7 +16,7 @@
     },
     {
       "comment": "Makes sure the data mapper disconnects from it's database when the application needs to stop.",
-      "@id": "urn:solid-server:default:Finalizer",
+      "@id": "urn:solid-on-rails:default:Finalizer",
       "ParallelFinalizer:_finalizers": [ { "@id": "urn:solid-on-rails:default:DataMapper" } ]
     }
   ]
