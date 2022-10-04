@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention, */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ComponentsManager } from 'componentsjs';
 import type { App } from '../../../src/init/App';
 import { AppRunner } from '../../../src/init/AppRunner';
