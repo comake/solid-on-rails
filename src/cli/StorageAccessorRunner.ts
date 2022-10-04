@@ -64,7 +64,7 @@ export class StorageAccessorRunner extends AsyncronousAppAccessorRunner {
       this.logger.info('Running pending migrations');
       await dataMapper.initialize();
       await dataMapper.runPendingMigrations();
-      this.logger.info('Successfully run migrations');
+      this.logger.info('Successfully ran migrations');
     };
     await this.runAppAndExecuteCallbackWithInstancesAndEnv(params, argv, callback);
   }
