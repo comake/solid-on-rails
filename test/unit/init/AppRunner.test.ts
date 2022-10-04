@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention, jest/no-commented-out-tests */
+/* eslint-disable @typescript-eslint/naming-convention, */
 import { ComponentsManager } from 'componentsjs';
 import type { App } from '../../../src/init/App';
 import { AppRunner } from '../../../src/init/AppRunner';
@@ -247,55 +247,4 @@ describe('AppRunner', (): void => {
       process.argv = argv;
     });
   });
-
-  // Describe('runCliSync', (): void => {
-  //   it('starts the server.', async(): Promise<void> => {
-  //     // eslint-disable-next-line no-sync
-  //     new AppRunner().runCliSync(params, { argv: [ 'node', 'script' ]});
-
-  //     // Wait until app.start has been called, because we can't await AppRunner.run.
-  //     await flushPromises();
-
-  //     expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
-  //     expect(ComponentsManager.build).toHaveBeenCalledWith({
-  //       dumpErrorState: true,
-  //       logLevel: 'info',
-  //       mainModulePath: joinFilePath(__dirname, '../../../'),
-  //     });
-  //     expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-  //     expect(manager.configRegistry.register)
-  //       .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
-  //     expect(manager.instantiate).toHaveBeenCalledTimes(2);
-  //     expect(manager.instantiate).toHaveBeenNthCalledWith(
-  //       1,
-  //       'urn:solid-on-rails-setup:default:CliResolver',
-  //       { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
-  //     );
-  //     expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
-  //     expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
-  //     expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
-  //     expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
-  //     expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-  //       'urn:solid-on-rails:default:App',
-  //       { variables: defaultVariables });
-  //     expect(app.start).toHaveBeenCalledTimes(1);
-  //     expect(app.start).toHaveBeenLastCalledWith();
-  //   });
-
-  //   it('exits the process and writes to stderr if there was an error.', async(): Promise<void> => {
-  //     manager.instantiate.mockRejectedValueOnce(new Error('Fatal'));
-
-  //     // eslint-disable-next-line no-sync
-  //     new AppRunner().runCliSync({ argv: [ 'node', 'script' ]});
-
-  //     // Wait until app.start has been called, because we can't await AppRunner.runCli.
-  //     await flushPromises();
-
-  //     expect(write).toHaveBeenCalledTimes(1);
-  //     expect(write).toHaveBeenLastCalledWith(expect.stringMatching(/Cause: Fatal/mu));
-
-  //     expect(exit).toHaveBeenCalledTimes(1);
-  //     expect(exit).toHaveBeenLastCalledWith(1);
-  //   });
-  // });
 });
