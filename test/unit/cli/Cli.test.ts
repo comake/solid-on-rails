@@ -26,7 +26,7 @@ const HELP_MESSAGE = `solid-on-rails [<command>]
       -m, --mainModulePath                                                                                          [string]
       -o, --modulePathPlaceholder                                                                [string] [default: "@SoR:"]
       -v, --envVarPrefix                                                                              [string] [default: ""]
-      -c, --config                             [string] [default: "${posix.join(process.cwd(), 'config/default.json')}"]
+      -c, --config                             [string] [default: "${posix.join(process.cwd().replace(/\\+/gu, '/'), 'config', 'default.json')}"]
     Examples:
       solid-on-rails storages:seed -c ./path/to/config.json -m .  Seed the storages with a custom config`
   .replace(/\s+/ug, ` `);
