@@ -48,7 +48,7 @@ Components.js allows components to be instantiated and wired together declarativ
 
 Solid on Rails utilizes the [Data Mapper Pattern](https://en.wikipedia.org/wiki/Data\_mapper\_pattern) to separate an application's domain logic and it's usage of databases to store data. This means that you can create applications that are loosely coupled, and thus hightly scalable and maintainable.
 
-The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/).
+The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/). It includes a system to run migrations on data in the database.
 
 [Learn more about Storage](https://comake-1.gitbook.io/solid-on-rails/guides/storage)
 
@@ -118,6 +118,8 @@ Continue to the [Getting Started guide](https://comake-1.gitbook.io/solid-on-rai
  - [ ] Break up BaseHttpServerFactory createServer function
  - [ ] UiEnabledConverter?
  - [ ] Add integration tests for Storage Accessor
+ - [ ] Add migration documentation
+ - [ ] Add CLI documentation
 
 ### Note
 There's a bug with typeorm and componentsjs-generator

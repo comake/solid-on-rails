@@ -39,14 +39,16 @@ describe('A TypeOrmDataMapper', (): void => {
       initialize: jest.fn().mockImplementation(async(): Promise<void> => {
         (dataSource as any).isInitialized = true;
       }),
-      synchronize: jest.fn(),
       destroy: jest.fn(),
       isInitialized: false,
+      runMigrations: jest.fn(),
+      synchronize: jest.fn(),
+      undoLastMigration: jest.fn(),
     } as any;
     dataSourceConstructor = jest.fn()
       .mockImplementation((): DataSource => (dataSource as any));
     (DataSource as jest.Mock).mockImplementation(dataSourceConstructor);
-    mapper = new TypeOrmDataMapper(options, entitySchemaFactories);
+    mapper = new TypeOrmDataMapper(options, { entitySchemaFactories });
   });
 
   it('initializes a typeORM DataSource with an EntitySchema for each entity schema factory.',
@@ -61,6 +63,7 @@ describe('A TypeOrmDataMapper', (): void => {
           usersEntitySchema,
           booksEntitySchema,
         ],
+        migrations: [],
       });
     });
 
@@ -71,7 +74,7 @@ describe('A TypeOrmDataMapper', (): void => {
       expect(generateUsers).toHaveBeenCalledTimes(0);
       expect(generateBooks).toHaveBeenCalledTimes(0);
       expect(DataSource).toHaveBeenCalledTimes(1);
-      expect(DataSource).toHaveBeenCalledWith({ ...options, entities: []});
+      expect(DataSource).toHaveBeenCalledWith({ ...options, entities: [], migrations: []});
     });
 
   it('throws an error when getting a repository before the data mapper has been initialized.',
@@ -110,9 +113,27 @@ describe('A TypeOrmDataMapper', (): void => {
     expect(dataSource.destroy).toHaveBeenCalledTimes(1);
   });
 
+  it('sets up the database.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.setupDatabase();
+    expect(dataSource.synchronize).toHaveBeenCalledTimes(1);
+  });
+
   it('drops the database.', async(): Promise<void> => {
     await mapper.initialize();
     await mapper.dropDatabase();
     expect(dataSource.dropDatabase).toHaveBeenCalledTimes(1);
+  });
+
+  it('runs pending migrations.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.runPendingMigrations();
+    expect(dataSource.runMigrations).toHaveBeenCalledTimes(1);
+  });
+
+  it('reverts the last executed migration.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.revertLastMigration();
+    expect(dataSource.undoLastMigration).toHaveBeenCalledTimes(1);
   });
 });

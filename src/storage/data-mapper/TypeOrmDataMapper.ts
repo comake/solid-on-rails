@@ -1,23 +1,31 @@
 /* eslint-disable tsdoc/syntax */
 // tsdoc/syntax cannot handle `@range`
-import type { EntitySchema, DataSourceOptions, Repository } from 'typeorm';
+import type { EntitySchema, DataSourceOptions,
+  Repository, ObjectLiteral, MigrationInterface, MixedList } from 'typeorm';
 import { DataSource } from 'typeorm';
 import type { Finalizable } from '../../init/finalize/Finalizable';
 import type { TypeOrmEntitySchemaFactory } from './schemas/TypeOrmEntitySchemaFactory';
 
+export interface TypeOrmDataMapperArgs {
+  migrations?: MigrationInterface[];
+  entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[];
+}
+
 export class TypeOrmDataMapper implements Finalizable {
   private readonly entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[];
+  private readonly migrations: MigrationInterface[];
   private readonly options: DataSourceOptions;
   private entitySchemas: Record<string, EntitySchema> = {};
   private dataSource?: DataSource;
 
   /**
- * @param options - JSON options for the TypeORM DataSource @range {json}
- * @param entitySchemaFactories - An array of factories to generate TypeORM Entity Schemas.
- */
-  public constructor(options: DataSourceOptions, entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[]) {
-    this.entitySchemaFactories = entitySchemaFactories;
+   * @param options - JSON options for the TypeORM DataSource @range {json}
+   * @param args - The remaining optional parameters for the Data Mapper.
+   */
+  public constructor(options: DataSourceOptions, args?: TypeOrmDataMapperArgs) {
+    this.entitySchemaFactories = args?.entitySchemaFactories;
     this.options = options;
+    this.migrations = args?.migrations ?? [];
   }
 
   public async initialize(): Promise<void> {
@@ -29,9 +37,14 @@ export class TypeOrmDataMapper implements Finalizable {
     this.dataSource = new DataSource({
       ...this.options,
       entities: entitySchemas,
+      migrations: this.migrations as unknown as MixedList<() => any>,
     });
     await this.dataSource.initialize();
-    await this.dataSource.synchronize();
+  }
+
+  public async setupDatabase(): Promise<void> {
+    this.ensureDatabaseIsInitialised();
+    await this.dataSource!.synchronize();
   }
 
   private generateEntitySchemas(): EntitySchema[] {
@@ -47,7 +60,7 @@ export class TypeOrmDataMapper implements Finalizable {
     }
   }
 
-  public getRepository<T>(entityType: string): Repository<T> {
+  public getRepository<T extends ObjectLiteral>(entityType: string): Repository<T> {
     this.ensureDatabaseIsInitialised();
 
     const entitySchema = this.entitySchemas[entityType];
@@ -66,5 +79,15 @@ export class TypeOrmDataMapper implements Finalizable {
     if (!this.dataSource || !this.dataSource.isInitialized) {
       throw new Error('The Data Source has not been initialized yet.');
     }
+  }
+
+  public async runPendingMigrations(): Promise<void> {
+    this.ensureDatabaseIsInitialised();
+    await this.dataSource!.runMigrations();
+  }
+
+  public async revertLastMigration(): Promise<void> {
+    this.ensureDatabaseIsInitialised();
+    await this.dataSource!.undoLastMigration();
   }
 }

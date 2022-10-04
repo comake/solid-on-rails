@@ -57,7 +57,13 @@
         "username": "postgres",
         "password": "abc123",
         "database": "development"
-      }
+      },
+      "TypeOrmDataMapper:_args_migrations": [
+        {
+          "@id": "urn:solid-on-rails:test:UserMigration",
+          "@type": "Variable"
+        }
+      ]
     }
   ]
 }

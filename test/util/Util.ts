@@ -7,6 +7,7 @@ const portNames = [
   'DataMapper',
   'Job',
   'Middleware',
+  'Migration',
   // Unit
   'BaseHttpServerFactory',
 ] as const;

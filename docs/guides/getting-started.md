@@ -137,3 +137,35 @@ When `envVarPrefix` is set (eg. `APP_`), a parameter supplied through an environ
 {% hint style="warning" %}
 Command-line arguments will always override environment variables!
 {% endhint %}
+
+### CLI Scripts
+
+Solid on Rails comes with a built in CLI which supports:
+
+* `solid-on-rails storage:seed` Seeding data into the database
+* `solid-on-rails storage:drop` Dropping all data in the database
+* `solid-on-rails db:setup' Running migrations against data in the database
+* `solid-on-rails db:migrate' Running migrations against data in the database
+* `solid-on-rails db:revert` Reverting migrations
+* `solid-on-rails queues:deleteAll` Deleting all background job queues
+* `solid-on-rails queues:delete` Deleting specific background job queues
+
+You may prefer to add helpers in your `package.json` to set the configuration options for each of these commands like so:
+  ```json
+  {
+    ...
+    "scripts": {
+      "storages:seed": "npx solid-on-rails storages:seed -c ./config/storage-accessor.json -m .",
+      "storages:drop": "npx solid-on-rails storages:drop -c ./config/storage-accessor.json -m .",
+      "db:setup": "npx solid-on-rails db:setup -c ./config/storage-accessor.json -m .",
+      "db:migrate": "npx solid-on-rails db:migrate -c ./config/storage-accessor.json -m .",
+      "db:revert": "npx solid-on-rails db:revert -c ./config/storage-accessor.json -m .",
+      "queues:deleteAll": "npx solid-on-rails queues:deleteAll -c ./config/queue-accessor.json -m .",
+      "queues:delete": "npx solid-on-rails queues:delete -c ./config/queue-accessor.json -m .",
+      "start": "npx solid-on-rails -c ./config/test.json -m .",
+      ...
+    }
+  }
+  ```
+
+  Now you can use much shorter commands such as `npm run storages:seed`.

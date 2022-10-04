@@ -46,6 +46,7 @@ describeIf('docker', 'An http server with Postgres Data Mapper storage', (): voi
     ) as Record<string, any>;
     ({ app, dataMapper } = instances);
     await app.start();
+    await dataMapper.setupDatabase();
   });
 
   afterAll(async(): Promise<void> => {

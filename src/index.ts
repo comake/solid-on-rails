@@ -34,6 +34,12 @@ export * from './http/HttpRequest';
 export * from './http/HttpResponse';
 export * from './http/ParsedRequest';
 
+// Cli
+export * from './cli/AsyncronousAppAccessorRunner';
+export * from './cli/Cli';
+export * from './cli/QueueAdapterAccessorRunner';
+export * from './cli/StorageAccessorRunner';
+
 // Init/Cli
 export * from './init/cli/CliExtractor';
 export * from './init/cli/YargsCliExtractor';
@@ -66,8 +72,6 @@ export * from './init/variables/SettingsResolver';
 export * from './init/App';
 export * from './init/AppRunner';
 export * from './init/CliResolver';
-export * from './init/QueueAdapterAccessorRunner';
-export * from './init/StorageAccessorRunner';
 
 // Jobs/Adapter
 export * from './jobs/adapter/BullQueueAdapter';

@@ -39,11 +39,7 @@
     "assets"
   ],
   "bin": {
-    "solid-on-rails": "bin/server.js",
-    "solid-on-rails-drop-storages": "bin/drop-storages.js",
-    "solid-on-rails-seed-storages": "bin/seed-storages.js",
-    "solid-on-rails-delete-queue": "bin/delete-queue.js",
-    "solid-on-rails-delete-all-queues": "bin/delete-all-queues.js"
+    "solid-on-rails": "bin/cli.js"
   },
   "commitlint": {
     "extends": [
@@ -51,10 +47,7 @@
     ]
   },
   "scripts": {
-    "start": "node ./bin/server.js",
-    "storages:drop": "node ./bin/drop-storages.js",
-    "queues:deleteAll": "bin/delete-all-queues.js",
-    "queues:delete": "node ./bin/delete-queue.js",
+    "start": "node ./bin/cli.js",
     "build": "npm run build:ts && npm run build:components",
     "build:components": "componentsjs-generator -s src -c dist/components -r sor -i .componentsignore --typeScopedContexts",
     "build:ts": "tsc",
@@ -70,7 +63,6 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
-    "@tsconfig/node14": "^1.0.3",
     "@types/bull": "^3.15.9",
     "@types/cors": "^2.8.12",
     "@types/ejs": "^3.1.1",
@@ -101,6 +93,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "@tsconfig/node14": "^1.0.3",
     "arrayify-stream": "^2.0.0",
     "bull": "^4.8.5",
     "componentsjs": "^4.5.0",
