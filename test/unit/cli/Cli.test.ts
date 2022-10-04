@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { posix } from 'path';
 import { Cli } from '../../../src/cli/Cli';
 import { QueueAdapterAccessorRunner } from '../../../src/cli/QueueAdapterAccessorRunner';
 import { StorageAccessorRunner } from '../../../src/cli/StorageAccessorRunner';
@@ -25,7 +26,7 @@ const HELP_MESSAGE = `solid-on-rails [<command>]
       -m, --mainModulePath                                                                                          [string]
       -o, --modulePathPlaceholder                                                                [string] [default: "@SoR:"]
       -v, --envVarPrefix                                                                              [string] [default: ""]
-      -c, --config                             [string] [default: "/Users/adlerfaulkner/solid-on-rails/config/default.json"]
+      -c, --config                             [string] [default: "${posix.join(process.cwd(), 'config/default.json')}"]
     Examples:
       solid-on-rails storages:seed -c ./path/to/config.json -m .  Seed the storages with a custom config`
   .replace(/\s+/ug, ` `);
