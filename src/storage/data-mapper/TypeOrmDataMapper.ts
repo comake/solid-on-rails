@@ -16,7 +16,7 @@ export class TypeOrmDataMapper implements Finalizable {
 
   /**
    * @param options - JSON options for the TypeORM DataSource @range {json}
-   * @param args - The remaining optional parameters for the Data Mapper.
+   * @param entitySchemaFactories - An array of factories to generate TypeORM Entity Schemas.
    */
   public constructor(options: DataSourceOptions, entitySchemaFactories?: TypeOrmEntitySchemaFactory<any>[]) {
     this.entitySchemaFactories = entitySchemaFactories;
