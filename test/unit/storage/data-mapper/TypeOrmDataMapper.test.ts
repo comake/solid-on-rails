@@ -1,11 +1,50 @@
-import type { DataSourceOptions } from 'typeorm';
-import { DataSource } from 'typeorm';
+import { promises as fs } from 'fs';
+import type { DataSourceOptions, MigrationInterface, QueryRunner } from 'typeorm';
+import { Table, DataSource } from 'typeorm';
 import type {
   TypeOrmEntitySchemaFactory,
 } from '../../../../src/storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
 import { TypeOrmDataMapper } from '../../../../src/storage/data-mapper/TypeOrmDataMapper';
 
+const userTable = {
+  name: 'user',
+  columns: [
+    {
+      name: 'id',
+      type: 'int',
+      isPrimary: true,
+      isGenerated: true,
+    },
+  ],
+};
+
+class Migration1234 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(new Table(userTable));
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable(userTable.name);
+  }
+}
+
 jest.mock('typeorm');
+
+jest.mock('fs', (): any => {
+  const originalModule = jest.requireActual('fs');
+  return {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    __esModule: true,
+    ...originalModule,
+    promises: { readdir: jest.fn().mockResolvedValue([]) },
+  };
+});
+
+jest.mock(
+  '/var/cwd/db/migrations/Migration1234.js',
+  (): any => Migration1234,
+  { virtual: true },
+);
 
 describe('A TypeOrmDataMapper', (): void => {
   const options = {
@@ -27,6 +66,7 @@ describe('A TypeOrmDataMapper', (): void => {
 
   beforeEach(async(): Promise<void> => {
     jest.resetAllMocks();
+    jest.spyOn(process, 'cwd').mockReturnValue('/var/cwd');
     generateUsers = jest.fn().mockReturnValue(usersEntitySchema);
     generateBooks = jest.fn().mockReturnValue(booksEntitySchema);
     entitySchemaFactories = [
@@ -39,9 +79,11 @@ describe('A TypeOrmDataMapper', (): void => {
       initialize: jest.fn().mockImplementation(async(): Promise<void> => {
         (dataSource as any).isInitialized = true;
       }),
-      synchronize: jest.fn(),
       destroy: jest.fn(),
       isInitialized: false,
+      runMigrations: jest.fn(),
+      synchronize: jest.fn(),
+      undoLastMigration: jest.fn(),
     } as any;
     dataSourceConstructor = jest.fn()
       .mockImplementation((): DataSource => (dataSource as any));
@@ -61,6 +103,24 @@ describe('A TypeOrmDataMapper', (): void => {
           usersEntitySchema,
           booksEntitySchema,
         ],
+        migrations: [],
+      });
+    });
+
+  it('initializes a typeORM DataSource with a migration for each migration in ./db/migrations.',
+    async(): Promise<void> => {
+      (fs.readdir as jest.Mock).mockResolvedValue([ 'Migration1234.js' ]);
+      await expect(mapper.initialize()).resolves.toBeUndefined();
+      expect(generateUsers).toHaveBeenCalledTimes(1);
+      expect(generateBooks).toHaveBeenCalledTimes(1);
+      expect(DataSource).toHaveBeenCalledTimes(1);
+      expect(DataSource).toHaveBeenCalledWith({
+        ...options,
+        entities: [
+          usersEntitySchema,
+          booksEntitySchema,
+        ],
+        migrations: [ Migration1234 ],
       });
     });
 
@@ -71,7 +131,7 @@ describe('A TypeOrmDataMapper', (): void => {
       expect(generateUsers).toHaveBeenCalledTimes(0);
       expect(generateBooks).toHaveBeenCalledTimes(0);
       expect(DataSource).toHaveBeenCalledTimes(1);
-      expect(DataSource).toHaveBeenCalledWith({ ...options, entities: []});
+      expect(DataSource).toHaveBeenCalledWith({ ...options, entities: [], migrations: []});
     });
 
   it('throws an error when getting a repository before the data mapper has been initialized.',
@@ -110,9 +170,27 @@ describe('A TypeOrmDataMapper', (): void => {
     expect(dataSource.destroy).toHaveBeenCalledTimes(1);
   });
 
+  it('sets up the database.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.setupDatabase();
+    expect(dataSource.synchronize).toHaveBeenCalledTimes(1);
+  });
+
   it('drops the database.', async(): Promise<void> => {
     await mapper.initialize();
     await mapper.dropDatabase();
     expect(dataSource.dropDatabase).toHaveBeenCalledTimes(1);
+  });
+
+  it('runs pending migrations.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.runPendingMigrations();
+    expect(dataSource.runMigrations).toHaveBeenCalledTimes(1);
+  });
+
+  it('reverts the last executed migration.', async(): Promise<void> => {
+    await mapper.initialize();
+    await mapper.revertLastMigration();
+    expect(dataSource.undoLastMigration).toHaveBeenCalledTimes(1);
   });
 });

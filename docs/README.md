@@ -29,7 +29,7 @@ Components.js allows components to be instantiated and wired together declarativ
 
 Solid on Rails utilizes the [Data Mapper Pattern](https://en.wikipedia.org/wiki/Data\_mapper\_pattern) to separate an application's domain logic and it's usage of databases to store data. This means that you can create applications that are loosely coupled, and thus hightly scalable and maintainable.
 
-The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/).
+The Data Mapper Pattern is implemented using [TypeORM](https://typeorm.io/). It includes a system to run migrations on data in the database.
 
 {% content-ref url="guides/storage.md" %}
 [storage.md](guides/storage.md)

@@ -1,0 +1,63 @@
+{
+  "@context":[
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+    { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
+  ],
+  "import": [
+    "files-sor:config/app/main/default.json",
+    "files-sor:config/app/initialize/default.json",
+    "files-sor:config/app/finalize/default.json",
+    "files-sor:config/app/variables/default.json",
+    "files-sor:config/app/path/default.json",
+    "files-sor:config/http/handler/default.json",
+    "files-sor:config/http/static/default.json",
+    "files-sor:config/http/routes/default.json",
+    "files-sor:config/http/error-handler.json",
+    "files-sor:config/http/response-writer.json",
+    "files-sor:config/http/request-parser.json",
+    "files-sor:config/server/middleware/default.json",
+    "files-sor:config/server/server-factory/default.json",
+    "files-sor:config/storage/key-value/memory.json",
+    "files-sor:config/storage/data-mapper/init/initializer.json",
+    "files-sor:config/util/variables/default.json",
+    "files-sor:config/util/logging/winston.json"
+  ],
+  "@graph": [
+    {
+      "@id": "urn:solid-on-rails:test:Instances",
+      "@type": "RecordObject",
+      "RecordObject:_record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "dataMapper",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:DataMapper" }
+        }
+      ]
+    },
+    {
+      "comment": [
+        "The default Data Mapper. No entity schemas are specified here.",
+        "Replace this config with one that includes the entitySchemaFactories parameter with your schemas."
+      ],
+      "@id": "urn:solid-on-rails:default:DataMapper",
+      "@type": "TypeOrmDataMapper",
+      "entitySchemaFactories": [
+        { 
+          "@id": "urn:solid-on-rails:test:UserEntitySchemaFactory",
+          "@type": "Variable"
+        }
+      ],
+      "options": {
+        "type": "postgres",
+        "host": "0.0.0.0",
+        "port": 5432,
+        "username": "postgres",
+        "password": "abc123",
+        "database": "development"
+      }
+    }
+  ]
+}

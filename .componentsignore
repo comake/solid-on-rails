@@ -4,5 +4,6 @@
   "HttpErrorOptions",
   "WinstonLogger",
   "TypeOrmRepository",
-  "ConfiguredJobOptions"
+  "ConfiguredJobOptions",
+  "MigrationInterface"
 ]

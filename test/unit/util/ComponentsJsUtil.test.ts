@@ -3,19 +3,13 @@ import { ComponentsManager } from 'componentsjs';
 import type { IComponentsManagerBuilderOptions } from 'componentsjs';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
+import type { CliParameters } from '../../../src/util/ComponentsJsUtil';
 import {
   createComponentsManagerSetupFromCliArgs,
   instantiateWithManagerAndVariables,
   createComponentsManager,
-  CORE_CLI_PARAMETERS,
 } from '../../../src/util/ComponentsJsUtil';
-import type { CliParametersConfig } from '../../../src/util/ComponentsJsUtil';
 import { joinFilePath } from '../../../src/util/PathUtil';
-
-const cliParameters = {
-  ...CORE_CLI_PARAMETERS,
-  config: { type: 'string', alias: 'c', default: './config.json', requiresArg: true },
-} as CliParametersConfig;
 
 const variables = {};
 
@@ -70,17 +64,25 @@ describe('ComponentsJsUtil', (): void => {
   });
 
   describe('#createComponentsManagerSetupFromCliArgs', (): void => {
+    let params: CliParameters;
+
+    beforeEach(async(): Promise<void> => {
+      params = {
+        config: './config.json',
+        loggingLevel: 'info',
+        mainModulePath: undefined,
+        modulePathPlaceholder: '@SoR',
+        envVarPrefix: '',
+      };
+    });
+
     it('returns the variables, parameters, and components manager configured with the cli args.',
       async(): Promise<void> => {
         await expect(createComponentsManagerSetupFromCliArgs(
+          params,
           [ 'node', 'script' ],
-          cliParameters,
         )).resolves.toEqual(
-          expect.objectContaining({
-            variables,
-            parameters: expect.any(Object),
-            componentsManager: manager,
-          }),
+          expect.objectContaining({ variables, componentsManager: manager }),
         );
         expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
         expect(ComponentsManager.build).toHaveBeenCalledWith({
@@ -100,7 +102,7 @@ describe('ComponentsJsUtil', (): void => {
 
       let caughtError: Error = new Error('should disappear');
       try {
-        await createComponentsManagerSetupFromCliArgs([ 'node', 'script' ], cliParameters);
+        await createComponentsManagerSetupFromCliArgs(params, [ 'node', 'script' ]);
       } catch (error: unknown) {
         caughtError = error as Error;
       }
@@ -116,7 +118,7 @@ describe('ComponentsJsUtil', (): void => {
 
       let caughtError: Error = new Error('should disappear');
       try {
-        await createComponentsManagerSetupFromCliArgs([ 'node', 'script' ], cliParameters);
+        await createComponentsManagerSetupFromCliArgs(params, [ 'node', 'script' ]);
       } catch (error: unknown) {
         caughtError = error as Error;
       }

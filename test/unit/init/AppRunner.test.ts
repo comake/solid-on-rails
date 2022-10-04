@@ -4,8 +4,8 @@ import type { App } from '../../../src/init/App';
 import { AppRunner } from '../../../src/init/AppRunner';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
+import type { CliParameters } from '../../../src/util/ComponentsJsUtil';
 import { joinFilePath } from '../../../src/util/PathUtil';
-import { flushPromises } from '../../util/Util';
 
 const app: jest.Mocked<App> = {
   start: jest.fn(),
@@ -66,13 +66,14 @@ describe('AppRunner', (): void => {
     });
 
     it('starts the server with provided settings.', async(): Promise<void> => {
+      const configFile = joinFilePath(__dirname, '../../../config/default.json');
       await new AppRunner().run(
         {
           mainModulePath: joinFilePath(__dirname, '../../../'),
           dumpErrorState: true,
           logLevel: 'info',
         },
-        joinFilePath(__dirname, '../../../config/default.json'),
+        configFile,
         variables,
       );
 
@@ -83,8 +84,7 @@ describe('AppRunner', (): void => {
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
+      expect(manager.configRegistry.register).toHaveBeenCalledWith(configFile);
       expect(manager.instantiate).toHaveBeenCalledTimes(1);
       expect(manager.instantiate).toHaveBeenNthCalledWith(1, 'urn:solid-on-rails:default:App', { variables });
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(0);
@@ -95,8 +95,20 @@ describe('AppRunner', (): void => {
   });
 
   describe('runCli', (): void => {
+    let params: CliParameters;
+
+    beforeEach(async(): Promise<void> => {
+      params = {
+        config: './config.json',
+        loggingLevel: 'info',
+        mainModulePath: undefined,
+        modulePathPlaceholder: '@SoR:',
+        envVarPrefix: '',
+      };
+    });
+
     it('runs the server.', async(): Promise<void> => {
-      await expect(new AppRunner().runCli([ 'node', 'script' ])).resolves.toBeUndefined();
+      await expect(new AppRunner().runCli(params, [ 'node', 'script' ])).resolves.toBeUndefined();
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
@@ -105,8 +117,7 @@ describe('AppRunner', (): void => {
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
+      expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
@@ -129,8 +140,10 @@ describe('AppRunner', (): void => {
       const { env } = process;
       const OLD_STATE = env.CUSTOM_ENV_PREFIX_LOGGING_LEVEL;
       env.CUSTOM_ENV_PREFIX_LOGGING_LEVEL = 'debug';
+      params.loggingLevel = 'debug';
+      params.envVarPrefix = 'CUSTOM_ENV_PREFIX';
       await expect(
-        new AppRunner().runCli([ 'node', 'script', '--envVarPrefix=CUSTOM_ENV_PREFIX' ]),
+        new AppRunner().runCli(params, [ 'node', 'script', '--envVarPrefix=CUSTOM_ENV_PREFIX' ]),
       ).resolves.toBeUndefined();
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
@@ -141,8 +154,7 @@ describe('AppRunner', (): void => {
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
+      expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
@@ -175,7 +187,7 @@ describe('AppRunner', (): void => {
 
       let caughtError: Error = new Error('should disappear');
       try {
-        await new AppRunner().runCli([ 'node', 'script' ]);
+        await new AppRunner().runCli(params, [ 'node', 'script' ]);
       } catch (error: unknown) {
         caughtError = error as Error;
       }
@@ -202,8 +214,11 @@ describe('AppRunner', (): void => {
         '-t',
       ];
       process.argv = argvParameters;
+      params.config = 'myconfig.json';
+      params.mainModulePath = 'module/path';
+      params.loggingLevel = 'debug';
 
-      await expect(new AppRunner().runCli()).resolves.toBeUndefined();
+      await expect(new AppRunner().runCli(params)).resolves.toBeUndefined();
 
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
@@ -212,8 +227,7 @@ describe('AppRunner', (): void => {
         mainModulePath: '/var/cwd/module/path',
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith('/var/cwd/myconfig.json');
+      expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/myconfig.json');
       expect(manager.instantiate).toHaveBeenCalledTimes(2);
       expect(manager.instantiate).toHaveBeenNthCalledWith(
         1,
@@ -231,57 +245,6 @@ describe('AppRunner', (): void => {
       expect(app.start).toHaveBeenLastCalledWith();
 
       process.argv = argv;
-    });
-  });
-
-  describe('runCliSync', (): void => {
-    it('starts the server.', async(): Promise<void> => {
-      // eslint-disable-next-line no-sync
-      new AppRunner().runCliSync({ argv: [ 'node', 'script' ]});
-
-      // Wait until app.start has been called, because we can't await AppRunner.run.
-      await flushPromises();
-
-      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
-      expect(ComponentsManager.build).toHaveBeenCalledWith({
-        dumpErrorState: true,
-        logLevel: 'info',
-        mainModulePath: joinFilePath(__dirname, '../../../'),
-      });
-      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register)
-        .toHaveBeenCalledWith(joinFilePath(__dirname, '/../../../config/default.json'));
-      expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(
-        1,
-        'urn:solid-on-rails-setup:default:CliResolver',
-        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
-      );
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
-      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
-      expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:solid-on-rails:default:App',
-        { variables: defaultVariables });
-      expect(app.start).toHaveBeenCalledTimes(1);
-      expect(app.start).toHaveBeenLastCalledWith();
-    });
-
-    it('exits the process and writes to stderr if there was an error.', async(): Promise<void> => {
-      manager.instantiate.mockRejectedValueOnce(new Error('Fatal'));
-
-      // eslint-disable-next-line no-sync
-      new AppRunner().runCliSync({ argv: [ 'node', 'script' ]});
-
-      // Wait until app.start has been called, because we can't await AppRunner.runCli.
-      await flushPromises();
-
-      expect(write).toHaveBeenCalledTimes(1);
-      expect(write).toHaveBeenLastCalledWith(expect.stringMatching(/Cause: Fatal/mu));
-
-      expect(exit).toHaveBeenCalledTimes(1);
-      expect(exit).toHaveBeenLastCalledWith(1);
     });
   });
 });
