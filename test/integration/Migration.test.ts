@@ -5,11 +5,13 @@ import type { App } from '../../src/init/App';
 import { baseColumnSchemaPart } from '../../src/storage/data-mapper/schemas/BaseColumnSchemaPart';
 import { TypeOrmEntitySchemaFactory } from '../../src/storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
 import type { TypeOrmDataMapper } from '../../src/storage/data-mapper/TypeOrmDataMapper';
-import { describeIf, getPort } from '../util/Util';
+import { PlaceholderPathResolver } from '../../src/util/path/PlaceholderPathResolver';
+import { describeIf, getPort, mockFileSystem } from '../util/Util';
 import { getDefaultVariables, getTestConfigPath, instantiateFromConfig } from './Config';
 
 const port = getPort('Migration');
 const baseUrl = `http://localhost:${port}`;
+const pathResolver = new PlaceholderPathResolver('@SoR:');
 
 interface User {
   id: number;
@@ -70,13 +72,19 @@ describeIf('docker', 'An http server with Postgres Data Mapper storage and migra
   const userEntitySchemaFactory = new UserEntitySchemaFactory();
 
   beforeAll(async(): Promise<void> => {
+    const { data } = mockFileSystem(pathResolver.resolveAssetPath(''));
+    Object.assign(data, {
+      './db/migrations/': {
+        'UserMigration1664844570859.js': UserMigration1664844570859,
+      },
+    });
+
     const instances = await instantiateFromConfig(
       'urn:solid-on-rails:test:Instances',
       getTestConfigPath('migration.json'),
       {
         ...getDefaultVariables(port, baseUrl),
         'urn:solid-on-rails:test:UserEntitySchemaFactory': userEntitySchemaFactory,
-        'urn:solid-on-rails:test:UserMigration': UserMigration1664844570859,
       },
     ) as Record<string, any>;
     ({ app, dataMapper } = instances);

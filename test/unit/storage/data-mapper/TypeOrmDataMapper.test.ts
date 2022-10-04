@@ -1,11 +1,50 @@
-import type { DataSourceOptions } from 'typeorm';
-import { DataSource } from 'typeorm';
+import { promises as fs } from 'fs';
+import type { DataSourceOptions, MigrationInterface, QueryRunner } from 'typeorm';
+import { Table, DataSource } from 'typeorm';
 import type {
   TypeOrmEntitySchemaFactory,
 } from '../../../../src/storage/data-mapper/schemas/TypeOrmEntitySchemaFactory';
 import { TypeOrmDataMapper } from '../../../../src/storage/data-mapper/TypeOrmDataMapper';
 
+const userTable = {
+  name: 'user',
+  columns: [
+    {
+      name: 'id',
+      type: 'int',
+      isPrimary: true,
+      isGenerated: true,
+    },
+  ],
+};
+
+class Migration1234 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(new Table(userTable));
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable(userTable.name);
+  }
+}
+
 jest.mock('typeorm');
+
+jest.mock('fs', (): any => {
+  const originalModule = jest.requireActual('fs');
+  return {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    __esModule: true,
+    ...originalModule,
+    promises: { readdir: jest.fn().mockResolvedValue([]) },
+  };
+});
+
+jest.mock(
+  '/var/cwd/db/migrations/Migration1234.js',
+  (): any => Migration1234,
+  { virtual: true },
+);
 
 describe('A TypeOrmDataMapper', (): void => {
   const options = {
@@ -27,6 +66,7 @@ describe('A TypeOrmDataMapper', (): void => {
 
   beforeEach(async(): Promise<void> => {
     jest.resetAllMocks();
+    jest.spyOn(process, 'cwd').mockReturnValue('/var/cwd');
     generateUsers = jest.fn().mockReturnValue(usersEntitySchema);
     generateBooks = jest.fn().mockReturnValue(booksEntitySchema);
     entitySchemaFactories = [
@@ -48,7 +88,7 @@ describe('A TypeOrmDataMapper', (): void => {
     dataSourceConstructor = jest.fn()
       .mockImplementation((): DataSource => (dataSource as any));
     (DataSource as jest.Mock).mockImplementation(dataSourceConstructor);
-    mapper = new TypeOrmDataMapper(options, { entitySchemaFactories });
+    mapper = new TypeOrmDataMapper(options, entitySchemaFactories);
   });
 
   it('initializes a typeORM DataSource with an EntitySchema for each entity schema factory.',
@@ -64,6 +104,23 @@ describe('A TypeOrmDataMapper', (): void => {
           booksEntitySchema,
         ],
         migrations: [],
+      });
+    });
+
+  it('initializes a typeORM DataSource with a migration for each migration in ./db/migrations.',
+    async(): Promise<void> => {
+      (fs.readdir as jest.Mock).mockResolvedValue([ 'Migration1234.js' ]);
+      await expect(mapper.initialize()).resolves.toBeUndefined();
+      expect(generateUsers).toHaveBeenCalledTimes(1);
+      expect(generateBooks).toHaveBeenCalledTimes(1);
+      expect(DataSource).toHaveBeenCalledTimes(1);
+      expect(DataSource).toHaveBeenCalledWith({
+        ...options,
+        entities: [
+          usersEntitySchema,
+          booksEntitySchema,
+        ],
+        migrations: [ Migration1234 ],
       });
     });
 

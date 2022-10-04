@@ -66,10 +66,10 @@ export class Cli {
     // Parse the core CLI arguments needed to load the configuration
     const yargv = yargs(argv.slice(2))
       .usage('solid-on-rails [<command>]')
-      .command('storages:seed', 'Seed the storages from your ./scripts/seeds.js file')
+      .command('storages:seed', 'Seed the storages from the ./db/seeds.js file')
       .command('storages:drop', 'Drop all data from the DataMapper and KeyValue Storages')
       .command('db:setup', 'Setup the database from configured entity schemas')
-      .command('db:migrate', 'Run all pending migrations')
+      .command('db:migrate', 'Run all pending migrations in the ./db/migrations folder')
       .command('db:revert', 'Revert the last executed migration')
       .command('queues:deleteAll', 'Delete all queues')
       .command('queues:delete', 'Delete a specific queue')

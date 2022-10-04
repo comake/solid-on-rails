@@ -1,7 +1,7 @@
 {
   "@context": [
     "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
-    { "TypeOrmDataMapper:_options": { "@type": "@json" } }
+    { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
   ],
   "import": [
     "files-sor:config/storage/data-mapper/init/initializer.json"
@@ -14,7 +14,7 @@
       ],
       "@id": "urn:solid-on-rails:default:DataMapper",
       "@type": "TypeOrmDataMapper",
-      "TypeOrmDataMapper:_options": {
+      "options": {
         "type": "postgres",
         "host": "0.0.0.0",
         "port": 5432,

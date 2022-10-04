@@ -74,7 +74,7 @@ jest.spyOn(process, 'cwd').mockReturnValue('/var/cwd');
 
 const seedsFunction = jest.fn();
 jest.mock(
-  '/var/cwd/scripts/seeds.js',
+  '/var/cwd/db/seeds.js',
   (): any => seedsFunction,
   { virtual: true },
 );

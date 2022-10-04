@@ -11,13 +11,13 @@ jest.mock('../../../src/init/AppRunner');
 
 const HELP_MESSAGE = `solid-on-rails [<command>]
     Commands:
-      processChild.js storages:seed     Seed the storages from your ./scripts/seeds.js file
-      processChild.js storages:drop     Drop all data from the DataMapper and KeyValue Storages
-      processChild.js db:setup          Setup the database from configured entity schemas
-      processChild.js db:migrate        Run all pending migrations
-      processChild.js db:revert         Revert the last executed migration
-      processChild.js queues:deleteAll  Delete all queues
-      processChild.js queues:delete     Delete a specific queue
+      script storages:seed     Seed the storages from the ./db/seeds.js file
+      script storages:drop     Drop all data from the DataMapper and KeyValue Storages
+      script db:setup          Setup the database from configured entity schemas
+      script db:migrate        Run all pending migrations in the ./db/migrations folder
+      script db:revert         Revert the last executed migration
+      script queues:deleteAll  Delete all queues
+      script queues:delete     Delete a specific queue
     Options:
           --help                   Show help                                                                       [boolean]
           --version                Show version number                                                             [boolean]
@@ -174,6 +174,8 @@ describe('The Cli', (): void => {
   it('displays the help message when an invalid command is used.', async(): Promise<void> => {
     const error = jest.spyOn(console, 'error').mockImplementation(jest.fn() as any);
     const exit = jest.spyOn(process, 'exit').mockImplementation(jest.fn() as any);
+    const originalArgv = process.argv;
+    process.argv = [ 'node', 'script', 'go' ];
     // eslint-disable-next-line no-sync
     new Cli().runCliSync({ argv: [ 'node', 'script', 'go' ]});
     // Wait until app.start has been called, because we can't await AppRunner.run.
@@ -185,12 +187,15 @@ describe('The Cli', (): void => {
     expect(error).toHaveBeenCalledTimes(1);
     expect(error.mock.calls[0][0].replace(/\s+/ug, ` `)).toEqual(HELP_MESSAGE);
     expect(exit).toHaveBeenCalledTimes(0);
+    process.argv = originalArgv;
   });
 
   it('displays the help message when the help flag is used and exits with code 0.', async(): Promise<void> => {
     jest.spyOn(console, 'log').mockImplementation(jest.fn() as any);
     const error = jest.spyOn(console, 'error').mockImplementation(jest.fn() as any);
     const exit = jest.spyOn(process, 'exit').mockImplementation(jest.fn() as any);
+    const originalArgv = process.argv;
+    process.argv = [ 'node', 'script', '--help' ];
     // eslint-disable-next-line no-sync
     new Cli().runCliSync({ argv: [ 'node', 'script', '--help' ]});
     // Wait until app.start has been called, because we can't await AppRunner.run.
@@ -202,6 +207,7 @@ describe('The Cli', (): void => {
     expect(error.mock.calls[0][0].replace(/\s+/ug, ` `)).toEqual(HELP_MESSAGE);
     expect(exit).toHaveBeenCalledTimes(1);
     expect(exit).toHaveBeenLastCalledWith(0);
+    process.argv = originalArgv;
   });
 
   it('exits the process if the command execution fails.', async(): Promise<void> => {

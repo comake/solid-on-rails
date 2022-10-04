@@ -21,7 +21,7 @@ export class StorageAccessorRunner extends AsyncronousAppAccessorRunner {
   public async seedStorages(params: CliParameters, argv: CliArgv): Promise<void> {
     const callback = async(args: AsyncronousAppRunnerCallbackArgs): Promise<void> => {
       this.logger.info('Running seeds');
-      const seedsFile = absoluteFilePath('./scripts/seeds.js');
+      const seedsFile = absoluteFilePath('./db/seeds.js');
       const seedsFunction = require(seedsFile);
       await seedsFunction(args);
       this.logger.info('Successfully executed seeds');
