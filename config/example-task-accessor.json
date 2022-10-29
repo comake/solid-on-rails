@@ -1,0 +1,43 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sor:config/app/main/default.json",
+    "files-sor:config/app/initialize/no-server.json",
+    "files-sor:config/app/finalize/no-server.json",
+    "files-sor:config/app/variables/default.json",
+    "files-sor:config/app/path/default.json",
+
+    "files-sor:config/storage/key-value/memory.json",
+    "files-sor:config/storage/data-mapper/type-orm.json",
+
+    "files-sor:config/jobs/bull.json",
+
+    "files-sor:config/util/variables/default.json",
+    "files-sor:config/util/logging/winston.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Access to the Data Mapper and Key Value storages.",
+      "@id": "urn:solid-on-rails:queue-accessor:Instances",
+      "@type": "RecordObject",
+      "record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "dataMapper",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:DataMapper" }
+        },
+        {
+          "RecordObject:_record_key": "keyValue",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:KeyValueStorage" }
+        },
+        {
+          "RecordObject:_record_key": "queueAdapter",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:QueueAdapter" }
+        }
+      ]
+    }
+  ]
+}

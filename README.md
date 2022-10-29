@@ -6,7 +6,7 @@
   <br/>
   <h2>Solid on Rails</h2>
   <p>
-    A web-application framework for building highly configurable & decentralized apps <br/> using <a href="https://nodejs.org/">Node.js</a>, <a href="https://www.comake.io/skl">SKL</a>, and <a href="https://solidproject.org/">Solid</a>.
+    A web-application framework for building highly configurable & decentralized apps <br/> using <a href="https://nodejs.org/">Node.js</a> and <a href="https://solidproject.org/">Solid</a>.
   </p>
   <p>
     <a href="#features"><strong>Features</strong></a> ·
