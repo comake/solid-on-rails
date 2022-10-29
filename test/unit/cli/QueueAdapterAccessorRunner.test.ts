@@ -113,9 +113,8 @@ describe('QueueAdapterAccessorRunner', (): void => {
 
   describe('deleteQueue', (): void => {
     it('runs the server and deletes all the queues.', async(): Promise<void> => {
-      params.queueName = 'default';
       const runner = new QueueAdapterAccessorRunner();
-      await expect(runner.deleteQueue(params, [ 'node', 'script' ])).resolves.toBeUndefined();
+      await expect(runner.deleteQueue(params, [ 'node', 'queues:deleteQueue', 'default' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
@@ -131,7 +130,10 @@ describe('QueueAdapterAccessorRunner', (): void => {
         { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
+      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
+        argv: [ 'node', 'queues:deleteQueue', 'default' ],
+        envVarPrefix: '',
+      });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,

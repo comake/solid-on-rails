@@ -106,7 +106,7 @@ describe('TaskRunner', (): void => {
   describe('runTask', (): void => {
     it('runs the server and executes the task function.', async(): Promise<void> => {
       const runner = new TaskRunner();
-      await expect(runner.runTask(params, [ 'node', 'script', 'basicTask' ])).resolves.toBeUndefined();
+      await expect(runner.runTask(params, [ 'node', 'task', 'basicTask' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
@@ -123,7 +123,7 @@ describe('TaskRunner', (): void => {
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
-        argv: [ 'node', 'script', 'basicTask' ],
+        argv: [ 'node', 'task', 'basicTask' ],
         envVarPrefix: '',
       });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
