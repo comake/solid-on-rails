@@ -29,32 +29,6 @@
           "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:QueueAdapter" }
         }
       ]
-    },
-    {
-      "@id": "urn:solid-on-rails-setup:default:CliExtractor",
-      "@type": "YargsCliExtractor",
-      "extendedParameters": {
-        "queueName": {
-          "demandOption": false,
-          "requiresArg": true,
-          "type": "string",
-          "describe": "A specific queue to perform an action on."
-        }
-      }
-    },
-    {
-      "comment": "Adds resolvers to assign the CLI values to the Components.js variables.",
-      "@id": "urn:solid-on-rails-setup:default:SettingsResolver",
-      "@type": "CombinedSettingsResolver",
-      "resolvers": [
-        {
-          "CombinedSettingsResolver:_resolvers_key": "urn:skl-sync-server:custom:variable:queueName",
-          "CombinedSettingsResolver:_resolvers_value": {
-            "@type": "KeyExtractor",
-            "key": "queueName"
-          }
-        }
-      ]
     }
   ]
 }
