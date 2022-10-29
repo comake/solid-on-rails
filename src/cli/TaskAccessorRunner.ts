@@ -20,7 +20,8 @@ export class TaskAccessorRunner extends AsyncronousAppAccessorRunner {
 
   public async runTask(params: CliParameters, argv: CliArgv): Promise<void> {
     const callback = async(args: AsyncronousAppRunnerCallbackArgs): Promise<void> => {
-      const taskName = argv[2];
+      const indexOfTaskCommand = argv.indexOf('task');
+      const taskName = argv[indexOfTaskCommand + 1];
       this.logger.info(`Running task ${taskName}`);
       const taskFile = absoluteFilePath(`./tasks/${taskName}.js`);
       const taskFunction = require(taskFile);

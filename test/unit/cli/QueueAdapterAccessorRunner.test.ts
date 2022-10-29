@@ -114,7 +114,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
   describe('deleteQueue', (): void => {
     it('runs the server and deletes all the queues.', async(): Promise<void> => {
       const runner = new QueueAdapterAccessorRunner();
-      await expect(runner.deleteQueue(params, [ 'node', 'queues:deleteQueue', 'default' ])).resolves.toBeUndefined();
+      await expect(runner.deleteQueue(params, [ 'node', 'queues:delete', 'default' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
@@ -131,7 +131,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
-        argv: [ 'node', 'queues:deleteQueue', 'default' ],
+        argv: [ 'node', 'queues:delete', 'default' ],
         envVarPrefix: '',
       });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);

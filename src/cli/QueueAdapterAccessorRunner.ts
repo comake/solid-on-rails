@@ -29,7 +29,8 @@ export class QueueAdapterAccessorRunner extends AsyncronousAppAccessorRunner {
     argv: CliArgv,
   ): Promise<void> {
     const callback = async({ instances: { queueAdapter }}: AsyncronousAppRunnerCallbackArgs): Promise<void> => {
-      const queueName = argv[2];
+      const indexOfQueuesDeleteCommand = argv.indexOf('queues:delete');
+      const queueName = argv[indexOfQueuesDeleteCommand + 1];
       this.logger.info(`Deleting this ${queueName} queue`);
       await queueAdapter.deleteQueue(queueName);
       this.logger.info(`Successfully deleted the ${queueName} queue.`);
