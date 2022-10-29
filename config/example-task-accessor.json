@@ -18,7 +18,7 @@
   "@graph": [
     {
       "comment": "Access to the Data Mapper and Key Value storages.",
-      "@id": "urn:solid-on-rails:queue-accessor:Instances",
+      "@id": "urn:solid-on-rails:task-accessor:Instances",
       "@type": "RecordObject",
       "record": [
         {

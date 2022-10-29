@@ -3,13 +3,13 @@ import { posix } from 'path';
 import { Cli } from '../../../src/cli/Cli';
 import { QueueAdapterAccessorRunner } from '../../../src/cli/QueueAdapterAccessorRunner';
 import { StorageAccessorRunner } from '../../../src/cli/StorageAccessorRunner';
-import { TaskRunner } from '../../../src/cli/TaskRunner';
+import { TaskAccessorRunner } from '../../../src/cli/TaskAccessorRunner';
 import { AppRunner } from '../../../src/init/AppRunner';
 import { flushPromises } from '../../util/Util';
 
 jest.mock('../../../src/cli/QueueAdapterAccessorRunner');
 jest.mock('../../../src/cli/StorageAccessorRunner');
-jest.mock('../../../src/cli/TaskRunner');
+jest.mock('../../../src/cli/TaskAccessorRunner');
 jest.mock('../../../src/init/AppRunner');
 
 const HELP_MESSAGE = `solid-on-rails [<command>]
@@ -41,12 +41,12 @@ describe('The Cli', (): void => {
 
   it('runs the task command.', async(): Promise<void> => {
     const runTask = jest.fn().mockReturnValue(Promise.resolve());
-    (TaskRunner as jest.Mock).mockImplementation((): any => ({ runTask }));
+    (TaskAccessorRunner as jest.Mock).mockImplementation((): any => ({ runTask }));
     // eslint-disable-next-line no-sync
     new Cli().runCliSync({ argv: [ 'node', 'script', 'task', 'taskName' ]});
     // Wait until app.start has been called, because we can't await AppRunner.run.
     await flushPromises();
-    expect(TaskRunner).toHaveBeenCalledTimes(1);
+    expect(TaskAccessorRunner).toHaveBeenCalledTimes(1);
     expect(runTask).toHaveBeenCalledTimes(1);
     expect(runTask).toHaveBeenCalledWith(
       expect.objectContaining({

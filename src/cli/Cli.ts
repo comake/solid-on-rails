@@ -10,7 +10,7 @@ import { createErrorMessage } from '../util/errors/ErrorUtil';
 import { resolveModulePath } from '../util/PathUtil';
 import { QueueAdapterAccessorRunner } from './QueueAdapterAccessorRunner';
 import { StorageAccessorRunner } from './StorageAccessorRunner';
-import { TaskRunner } from './TaskRunner';
+import { TaskAccessorRunner } from './TaskAccessorRunner';
 
 // See https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
@@ -94,7 +94,7 @@ export class Cli {
       return appRunner.runCli(params, argv);
     }
     if (command === 'task') {
-      const runner = new TaskRunner();
+      const runner = new TaskAccessorRunner();
       return runner.runTask(params, argv);
     }
     if (command === 'storages:seed') {

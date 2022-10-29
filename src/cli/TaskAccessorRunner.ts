@@ -13,9 +13,9 @@ import { AsyncronousAppAccessorRunner } from './AsyncronousAppAccessorRunner';
 /**
  * A class that can be used to instantiate and start a server based on a Component.js configuration.
  */
-export class TaskRunner extends AsyncronousAppAccessorRunner {
+export class TaskAccessorRunner extends AsyncronousAppAccessorRunner {
   protected readonly instantiationErrorMessage = 'Could not create the storages';
-  protected readonly defaultInstancesUri = 'urn:solid-on-rails:storage-accessor:Instances';
+  protected readonly defaultInstancesUri = 'urn:solid-on-rails:task-accessor:Instances';
   protected readonly logger = getLoggerFor(this);
 
   public async runTask(params: CliParameters, argv: CliArgv): Promise<void> {

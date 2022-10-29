@@ -39,7 +39,7 @@ export * from './cli/AsyncronousAppAccessorRunner';
 export * from './cli/Cli';
 export * from './cli/QueueAdapterAccessorRunner';
 export * from './cli/StorageAccessorRunner';
-export * from './cli/TaskRunner';
+export * from './cli/TaskAccessorRunner';
 
 // Init/Cli
 export * from './init/cli/CliExtractor';

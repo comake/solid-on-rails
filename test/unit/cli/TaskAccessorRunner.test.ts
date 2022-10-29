@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ComponentsManager } from 'componentsjs';
-import { TaskRunner } from '../../../src/cli/TaskRunner';
+import { TaskAccessorRunner } from '../../../src/cli/TaskAccessorRunner';
 import type { App } from '../../../src/init/App';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
@@ -62,7 +62,7 @@ const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
       case 'urn:solid-on-rails-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:solid-on-rails:storage-accessor:Instances': return instances;
+      case 'urn:solid-on-rails:task-accessor:Instances': return instances;
       default: throw new Error('unknown iri');
     }
   }),
@@ -86,7 +86,7 @@ jest.mock(
   { virtual: true },
 );
 
-describe('TaskRunner', (): void => {
+describe('TaskAccessorRunner', (): void => {
   let params: CliParameters;
 
   beforeEach(async(): Promise<void> => {
@@ -105,7 +105,7 @@ describe('TaskRunner', (): void => {
 
   describe('runTask', (): void => {
     it('runs the server and executes the task function.', async(): Promise<void> => {
-      const runner = new TaskRunner();
+      const runner = new TaskAccessorRunner();
       await expect(runner.runTask(params, [ 'node', 'task', 'basicTask' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
@@ -129,7 +129,7 @@ describe('TaskRunner', (): void => {
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:solid-on-rails:storage-accessor:Instances',
+        'urn:solid-on-rails:task-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(basicTaskFunction).toHaveBeenCalledTimes(1);
