@@ -3,15 +3,18 @@ import { posix } from 'path';
 import { Cli } from '../../../src/cli/Cli';
 import { QueueAdapterAccessorRunner } from '../../../src/cli/QueueAdapterAccessorRunner';
 import { StorageAccessorRunner } from '../../../src/cli/StorageAccessorRunner';
+import { TaskRunner } from '../../../src/cli/TaskRunner';
 import { AppRunner } from '../../../src/init/AppRunner';
 import { flushPromises } from '../../util/Util';
 
 jest.mock('../../../src/cli/QueueAdapterAccessorRunner');
 jest.mock('../../../src/cli/StorageAccessorRunner');
+jest.mock('../../../src/cli/TaskRunner');
 jest.mock('../../../src/init/AppRunner');
 
 const HELP_MESSAGE = `solid-on-rails [<command>]
     Commands:
+      script task              Run a task from the tasks folder
       script storages:seed     Seed the storages from the ./db/seeds.js file
       script storages:drop     Drop all data from the DataMapper and KeyValue Storages
       script db:setup          Setup the database from configured entity schemas
@@ -34,6 +37,23 @@ const HELP_MESSAGE = `solid-on-rails [<command>]
 describe('The Cli', (): void => {
   afterEach(async(): Promise<void> => {
     jest.clearAllMocks();
+  });
+
+  it('runs the task command.', async(): Promise<void> => {
+    const runTask = jest.fn().mockReturnValue(Promise.resolve());
+    (TaskRunner as jest.Mock).mockImplementation((): any => ({ runTask }));
+    // eslint-disable-next-line no-sync
+    new Cli().runCliSync({ argv: [ 'node', 'script', 'task', 'taskName' ]});
+    // Wait until app.start has been called, because we can't await AppRunner.run.
+    await flushPromises();
+    expect(TaskRunner).toHaveBeenCalledTimes(1);
+    expect(runTask).toHaveBeenCalledTimes(1);
+    expect(runTask).toHaveBeenCalledWith(
+      expect.objectContaining({
+        loggingLevel: 'info',
+      }),
+      [ 'node', 'script', 'task', 'taskName' ],
+    );
   });
 
   it('runs the storages:seed command.', async(): Promise<void> => {
@@ -91,7 +111,7 @@ describe('The Cli', (): void => {
     const deleteQueue = jest.fn().mockReturnValue(Promise.resolve());
     (QueueAdapterAccessorRunner as jest.Mock).mockImplementation((): any => ({ deleteQueue }));
     // eslint-disable-next-line no-sync
-    new Cli().runCliSync({ argv: [ 'node', 'script', 'queues:delete' ]});
+    new Cli().runCliSync({ argv: [ 'node', 'script', 'queues:delete', 'default' ]});
     // Wait until app.start has been called, because we can't await AppRunner.run.
     await flushPromises();
     expect(QueueAdapterAccessorRunner).toHaveBeenCalledTimes(1);
@@ -100,7 +120,7 @@ describe('The Cli', (): void => {
       expect.objectContaining({
         loggingLevel: 'info',
       }),
-      [ 'node', 'script', 'queues:delete' ],
+      [ 'node', 'script', 'queues:delete', 'default' ],
     );
   });
 

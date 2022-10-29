@@ -1,16 +1,31 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { ComponentsManager } from 'componentsjs';
-import { QueueAdapterAccessorRunner } from '../../../src/cli/QueueAdapterAccessorRunner';
+import { TaskRunner } from '../../../src/cli/TaskRunner';
 import type { App } from '../../../src/init/App';
 import type { CliExtractor } from '../../../src/init/cli/CliExtractor';
 import type { SettingsResolver } from '../../../src/init/variables/SettingsResolver';
 import type { QueueAdapter } from '../../../src/jobs/adapter/QueueAdapter';
+import type { TypeOrmDataMapper } from '../../../src/storage/data-mapper/TypeOrmDataMapper';
+import type { KeyValueStorage } from '../../../src/storage/keyvalue/KeyValueStorage';
 import type { CliParameters } from '../../../src/util/ComponentsJsUtil';
 import { joinFilePath } from '../../../src/util/PathUtil';
 
 const app: jest.Mocked<App> = {
   start: jest.fn(),
   stop: jest.fn(),
+} as any;
+
+const dataMapper: jest.Mocked<TypeOrmDataMapper> = {
+  initialize: jest.fn(),
+  dropDatabase: jest.fn(),
+  runPendingMigrations: jest.fn(),
+  revertLastMigration: jest.fn(),
+  setupDatabase: jest.fn(),
+} as any;
+
+const keyValue: jest.Mocked<KeyValueStorage<any, any>> = {
+  entries: jest.fn().mockReturnValue([[ 'key', 'value' ], [ 'key2', 'value2' ]]),
+  delete: jest.fn(),
 } as any;
 
 const queueAdapter: jest.Mocked<QueueAdapter> = {
@@ -20,11 +35,12 @@ const queueAdapter: jest.Mocked<QueueAdapter> = {
 
 const instances = {
   app,
+  dataMapper,
+  keyValue,
   queueAdapter,
-  env: {},
 };
 
-const defaultParameters: Record<string, any> = {
+const defaultParameters = {
   port: 3000,
   logLevel: 'info',
 };
@@ -33,7 +49,7 @@ const cliExtractor: jest.Mocked<CliExtractor> = {
   handleSafe: jest.fn().mockResolvedValue(defaultParameters),
 } as any;
 
-const defaultVariables: Record<string, any> = {
+const defaultVariables = {
   'urn:solid-on-rails:default:variable:port': 3000,
   'urn:solid-on-rails:default:variable:loggingLevel': 'info',
 };
@@ -46,7 +62,7 @@ const manager: jest.Mocked<ComponentsManager<Record<string, any>>> = {
   instantiate: jest.fn(async(iri: string): Promise<any> => {
     switch (iri) {
       case 'urn:solid-on-rails-setup:default:CliResolver': return { cliExtractor, settingsResolver };
-      case 'urn:solid-on-rails:queue-accessor:Instances': return instances;
+      case 'urn:solid-on-rails:storage-accessor:Instances': return instances;
       default: throw new Error('unknown iri');
     }
   }),
@@ -63,7 +79,14 @@ jest.mock('componentsjs', (): any => ({
 
 jest.spyOn(process, 'cwd').mockReturnValue('/var/cwd');
 
-describe('QueueAdapterAccessorRunner', (): void => {
+const basicTaskFunction = jest.fn();
+jest.mock(
+  '/var/cwd/tasks/basicTask.js',
+  (): any => basicTaskFunction,
+  { virtual: true },
+);
+
+describe('TaskRunner', (): void => {
   let params: CliParameters;
 
   beforeEach(async(): Promise<void> => {
@@ -80,41 +103,10 @@ describe('QueueAdapterAccessorRunner', (): void => {
     jest.clearAllMocks();
   });
 
-  describe('deleteAllQueues', (): void => {
-    it('runs the server and deletes all the queues.', async(): Promise<void> => {
-      const runner = new QueueAdapterAccessorRunner();
-      await expect(runner.deleteAllQueues(params, [ 'node', 'script' ])).resolves.toBeUndefined();
-      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
-      expect(ComponentsManager.build).toHaveBeenCalledWith({
-        dumpErrorState: true,
-        logLevel: 'info',
-        mainModulePath: joinFilePath(__dirname, '../../../'),
-      });
-      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
-      expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
-      expect(manager.instantiate).toHaveBeenCalledTimes(2);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(
-        1,
-        'urn:solid-on-rails-setup:default:CliResolver',
-        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
-      );
-      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
-      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({ argv: [ 'node', 'script' ], envVarPrefix: '' });
-      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
-      expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
-      expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:solid-on-rails:queue-accessor:Instances',
-        { variables: defaultVariables });
-      expect(app.start).toHaveBeenCalledTimes(1);
-      expect(queueAdapter.deleteAllQueues).toHaveBeenCalledTimes(1);
-      expect(app.stop).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('deleteQueue', (): void => {
-    it('runs the server and deletes all the queues.', async(): Promise<void> => {
-      const runner = new QueueAdapterAccessorRunner();
-      await expect(runner.deleteQueue(params, [ 'node', 'queues:deleteQueue', 'default' ])).resolves.toBeUndefined();
+  describe('runTask', (): void => {
+    it('runs the server and executes the task function.', async(): Promise<void> => {
+      const runner = new TaskRunner();
+      await expect(runner.runTask(params, [ 'node', 'task', 'basicTask' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
@@ -131,17 +123,24 @@ describe('QueueAdapterAccessorRunner', (): void => {
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
-        argv: [ 'node', 'queues:deleteQueue', 'default' ],
+        argv: [ 'node', 'task', 'basicTask' ],
         envVarPrefix: '',
       });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
       expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
       expect(manager.instantiate).toHaveBeenNthCalledWith(2,
-        'urn:solid-on-rails:queue-accessor:Instances',
+        'urn:solid-on-rails:storage-accessor:Instances',
         { variables: defaultVariables });
       expect(app.start).toHaveBeenCalledTimes(1);
-      expect(queueAdapter.deleteQueue).toHaveBeenCalledTimes(1);
-      expect(queueAdapter.deleteQueue).toHaveBeenCalledWith('default');
+      expect(basicTaskFunction).toHaveBeenCalledTimes(1);
+      expect(basicTaskFunction).toHaveBeenCalledWith({
+        instances: {
+          dataMapper,
+          keyValue,
+          queueAdapter,
+        },
+        env: params,
+      });
       expect(app.stop).toHaveBeenCalledTimes(1);
     });
   });

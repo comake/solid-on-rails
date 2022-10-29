@@ -8,6 +8,7 @@
     "files-sor:config/app/path/default.json",
 
     "files-sor:config/storage/key-value/memory.json",
+    "files-sor:config/storage/data-mapper/type-orm.json",
 
     "files-sor:config/jobs/bull.json",
 
@@ -23,6 +24,14 @@
         {
           "RecordObject:_record_key": "app",
           "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }
+        },
+        {
+          "RecordObject:_record_key": "dataMapper",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:DataMapper" }
+        },
+        {
+          "RecordObject:_record_key": "keyValue",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:KeyValueStorage" }
         },
         {
           "RecordObject:_record_key": "queueAdapter",

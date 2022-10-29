@@ -142,8 +142,9 @@ Command-line arguments will always override environment variables!
 
 Solid on Rails comes with a built in CLI which supports:
 
-* `solid-on-rails storage:seed` Seeding data into the database
-* `solid-on-rails storage:drop` Dropping all data in the database
+* `solid-on-rails task` Running a task with access to the database, key value storage, and job queues
+* `solid-on-rails storages:seed` Seeding data into the database
+* `solid-on-rails storages:drop` Dropping all data in the database
 * `solid-on-rails db:setup' Running migrations against data in the database
 * `solid-on-rails db:migrate' Running migrations against data in the database
 * `solid-on-rails db:revert` Reverting migrations
@@ -155,6 +156,7 @@ You may prefer to add helpers in your `package.json` to set the configuration op
   {
     ...
     "scripts": {
+      "task": "npx solid-on-rails task -c ./config/task-accessor.json -m .",
       "storages:seed": "npx solid-on-rails storages:seed -c ./config/storage-accessor.json -m .",
       "storages:drop": "npx solid-on-rails storages:drop -c ./config/storage-accessor.json -m .",
       "db:setup": "npx solid-on-rails db:setup -c ./config/storage-accessor.json -m .",
