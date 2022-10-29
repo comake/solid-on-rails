@@ -12,6 +12,7 @@ jest.mock('../../../src/init/AppRunner');
 
 const HELP_MESSAGE = `solid-on-rails [<command>]
     Commands:
+      script task              Run a task from the tasks folder
       script storages:seed     Seed the storages from the ./db/seeds.js file
       script storages:drop     Drop all data from the DataMapper and KeyValue Storages
       script db:setup          Setup the database from configured entity schemas

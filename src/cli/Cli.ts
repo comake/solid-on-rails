@@ -10,6 +10,7 @@ import { createErrorMessage } from '../util/errors/ErrorUtil';
 import { resolveModulePath } from '../util/PathUtil';
 import { QueueAdapterAccessorRunner } from './QueueAdapterAccessorRunner';
 import { StorageAccessorRunner } from './StorageAccessorRunner';
+import { TaskRunner } from './TaskRunner';
 
 // See https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
@@ -66,6 +67,7 @@ export class Cli {
     // Parse the core CLI arguments needed to load the configuration
     const yargv = yargs(argv.slice(2))
       .usage('solid-on-rails [<command>]')
+      .command('task', 'Run a task from the tasks folder')
       .command('storages:seed', 'Seed the storages from the ./db/seeds.js file')
       .command('storages:drop', 'Drop all data from the DataMapper and KeyValue Storages')
       .command('db:setup', 'Setup the database from configured entity schemas')
@@ -90,6 +92,10 @@ export class Cli {
     if (!command) {
       const appRunner = new AppRunner();
       return appRunner.runCli(params, argv);
+    }
+    if (command === 'task') {
+      const runner = new TaskRunner();
+      return runner.runTask(params, argv);
     }
     if (command === 'storages:seed') {
       const runner = new StorageAccessorRunner();
