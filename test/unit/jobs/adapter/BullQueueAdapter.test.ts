@@ -49,7 +49,7 @@ describe('A BullQueueAdapter', (): void => {
     close = jest.fn();
     obliterate = jest.fn();
     process = jest.fn().mockImplementation(
-      (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
+      (jobName: string, concurrency: number, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
       },
     );
@@ -92,8 +92,22 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, {});
+    expect(on).toHaveBeenCalledTimes(5);
+  });
+
+  it('initializes queues with only one total concurrent job.', async(): Promise<void> => {
+    jobs = { example: job, example2: job };
+    adapter = new BullQueueAdapter({ jobs, queues, redisConfig });
+    expect(Bull).toHaveBeenCalledTimes(1);
+    expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
+    expect(process).toHaveBeenCalledTimes(2);
+    expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
+    expect(process.mock.calls[1][0]).toBe('example2');
+    expect(process.mock.calls[1][1]).toBe(0);
     expect(on).toHaveBeenCalledTimes(5);
   });
 
@@ -132,6 +146,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', data, {});
     expect(perform).toHaveBeenCalledTimes(1);
@@ -146,6 +161,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *' }});
     expect(perform).toHaveBeenCalledTimes(0);
@@ -159,6 +175,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *', startDate: dayInMs }});
     expect(perform).toHaveBeenCalledTimes(0);
@@ -172,6 +189,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { cron: '5 4 * * *', startDate: 1000 }});
     expect(perform).toHaveBeenCalledTimes(0);
@@ -185,6 +203,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { repeat: { every: 1000 }});
     expect(perform).toHaveBeenCalledTimes(0);
@@ -198,6 +217,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { delay: dayInMs });
     expect(perform).toHaveBeenCalledTimes(0);
@@ -211,6 +231,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { delay: 1000 });
     expect(perform).toHaveBeenCalledTimes(0);
@@ -224,6 +245,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, { backoff: { type: 'exponential', delay: 2000 }});
     expect(perform).toHaveBeenCalledTimes(1);
@@ -238,6 +260,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, {});
     expect(on).toHaveBeenCalledTimes(5);
@@ -256,6 +279,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, {});
     expect(on).toHaveBeenCalledTimes(5);
@@ -272,6 +296,7 @@ describe('A BullQueueAdapter', (): void => {
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(process).toHaveBeenCalledTimes(1);
     expect(process.mock.calls[0][0]).toBe('example');
+    expect(process.mock.calls[0][1]).toBe(1);
     expect(add).toHaveBeenCalledTimes(1);
     expect(add).toHaveBeenCalledWith('example', {}, {});
     expect(on).toHaveBeenCalledTimes(5);

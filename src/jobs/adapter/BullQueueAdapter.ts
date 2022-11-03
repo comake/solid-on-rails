@@ -35,10 +35,11 @@ export class BullQueueAdapter implements QueueAdapter {
     for (const queue of args.queues) {
       this.queues[queue] = new Bull(queue, { redis: args.redisConfig });
       // Register every job to be processable on every queue
+      let isFirst = true;
       for (const jobName of Object.keys(this.jobs)) {
-        this.queues[queue].process(jobName, async(bullJob): Promise<void> => {
-          await this.jobs[jobName].perform(bullJob.data, this);
-        }) as any;
+        this.queues[queue].process(jobName, isFirst ? 1 : 0, async(bullJob): Promise<void> =>
+          this.jobs[jobName].perform(bullJob.data, this)) as any;
+        isFirst = false;
       }
       this.initializeQueueEvents(this.queues[queue]);
     }

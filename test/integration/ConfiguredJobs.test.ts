@@ -23,7 +23,7 @@ describe('An http server with preconfigured jobs', (): void => {
   beforeEach(async(): Promise<void> => {
     registeredJobs = {};
     process = jest.fn().mockImplementation(
-      (jobName: string, processFn: (bullJob: any) => Promise<void>): void => {
+      (jobName: string, concurrency: number, processFn: (bullJob: any) => Promise<void>): void => {
         registeredJobs[jobName] = processFn;
       },
     );
