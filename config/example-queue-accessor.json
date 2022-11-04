@@ -9,7 +9,7 @@
 
     "files-sor:config/storage/key-value/memory.json",
 
-    "files-sor:config/jobs/bull.json",
+    "files-sor:config/jobs/bull-no-processing.json",
 
     "files-sor:config/util/variables/default.json",
     "files-sor:config/util/logging/winston.json"
