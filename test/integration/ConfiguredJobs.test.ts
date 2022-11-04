@@ -2,6 +2,7 @@
 import Bull from 'bull';
 import type { App } from '../../src/init/App';
 import { BullQueueAdapter } from '../../src/jobs/adapter/BullQueueAdapter';
+import { BullQueueProcessor } from '../../src/jobs/processor/BullQueueProcessor';
 import { getPort } from '../util/Util';
 import { getTestConfigPath, instantiateFromConfig, getDefaultVariables } from './Config';
 
@@ -49,6 +50,7 @@ describe('An http server with preconfigured jobs', (): void => {
           }),
         },
       },
+      queueProcessor: new BullQueueProcessor(),
       redisConfig,
     });
 

@@ -78,6 +78,11 @@ export * from './init/CliResolver';
 export * from './jobs/adapter/BullQueueAdapter';
 export * from './jobs/adapter/QueueAdapter';
 
+// Jobs/Processor
+export * from './jobs/processor/BullQueueProcessor';
+export * from './jobs/processor/QueueProcessor';
+export * from './jobs/processor/VoidQueueProcessor';
+
 // Jobs/Scheduler
 export * from './jobs/scheduler/AdapterBasedScheduler';
 export * from './jobs/scheduler/JobScheduler';

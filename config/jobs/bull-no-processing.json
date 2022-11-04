@@ -16,8 +16,8 @@
         }
       ],
       "args_queueProcessor": {
-        "@type": "BullQueueProcessor"
-      }
+        "@type": "VoidQueueProcessor"
+      },
     },
     {
       "comment": "Makes sure the queue adapter shuts down when the application needs to stop.",

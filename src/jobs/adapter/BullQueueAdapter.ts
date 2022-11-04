@@ -3,6 +3,7 @@ import Bull from 'bull';
 import { getLoggerFor } from '../../logging/LogUtil';
 import type { Job } from '../Job';
 import type { JobOptions } from '../JobOptions';
+import type { BullQueueProcessor } from '../processor/BullQueueProcessor';
 import type { QueueAdapter } from './QueueAdapter';
 
 export interface RedisConfig {
@@ -17,6 +18,7 @@ export interface BullQueueAdapterArgs {
   jobs: Record<string, Job>;
   queues: string[];
   redisConfig: RedisConfig;
+  queueProcessor: BullQueueProcessor;
 }
 
 const DEFAULT_BACKOFF_DELAY = 2000;
@@ -32,39 +34,11 @@ export class BullQueueAdapter implements QueueAdapter {
 
   public constructor(args: BullQueueAdapterArgs) {
     this.jobs = args.jobs;
+
     for (const queue of args.queues) {
       this.queues[queue] = new Bull(queue, { redis: args.redisConfig });
-      // Register every job to be processable on every queue
-      let isFirst = true;
-      for (const jobName of Object.keys(this.jobs)) {
-        this.queues[queue].process(jobName, isFirst ? 1 : 0, async(bullJob): Promise<void> =>
-          this.jobs[jobName].perform(bullJob.data, this)) as any;
-        isFirst = false;
-      }
-      this.initializeQueueEvents(this.queues[queue]);
     }
-  }
-
-  private initializeQueueEvents(queue: Queue): void {
-    queue.on('error', (error): void => {
-      this.logger.info(`An error occured in queue ${queue.name}: ${error.message}\n${error.stack}`);
-    });
-
-    queue.on('active', (job): void => {
-      this.logger.info(`Job ${job.name} has started on queue ${queue.name}`);
-    });
-
-    queue.on('stalled', (job): void => {
-      this.logger.info(`Job ${job.name} has been marked as stalled on queue ${queue.name}`);
-    });
-
-    queue.on('completed', (job): void => {
-      this.logger.info(`Job ${job.name} successfully completed on queue ${queue.name}`);
-    });
-
-    queue.on('failed', (job, error): void => {
-      this.logger.info(`Job ${job.name} on queue ${queue.name} failed with reason: ${error.message}\n${error.stack}`);
-    });
+    args.queueProcessor.processJobsOnQueues(this.queues, this.jobs, this);
   }
 
   public async finalize(): Promise<void> {
