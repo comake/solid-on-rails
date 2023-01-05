@@ -1,11 +1,6 @@
----
-cover: .gitbook/assets/SolidOnRails-Cover.png
-coverY: 0
----
+# Welcome to Standard Solid
 
-# Welcome to Solid on Rails
-
-Solid on Rails is a web-application framework for building highly configurable & decentralized apps using [Node.js](https://nodejs.org/), [Solid](https://solidproject.org/), and [SKL](https://www.comake.io/skl). It was was created with the goal of making it incredibly easy for developers to build Solid applications. Taking inspiration from the success of [Ruby on Rails](https://rubyonrails.org/) (which Solid on Rails bears no formal association with) and [Lad](https://lad.js.org/), it comes pre-configured with everything needed to create an application that can:
+Standard Solid is a web-application framework for building highly configurable & decentralized apps using [Node.js](https://nodejs.org/), [Solid](https://solidproject.org/), and [SKL](https://www.comake.io/skl). It was was created with the goal of making it incredibly easy for developers to build Solid applications. Taking inspiration from the success of [Ruby on Rails](https://rubyonrails.org/) and [Lad](https://lad.js.org/), it comes pre-configured with everything needed to create an application that can:
 
 * Store application data in a database (relational or key-value)
 * Expose an API (REST, GraphQL, etc.)
@@ -17,9 +12,9 @@ Solid on Rails is a web-application framework for building highly configurable &
 
 ### Dependency Injection
 
-The Solid on Rails framework is designed to be flexible such that people can easily run different configurations. To do so, Solid on Rails uses the [dependency injection](https://martinfowler.com/articles/injection.html) framework [Components.js](https://componentsjs.readthedocs.io/).
+The Standard Solid framework is designed to be flexible such that people can easily run different configurations. To do so, Standard Solid uses the [dependency injection](https://martinfowler.com/articles/injection.html) framework [Components.js](https://componentsjs.readthedocs.io/).
 
-Components.js allows components to be instantiated and wired together declaratively using semantic configuration files. Solid on Rails also uses [Components-Generator.js](https://github.com/LinkedSoftwareDependencies/Components-Generator.js) to automatically generate the necessary description configurations of all classes. Components are configured in JSON files, which makes it so that changing the configuration does not require any changes to the code.
+Components.js allows components to be instantiated and wired together declaratively using semantic configuration files. Standard Solid also uses [Components-Generator.js](https://github.com/LinkedSoftwareDependencies/Components-Generator.js) to automatically generate the necessary description configurations of all classes. Components are configured in JSON files, which makes it so that changing the configuration does not require any changes to the code.
 
 {% content-ref url="guides/getting-started.md" %}
 [getting-started.md](guides/getting-started.md)

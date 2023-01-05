@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome to Solid on Rails](README.md)
+* [Welcome to Standard Solid](README.md)
 
 ## Guides
 
@@ -12,5 +12,5 @@
 ***
 
 * [Contributing](../CONTRIBUTING.md)
-* [Code of Conduct](../CODE_OF_CONDUCT.md)
+* [Code of Conduct](../CODE\_OF\_CONDUCT.md)
 * [License](../LICENSE.md)
