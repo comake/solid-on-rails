@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Welcome to Standard Solid](README.md)
+* [Standard Solid App Framework](README.md)
 
 ## Guides
 
