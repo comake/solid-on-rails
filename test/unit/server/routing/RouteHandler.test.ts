@@ -37,6 +37,14 @@ describe('A RouteHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe('response');
   });
 
+  it('calls the sub handler when handle is called when the routes subdomain is * and the request has any subdomain.',
+    async(): Promise<void> => {
+      input.request.url = new URL('https://app.example.com/test');
+      route.subdomain = '*';
+      const handler = new RouteHandler(route, subHandler);
+      await expect(handler.handle(input)).resolves.toBe('response');
+    });
+
   it('throws an error when the request method does not match the route method.', async(): Promise<void> => {
     route.method = 'POST';
     const handler = new RouteHandler(route, subHandler);
@@ -59,14 +67,6 @@ describe('A RouteHandler', (): void => {
     const handler = new RouteHandler(route, subHandler);
     await expect(handler.canHandle(input)).rejects.toThrow('Cannot handle subdomain of app.example.com');
   });
-
-  it('throws an error when the subdomain of the request does not match the route\'s subdomain regex.',
-    async(): Promise<void> => {
-      input.request.url = new URL('https://app.example.com/test');
-      route.subdomain = /^api|api\.sandbox/u;
-      const handler = new RouteHandler(route, subHandler);
-      await expect(handler.canHandle(input)).rejects.toThrow('Cannot handle subdomain of app.example.com');
-    });
 
   it('throws an error when the request has no subdomain and the route specifies one.',
     async(): Promise<void> => {

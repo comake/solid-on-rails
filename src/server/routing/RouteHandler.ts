@@ -8,7 +8,12 @@ import { NotFoundHttpError } from '../../util/errors/NotFoundHttpError';
 import { ParsedRequestHandler } from '../ParsedRequestHandler';
 import type { ParsedRequestHandlerInput } from '../ParsedRequestHandler';
 
-export type Subdomain = string | string[] | RegExp;
+export interface RegexpSubdomain {
+  type: 'Regexp';
+  value: string;
+}
+
+export type Subdomain = string | string[];
 
 export interface Route {
   path: string;
@@ -60,11 +65,11 @@ export class RouteHandler extends ParsedRequestHandler {
   private urlMatchesSubdomain(url: URL): boolean {
     const subdomain = this.getSubdomainFromUrl(url);
     if (this.subdomain && subdomain.length > 0) {
+      if (this.subdomain === '*') {
+        return true;
+      }
       if (typeof this.subdomain === 'string') {
         return subdomain === this.subdomain;
-      }
-      if (this.subdomain instanceof RegExp) {
-        return this.subdomain.test(subdomain);
       }
       if (Array.isArray(this.subdomain)) {
         return this.subdomain.includes(subdomain);
