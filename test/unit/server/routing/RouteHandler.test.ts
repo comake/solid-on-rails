@@ -37,12 +37,12 @@ describe('A RouteHandler', (): void => {
     await expect(handler.handle(input)).resolves.toBe('response');
   });
 
-  it('calls the sub handler when handle is called when the routes subdomain is * and the request has any subdomain.',
+  it('can handle when the routes subdomain is * and the request has any subdomain.',
     async(): Promise<void> => {
       input.request.url = new URL('https://app.example.com/test');
       route.subdomain = '*';
       const handler = new RouteHandler(route, subHandler);
-      await expect(handler.handle(input)).resolves.toBe('response');
+      await expect(handler.canHandle(input)).resolves.toBeUndefined();
     });
 
   it('throws an error when the request method does not match the route method.', async(): Promise<void> => {
