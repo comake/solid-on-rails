@@ -81,7 +81,8 @@ export class BullQueueAdapter implements QueueAdapter {
       this.addDelayFieldToObject(bullOptions, 'delay', options.at ?? options.in);
     }
 
-    if (options.retry) {
+    if (options.retryAttempts !== undefined) {
+      bullOptions.attempts = options.retryAttempts;
       bullOptions.backoff = {
         type: 'exponential',
         delay: DEFAULT_BACKOFF_DELAY,

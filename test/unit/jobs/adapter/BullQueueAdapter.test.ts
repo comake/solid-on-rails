@@ -153,14 +153,17 @@ describe('A BullQueueAdapter', (): void => {
     expect(add).toHaveBeenCalledWith('example', {}, { delay: 1000 });
   });
 
-  it('adds the job with a backoff setting.', async(): Promise<void> => {
+  it('adds the job with an auto-retry backoff setting.', async(): Promise<void> => {
     adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
-    await expect(adapter.performLater('example', {}, { retry: true }))
+    await expect(adapter.performLater('example', {}, { retryAttempts: 3 }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig });
     expect(add).toHaveBeenCalledTimes(1);
-    expect(add).toHaveBeenCalledWith('example', {}, { backoff: { type: 'exponential', delay: 2000 }});
+    expect(add).toHaveBeenCalledWith('example', {}, {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 2000 },
+    });
   });
 
   it('deletes a queue.', async(): Promise<void> => {

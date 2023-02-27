@@ -19,9 +19,10 @@ export interface JobOptions {
    */
   every?: Cron | number;
   /**
-   * Whether this job should be auto-retried on failure or not.
+   * How many times this job will be auto-retried on failure.
+   * If this field is not specified, the job will not be auto-retried.
    */
-  retry?: boolean;
+  retryAttempts?: number;
 }
 
 export type ConfiguredJobOptions = Omit<JobOptions, 'at'>;
