@@ -5,7 +5,10 @@
       "@id": "urn:solid-on-rails:default:QueueAdapter",
       "@type": "BullQueueAdapter",
       "args_queues": [
-        "default"
+        {
+          "BullQueueAdapter:_args_queues_key": "default",
+          "BullQueueAdapter:_args_queues_value": {}
+        }
       ],
       "args_jobs": [
         {
