@@ -106,7 +106,7 @@ describe('TaskAccessorRunner', (): void => {
   describe('runTask', (): void => {
     it('runs the server and executes the task function.', async(): Promise<void> => {
       const runner = new TaskAccessorRunner();
-      await expect(runner.runTask(params, [ 'node', 'task', 'basicTask' ])).resolves.toBeUndefined();
+      await expect(runner.runTask(params, [ 'node', 'task', 'basicTask', 'arg1' ])).resolves.toBeUndefined();
       expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
@@ -123,7 +123,7 @@ describe('TaskAccessorRunner', (): void => {
       );
       expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
       expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
-        argv: [ 'node', 'task', 'basicTask' ],
+        argv: [ 'node', 'task', 'basicTask', 'arg1' ],
         envVarPrefix: '',
       });
       expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
@@ -140,6 +140,7 @@ describe('TaskAccessorRunner', (): void => {
           queueAdapter,
         },
         env: params,
+        taskArgs: [ 'arg1' ],
       });
       expect(app.stop).toHaveBeenCalledTimes(1);
     });
