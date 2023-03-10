@@ -14,9 +14,48 @@ export interface RedisConfig {
   dbNumber?: string;
 }
 
+export interface BullQueueSettings {
+  /**
+   * Key expiration time for job locks.
+   */
+  lockDuration?: number;
+  /**
+   * Interval on which to acquire the job lock
+   */
+  lockRenewTime?: number;
+  /**
+   * How often check for stalled jobs (use 0 for never checking).
+   */
+  stalledInterval?: number;
+  /**
+   * Max amount of times a stalled job will be re-processed.
+   */
+  maxStalledCount?: number;
+  /**
+   * Poll interval for delayed jobs and added jobs.
+   */
+  guardInterval?: number;
+  /**
+   * Delay before processing next job in case of internal error.
+   */
+  retryProcessDelay?: number;
+  /**
+   * A set of custom backoff strategies keyed by name.
+   */
+  backoffStrategies?: Record<string, any>;
+  /**
+   * A timeout for when the queue is in drained state (empty waiting for jobs).
+   */
+  drainDelay?: number;
+  /**
+   * Enables multiple queues on the same instance of child pool to share the same instance.
+   */
+  isSharedChildPool?: boolean;
+}
+
 export interface BullQueueAdapterArgs {
   jobs: Record<string, Job>;
-  queues: string[];
+  queues: Record<string, BullQueueSettings>;
   redisConfig: RedisConfig;
   queueProcessor: BullQueueProcessor;
 }
@@ -35,8 +74,14 @@ export class BullQueueAdapter implements QueueAdapter {
   public constructor(args: BullQueueAdapterArgs) {
     this.jobs = args.jobs;
 
-    for (const queue of args.queues) {
-      this.queues[queue] = new Bull(queue, { redis: args.redisConfig });
+    for (const [ queue, settings ] of Object.entries(args.queues)) {
+      this.queues[queue] = new Bull(
+        queue,
+        {
+          redis: args.redisConfig,
+          settings,
+        },
+      );
     }
     args.queueProcessor.processJobsOnQueues(this.queues, this.jobs, this);
   }

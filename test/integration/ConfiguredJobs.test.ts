@@ -41,7 +41,7 @@ describe('An http server with preconfigured jobs', (): void => {
     (Bull as jest.Mock).mockImplementation(bullConstructor);
 
     const adapter = new BullQueueAdapter({
-      queues: [ 'default' ],
+      queues: { default: {}},
       jobs: {
         Void: {
           options: { queue: 'default' },

@@ -1,11 +1,17 @@
 {
-  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "@context": [
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+    { "BullQueueAdapter:_args_queues_value": { "@type": "@json" } }
+  ],
   "@graph": [
     {
       "@id": "urn:solid-on-rails:default:QueueAdapter",
       "@type": "BullQueueAdapter",
       "args_queues": [
-        "default"
+        {
+          "BullQueueAdapter:_args_queues_key": "default",
+          "BullQueueAdapter:_args_queues_value": {}
+        }
       ],
       "args_jobs": [
         {
@@ -17,7 +23,7 @@
       ],
       "args_queueProcessor": {
         "@type": "VoidQueueProcessor"
-      },
+      }
     },
     {
       "comment": "Makes sure the queue adapter shuts down when the application needs to stop.",
