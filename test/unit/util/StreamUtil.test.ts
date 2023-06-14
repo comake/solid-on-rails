@@ -7,6 +7,7 @@ import {
   guardedStreamFrom, pipeSafely, transformSafely,
   readableToString, readJsonStream, getSingleItem,
   guardedStreamFromJson,
+  safeReadJsonStream,
 } from '../../../src/util/StreamUtil';
 import { flushPromises } from '../../util/Util';
 
@@ -32,6 +33,17 @@ describe('StreamUtil', (): void => {
     it('parses the stream as JSON.', async(): Promise<void> => {
       const stream = Readable.from('{ "key": "value" }');
       await expect(readJsonStream(stream)).resolves.toEqual({ key: 'value' });
+    });
+  });
+
+  describe('#safeReadJsonStream', (): void => {
+    it('parses the stream as JSON.', async(): Promise<void> => {
+      const stream = Readable.from('{ "key": "value" }');
+      await expect(safeReadJsonStream(stream)).resolves.toEqual({ key: 'value' });
+    });
+    it('returns an empty object if parsing fails.', async(): Promise<void> => {
+      const stream = Readable.from('{ "key": "value }');
+      await expect(safeReadJsonStream(stream)).resolves.toEqual({});
     });
   });
 

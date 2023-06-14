@@ -4,6 +4,7 @@
     "files-sor:config/http/error-handler.json",
     "files-sor:config/http/response-writer.json",
     "files-sor:config/http/request-parser.json",
+    "files-sor:config/http/parameter-extractor.json",
     "files-sor:config/http/routes/templates/application.json",
     "files-sor:config/http/routes/handlers/index.json"
   ],

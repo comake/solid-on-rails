@@ -22,10 +22,6 @@ export interface ParsedRequest {
    */
   data: Guarded<Readable>;
   /**
-   * Named parameters from the path of the URL.
-   */
-  pathParams?: Record<string, string>;
-  /**
    * Allow applications to extend the request object with any data they want.
    */
   [k: string]: any;
