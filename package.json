@@ -1,6 +1,6 @@
 {
   "name": "@comake/solid-on-rails",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Runs a Node.js server using componentsjs preset with configurations for working with Solid.",
   "repository": {
     "type": "git",
