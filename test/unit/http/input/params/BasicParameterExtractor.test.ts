@@ -43,7 +43,7 @@ describe('A BasicParameterExtractor', (): void => {
     });
   });
 
-  it('returns parameters from the body if the content-type header is "application/json" and method is "POST".',
+  it('returns parameters from the body if the content-type header is "application/json" and method supports a body.',
     async(): Promise<void> => {
       const data = { foo: 'a' };
       const dataStream = guardedStreamFrom(JSON.stringify(data));

@@ -1,15 +1,10 @@
-import type { HttpResponse } from '../../http/HttpResponse';
 import type { ResponseDescription } from '../../http/output/response/ResponseDescription';
-import type { ParsedRequest } from '../../http/ParsedRequest';
+import type { ParsedRequestHandlerInput } from '../ParsedRequestHandler';
 
-export type ValidatedRouteHandlerInput<T = any> = {
-  params: T;
-  request: ParsedRequest;
-  response: HttpResponse;
-};
+export type RouteHandlerInput<T = Record<string, unknown>> = ParsedRequestHandlerInput & { params: T };
 /**
  * An HTTP request handler.
  */
-export abstract class RouteHandler<T = any> {
-  public abstract handle(input: T): Promise<ResponseDescription>;
+export abstract class RouteHandler<T = Record<string, unknown>> {
+  public abstract handle(input: RouteHandlerInput<T>): Promise<ResponseDescription>;
 }

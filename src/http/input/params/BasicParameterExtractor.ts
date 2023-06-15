@@ -1,9 +1,12 @@
 import type { Key } from 'path-to-regexp';
 import qs from 'qs';
+import { APPLICATION_JSON } from '../../../util/ContentTypes';
 import { safeReadJsonStream } from '../../../util/StreamUtil';
 import type { ParsedRequest } from '../../ParsedRequest';
 import type { ParameterExtractorArgs } from './ParameterExtractor';
 import { ParameterExtractor } from './ParameterExtractor';
+
+const REQUEST_METHODS_WITH_BODY = new Set([ 'POST', 'PATCH', 'PUT', 'DELETE' ]);
 
 /**
  * Extracts the parameters from a {@link ParsedRequest}.
@@ -42,7 +45,7 @@ export class BasicParameterExtractor extends ParameterExtractor {
 
   private async getBodyParams(request: ParsedRequest): Promise<NodeJS.Dict<any>> {
     const { 'content-type': contentType } = request.headers;
-    if (request.method === 'POST' && contentType === 'application/json') {
+    if (REQUEST_METHODS_WITH_BODY.has(request.method) && contentType === APPLICATION_JSON) {
       return await safeReadJsonStream(request.data);
     }
     return {};
