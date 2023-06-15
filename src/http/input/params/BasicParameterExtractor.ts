@@ -1,5 +1,5 @@
 import type { Key } from 'path-to-regexp';
-import queryString from 'query-string';
+import qs from 'qs';
 import { safeReadJsonStream } from '../../../util/StreamUtil';
 import type { ParsedRequest } from '../../ParsedRequest';
 import type { ParameterExtractorArgs } from './ParameterExtractor';
@@ -37,7 +37,7 @@ export class BasicParameterExtractor extends ParameterExtractor {
 
   private getQueryParams(request: ParsedRequest): NodeJS.Dict<any> {
     const { search } = request.url;
-    return queryString.parse(search, { arrayFormat: 'bracket' });
+    return qs.parse(search.slice(1));
   }
 
   private async getBodyParams(request: ParsedRequest): Promise<NodeJS.Dict<any>> {
