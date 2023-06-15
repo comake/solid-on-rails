@@ -6,6 +6,10 @@ export * from './http/handler/ParsingHttpHandler';
 export * from './http/input/body/BodyParser';
 export * from './http/input/body/RawBodyParser';
 
+// Http/Params
+export * from './http/input/params/BasicParameterExtractor';
+export * from './http/input/params/ParameterExtractor';
+
 // Http/Parser
 export * from './http/input/parser/BasicRequestParser';
 export * from './http/input/parser/RequestParser';
@@ -115,6 +119,7 @@ export * from './server/middleware/StaticAssetHandler';
 // Server/Routing
 export * from './server/routing/IndexViewHandler';
 export * from './server/routing/RouteHandler';
+export * from './server/routing/RouteMatchingRequestHandler';
 export * from './server/ParsedRequestHandler';
 
 // Storage/KeyValue

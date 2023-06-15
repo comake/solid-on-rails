@@ -3,7 +3,7 @@
   "@graph": [
     {
       "@id": "urn:solid-on-rails:default:IndexRouteHandler",
-      "@type": "RouteHandler",
+      "@type": "RouteMatchingRequestHandler",
       "route": {
         "path": "/",
         "method": "GET"
@@ -12,7 +12,8 @@
         "@type": "IndexViewHandler",
         "template": "@SoR:assets/views/index.html.ejs",
         "templateEngine": { "@id": "urn:solid-on-rails:default:ApplicationTemplateEngine" }
-      }
+      },
+      "parameterExtractor": { "@id": "urn:solid-on-rails:default:ParameterExtractor" }
     }
   ]
 }

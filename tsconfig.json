@@ -4,7 +4,8 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist",
-    "lib": ["es2020", "DOM"]
+    "lib": ["es2020", "DOM"],
+    "allowJs": true,
   },
   "include": [
     "src"

@@ -33,6 +33,14 @@ export async function readJsonStream(stream: Readable): Promise<NodeJS.Dict<any>
   return JSON.parse(body);
 }
 
+export async function safeReadJsonStream(stream: Readable): Promise<NodeJS.Dict<any>> {
+  try {
+    return await readJsonStream(stream);
+  } catch {
+    return {};
+  }
+}
+
 /**
  * Converts the stream to a single object.
  * This assumes the stream is in object mode and only contains a single element,
