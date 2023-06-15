@@ -4,9 +4,10 @@ module.exports = {
       tsconfig: 'tsconfig.json',
     },
   },
-  transform: {
-    '^.+\\.ts$': 'ts-jest',
-  },
+  preset: 'ts-jest/presets/js-with-ts',
+  transformIgnorePatterns: [
+    'node_modules/(?!(query-string|decode-uri-component|split-on-first|filter-obj)/)',
+  ],
   testRegex: '/test/(unit|integration)/.*\\.test\\.ts$',
   moduleFileExtensions: [
     'ts',

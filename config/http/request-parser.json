@@ -6,8 +6,7 @@
       "@type": "BasicRequestParser",
       "args_urlExtractor": {
         "@id": "urn:solid-on-rails:default:UrlExtractor",
-        "@type": "OriginalUrlExtractor",
-        "args_includeQueryString": false
+        "@type": "OriginalUrlExtractor"
       },
       "args_bodyParser": { "@type": "RawBodyParser" }
     }

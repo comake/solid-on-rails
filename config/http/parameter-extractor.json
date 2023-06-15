@@ -1,0 +1,10 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Extracts parameters from requests.",
+      "@id": "urn:solid-on-rails:default:ParameterExtractor",
+      "@type": "BasicParameterExtractor"
+    }
+  ]
+}

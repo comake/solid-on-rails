@@ -4,7 +4,7 @@ import { OriginalUrlExtractor } from '../../../../../src/http/input/url/Original
 describe('A OriginalUrlExtractor', (): void => {
   let extractor: OriginalUrlExtractor;
   beforeEach(async(): Promise<void> => {
-    extractor = new OriginalUrlExtractor({ includeQueryString: false });
+    extractor = new OriginalUrlExtractor();
   });
   // Default extractor to use, some test cases may specify an alternative extractor
 
@@ -33,24 +33,13 @@ describe('A OriginalUrlExtractor', (): void => {
 
   it('returns an input URL with query string.', async(): Promise<void> => {
     await expect(extractor.handle({ request: { url: '/url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
-      .resolves.toEqual(new URL('http://test.com/url'));
-  });
-
-  it('includes query strings by default.', async(): Promise<void> => {
-    extractor = new OriginalUrlExtractor({});
-    await expect(extractor.handle({ request: { url: '/url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
       .resolves.toEqual(new URL('http://test.com/url?abc=def&xyz'));
   });
 
   it('returns an input URL with multiple leading slashes.', async(): Promise<void> => {
-    extractor = new OriginalUrlExtractor({ includeQueryString: true });
+    extractor = new OriginalUrlExtractor();
     await expect(extractor.handle({ request: { url: '///url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
       .resolves.toEqual(new URL('http://test.com///url?abc=def&xyz'));
-  });
-
-  it('drops the query string when includeQueryString is set to false.', async(): Promise<void> => {
-    await expect(extractor.handle({ request: { url: '/url?abc=def&xyz', headers: { host: 'test.com' }} as any }))
-      .resolves.toEqual(new URL('http://test.com/url'));
   });
 
   it('supports host:port combinations.', async(): Promise<void> => {

@@ -6,24 +6,10 @@ import { toCanonicalUriPath } from '../../../util/PathUtil';
 import type { HttpRequest } from '../../HttpRequest';
 import { UrlExtractor } from './UrlExtractor';
 
-export interface OriginalUrlExtractorArgs {
-  /**
-   * Specify wether the OriginalUrlExtractor should include the request query string.
-   */
-  includeQueryString?: boolean;
-}
-
 /**
  * Reconstructs the original URL of an incoming {@link HttpRequest}.
  */
 export class OriginalUrlExtractor extends UrlExtractor {
-  private readonly includeQueryString: boolean;
-
-  public constructor(args: OriginalUrlExtractorArgs) {
-    super();
-    this.includeQueryString = args.includeQueryString ?? true;
-  }
-
   public async handle({ request: { url, connection, headers }}: { request: HttpRequest }): Promise<URL> {
     if (!url) {
       throw new InternalServerError('Missing URL');
@@ -54,10 +40,7 @@ export class OriginalUrlExtractor extends UrlExtractor {
     const originalUrl = new URL(`${protocol}://${host}`);
     const [ , pathname, search ] = /^([^?]*)(.*)/u.exec(toCanonicalUriPath(url))!;
     originalUrl.pathname = pathname;
-    if (this.includeQueryString && search) {
-      originalUrl.search = search;
-    }
-
+    originalUrl.search = search;
     return originalUrl;
   }
 }

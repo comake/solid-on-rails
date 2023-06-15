@@ -3,7 +3,7 @@
   "@graph": [
     {
       "@id": "urn:solid-on-rails:default:CreateUserHandler",
-      "@type": "RouteHandler",
+      "@type": "RouteMatchingRequestHandler",
       "route": {
         "path": "/users",
         "method": "POST"
@@ -11,7 +11,8 @@
       "handler": {
         "@type": "CreateUserHandler",
         "dataMapper": { "@id": "urn:solid-on-rails:default:DataMapper" }
-      }
+      },
+      "parameterExtractor": { "@id": "urn:solid-on-rails:default:ParameterExtractor" }
     }
   ]
 }
