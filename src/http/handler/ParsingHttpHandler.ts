@@ -57,7 +57,7 @@ export class ParsingHttpHandler extends HttpHandler {
       this.logger.verbose(`Parsed ${request.method} operation on ${request.url}`);
     } catch (error: unknown) {
       assertError(error);
-      result = await this.errorHandler.handleSafe({ error });
+      result = await this.errorHandler.handleSafe({ error, request, response });
     }
 
     if (result) {
