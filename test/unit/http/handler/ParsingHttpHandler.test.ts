@@ -61,7 +61,7 @@ describe('A ParsingHttpHandler', (): void => {
     requestHandler.handleSafe.mockRejectedValueOnce(error);
     await expect(handler.handle({ request, response })).resolves.toBeUndefined();
     expect(errorHandler.handleSafe).toHaveBeenCalledTimes(1);
-    expect(errorHandler.handleSafe).toHaveBeenLastCalledWith({ error });
+    expect(errorHandler.handleSafe).toHaveBeenLastCalledWith({ error, request: {}, response: {}});
     expect(responseWriter.handleSafe).toHaveBeenCalledTimes(1);
     expect(responseWriter.handleSafe).toHaveBeenLastCalledWith({ response, result: errorResponse });
   });
@@ -75,7 +75,7 @@ describe('A ParsingHttpHandler', (): void => {
     expect(requestParser.handleSafe).toHaveBeenCalledTimes(1);
     expect(requestParser.handleSafe).toHaveBeenLastCalledWith(request);
     expect(errorHandler.handleSafe).toHaveBeenCalledTimes(1);
-    expect(errorHandler.handleSafe).toHaveBeenLastCalledWith({ error });
+    expect(errorHandler.handleSafe).toHaveBeenLastCalledWith({ error, request: {}, response: {}});
     expect(responseWriter.handleSafe).toHaveBeenCalledTimes(1);
     expect(responseWriter.handleSafe).toHaveBeenLastCalledWith({ response, result: errorResponse });
   });
