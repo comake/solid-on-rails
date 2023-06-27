@@ -1,9 +1,11 @@
 import { getLoggerFor } from '../../../logging/LogUtil';
+import { APPLICATION_JSON } from '../../../util/ContentTypes';
 import { createErrorMessage } from '../../../util/errors/ErrorUtil';
 import { getStatusCode } from '../../../util/errors/HttpErrorUtil';
-import { guardedStreamFrom } from '../../../util/StreamUtil';
+import { addHeader } from '../../../util/HeaderUtil';
+import { guardedStreamFrom, guardedStreamFromJson } from '../../../util/StreamUtil';
 import type { ResponseDescription } from '../response/ResponseDescription';
-import type { ErrorHandlerArgs } from './ErrorHandler';
+import type { ErrorHandlerInput } from './ErrorHandler';
 import { ErrorHandler } from './ErrorHandler';
 
 /**
@@ -22,22 +24,37 @@ export class SafeErrorHandler extends ErrorHandler {
     this.showStackTrace = showStackTrace;
   }
 
-  public async handle(input: ErrorHandlerArgs): Promise<ResponseDescription> {
+  public async handle(input: ErrorHandlerInput): Promise<ResponseDescription> {
     try {
       return await this.errorHandler.handleSafe(input);
     } catch (error: unknown) {
       this.logger.debug(`Recovering from error handler failure: ${createErrorMessage(error)}`);
     }
-    const { error } = input;
+    const { error, request, response } = input;
     const statusCode = getStatusCode(error);
 
-    const text = typeof error.stack === 'string' && this.showStackTrace
-      ? `${error.stack}\n`
-      : `${error.name}: ${error.message}\n`;
-
+    let data: any;
+    const { 'content-type': contentType } = request.headers;
+    if (contentType === APPLICATION_JSON) {
+      addHeader(response, 'Content-Type', APPLICATION_JSON);
+      data = guardedStreamFromJson({
+        error: {
+          code: statusCode,
+          name: error.name,
+          message: typeof error.stack === 'string' && this.showStackTrace
+            ? error.stack
+            : error.message,
+        },
+      });
+    } else {
+      const text = typeof error.stack === 'string' && this.showStackTrace
+        ? `${error.stack}\n`
+        : `${error.name}: ${error.message}\n`;
+      data = guardedStreamFrom(text);
+    }
     return {
       statusCode,
-      data: guardedStreamFrom(text),
+      data,
     };
   }
 }
