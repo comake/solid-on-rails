@@ -1,6 +1,7 @@
 // Http/Handler
 export * from './http/handler/HttpHandler';
 export * from './http/handler/ParsingHttpHandler';
+export * from './http/handler/WebSocketHandler';
 
 // Http/Body
 export * from './http/input/body/BodyParser';
@@ -107,8 +108,13 @@ export * from './logging/VoidLoggerFactory';
 export * from './logging/WinstonLogger';
 export * from './logging/WinstonLoggerFactory';
 
+// Server/Configurator
+export * from './server/configurator/HandlerServerConfigurator';
+export * from './server/configurator/ServerConfigurator';
+export * from './server/configurator/WebSocketServerConfigurator';
+
 // Server/Factory
-export * from './server/factory/BaseHttpServerFactory';
+export * from './server/factory/BaseServerFactory';
 export * from './server/factory/HttpServerFactory';
 
 // Server/Middleware
