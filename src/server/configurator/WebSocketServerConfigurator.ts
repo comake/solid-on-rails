@@ -24,7 +24,6 @@ export class WebSocketServerConfigurator extends ServerConfigurator {
   }
 
   public async handle(server: Server): Promise<void> {
-    // Create WebSocket server
     const webSocketServer = new WebSocketServer({ noServer: true });
     server.on('upgrade', (upgradeRequest: IncomingMessage, socket: Socket, head: Buffer): void => {
       webSocketServer.handleUpgrade(upgradeRequest, socket, head, async(webSocket: WebSocket): Promise<void> => {

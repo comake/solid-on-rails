@@ -8,6 +8,7 @@ const portNames = [
   'Job',
   'Middleware',
   'Migration',
+  'WebSockets',
   // Unit
   'BaseServerFactory',
 ] as const;
