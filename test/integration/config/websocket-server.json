@@ -1,0 +1,46 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sor:config/app/main/default.json",
+    "files-sor:config/app/initialize/default.json",
+    "files-sor:config/app/finalize/default.json",
+    "files-sor:config/app/variables/default.json",
+    "files-sor:config/app/path/default.json",
+    "files-sor:config/http/static/default.json",
+    "files-sor:config/http/error-handler.json",
+    "files-sor:config/server/server-factory/default.json",
+    "files-sor:config/storage/key-value/memory.json",
+    "files-sor:config/util/variables/default.json",
+    "files-sor:config/util/logging/winston.json"
+  ],
+  "@graph": [
+    {
+      "comment": "Attempt to resolve requests first as static assets, then as normal routes.",
+      "@id": "urn:solid-on-rails:default:HttpHandler",
+      "@type": "SequenceHandler",
+      "handlers": [
+        { "@id": "urn:solid-on-rails:default:StaticAssetHandler" }
+      ]
+    },
+    {
+      "@id": "urn:solid-on-rails:default:WebSocketHandler",
+      "WaterfallHandler:_handlers": [
+        { "@id": "urn:solid-on-rails:default:ExampleWebSocketHandler" }
+      ]
+    },
+    {
+      "@id": "urn:solid-on-rails:default:ExampleWebSocketHandler",
+      "@type": "Variable"
+    },
+    {
+      "@id": "urn:solid-on-rails:test:Instances",
+      "@type": "RecordObject",
+      "RecordObject:_record": [
+        {
+          "RecordObject:_record_key": "app",
+          "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }
+        }
+      ]
+    }
+  ]
+}

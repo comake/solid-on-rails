@@ -3,10 +3,10 @@ import type { Server } from 'http';
 import request from 'supertest';
 import { HttpHandler } from '../../src/http/handler/HttpHandler';
 import type { HttpHandlerInput } from '../../src/http/handler/HttpHandler';
-import type { BaseHttpServerFactory } from '../../src/server/factory/BaseHttpServerFactory';
+import type { BaseServerFactory } from '../../src/server/factory/BaseServerFactory';
 import { splitCommaSeparated } from '../../src/util/StringUtil';
 import { getPort } from '../util/Util';
-import { getTestConfigPath, instantiateFromConfig } from './Config';
+import { getDefaultVariables, getTestConfigPath, instantiateFromConfig } from './Config';
 
 const port = getPort('Middleware');
 
@@ -25,13 +25,12 @@ describe('An http server with middleware', (): void => {
       'urn:solid-on-rails:default:ServerFactory',
       getTestConfigPath('server-middleware.json'),
       {
-        'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:',
+        ...getDefaultVariables(port),
         'urn:solid-on-rails:default:RoutesHandler': new SimpleHttpHandler(),
-        'urn:solid-on-rails:default:variable:baseUrl': 'https://example.com/',
-        'urn:solid-on-rails:default:variable:showStackTrace': true,
       },
-    ) as BaseHttpServerFactory;
-    server = factory.startServer(port);
+    ) as BaseServerFactory;
+    server = await factory.createServer();
+    server.listen(port);
   });
 
   afterAll(async(): Promise<void> => {

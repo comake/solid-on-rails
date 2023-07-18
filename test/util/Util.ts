@@ -8,8 +8,9 @@ const portNames = [
   'Job',
   'Middleware',
   'Migration',
+  'WebSockets',
   // Unit
-  'BaseHttpServerFactory',
+  'BaseServerFactory',
 ] as const;
 
 export function getPort(name: typeof portNames[number]): number {

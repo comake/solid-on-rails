@@ -1,0 +1,36 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "@id": "urn:solid-on-rails:default:ServerConfigurator",
+      "@type": "ParallelHandler",
+      "handlers": [
+        {
+          "comment": "Handles all request events from the server.",
+          "@id": "urn:solid-on-rails:default:HandlerServerConfigurator",
+          "@type": "HandlerServerConfigurator",
+          "handler": { "@id": "urn:solid-on-rails:default:HttpHandler" },
+          "showStackTrace": { "@id": "urn:solid-on-rails:default:variable:showStackTrace" }
+        },
+        {
+          "comment": "Handles all WebSocket connections to the server.",
+          "@id": "urn:solid-on-rails:default:WebSocketServerConfigurator",
+          "@type": "WebSocketServerConfigurator",
+          "handler": {
+            "@id": "urn:solid-on-rails:default:WebSocketHandler",
+            "@type": "WaterfallHandler",
+            "handlers": [
+              {
+                "comment": [
+                  "This handler is required to prevent Components.js issues with arrays.",
+                  "This might be fixed in the next Components.js release after which this can be removed."
+                ],
+                "@type": "UnsupportedAsyncHandler"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

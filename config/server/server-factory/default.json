@@ -1,12 +1,14 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
+  "import": [
+    "files-sor:config/server/server-factory/configurator/default.json"
+  ],
   "@graph": [
     {
       "comment": "Creates a server that supports HTTP requests.",
       "@id": "urn:solid-on-rails:default:ServerFactory",
-      "@type": "BaseHttpServerFactory",
-      "handler": { "@id": "urn:solid-on-rails:default:HttpHandler" },
-      "options_showStackTrace": { "@id": "urn:solid-on-rails:default:variable:showStackTrace" }
+      "@type": "BaseServerFactory",
+      "configurator": { "@id": "urn:solid-on-rails:default:ServerConfigurator" }
     }
   ]
 }
