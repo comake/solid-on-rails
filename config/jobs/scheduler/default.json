@@ -15,7 +15,8 @@
     {
       "comment": "Ensure the preconfigured Job schedules get initialized.",
       "@id": "urn:solid-on-rails:default:ParallelInitializer",
-      "ParallelHandler:_handlers": [
+      "@type": "ParallelHandler",
+      "handlers": [
         { "@id": "urn:solid-on-rails:default:JobSchedulesInitializer" }
       ]
     }

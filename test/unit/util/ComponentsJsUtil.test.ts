@@ -89,6 +89,7 @@ describe('ComponentsJsUtil', (): void => {
           dumpErrorState: true,
           logLevel: 'info',
           mainModulePath: joinFilePath(__dirname, '../../../'),
+          typeChecking: false,
         });
         expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
         expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);

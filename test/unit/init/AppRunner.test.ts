@@ -72,6 +72,7 @@ describe('AppRunner', (): void => {
           mainModulePath: joinFilePath(__dirname, '../../../'),
           dumpErrorState: true,
           logLevel: 'info',
+          typeChecking: false,
         },
         configFile,
         variables,
@@ -81,6 +82,7 @@ describe('AppRunner', (): void => {
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
         logLevel: 'info',
+        typeChecking: false,
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
@@ -114,6 +116,7 @@ describe('AppRunner', (): void => {
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
         logLevel: 'info',
+        typeChecking: false,
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
@@ -151,6 +154,7 @@ describe('AppRunner', (): void => {
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
         logLevel: 'debug',
+        typeChecking: false,
         mainModulePath: joinFilePath(__dirname, '../../../'),
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
@@ -224,6 +228,7 @@ describe('AppRunner', (): void => {
       expect(ComponentsManager.build).toHaveBeenCalledWith({
         dumpErrorState: true,
         logLevel: 'debug',
+        typeChecking: false,
         mainModulePath: '/var/cwd/module/path',
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);

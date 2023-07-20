@@ -23,8 +23,10 @@ export class JobSchedulesInitializer extends Initializer {
   /**
    * @param scheduler - the scheduler to send jobs to be queued.
    * @param schedules - the preconfigured schedules for specific jobs to be run on. @range {json}
+   *
+   * JSON parameters cannot be optional due to https://github.com/LinkedSoftwareDependencies/Components-Generator.js/issues/87
    */
-  public constructor(scheduler: JobScheduler, schedules: Record<string, JobSchedule> = {}) {
+  public constructor(scheduler: JobScheduler, schedules: Record<string, JobSchedule>) {
     super();
     this.scheduler = scheduler;
     this.schedules = schedules;

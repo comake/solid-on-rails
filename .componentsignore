@@ -6,5 +6,18 @@
   "TypeOrmRepository",
   "ConfiguredJobOptions",
   "MigrationInterface",
-  "BullQueueSettings"
+  "BullQueueSettings",
+  "Dict",
+  "NodeJS.Dict",
+  "Promise",
+  "Readonly",
+  "RegExp",
+  "Set",
+  "URL",
+  "HttpResponse",
+  "VariableBindings",
+  "Settings",
+  "Server",
+  "EventEmitter",
+  "YargsOptions"
 ]
