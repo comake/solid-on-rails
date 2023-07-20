@@ -1,3 +1,4 @@
+/* eslint-disable tsdoc/syntax */
 import type { Queue } from 'bull';
 import Bull from 'bull';
 import { getLoggerFor } from '../../logging/LogUtil';
@@ -53,13 +54,6 @@ export interface BullQueueSettings {
   isSharedChildPool?: boolean;
 }
 
-export interface BullQueueAdapterArgs {
-  jobs: Record<string, Job>;
-  queues: Record<string, BullQueueSettings>;
-  redisConfig: RedisConfig;
-  queueProcessor: BullQueueProcessor;
-}
-
 const DEFAULT_BACKOFF_DELAY = 2000;
 
 /**
@@ -68,22 +62,33 @@ const DEFAULT_BACKOFF_DELAY = 2000;
  */
 export class BullQueueAdapter implements QueueAdapter {
   protected readonly logger = getLoggerFor(this);
-  private readonly jobs: Record<string, Job>;
+  private readonly jobs: Job[];
   private readonly queues: Record<string, Queue> = {};
 
-  public constructor(args: BullQueueAdapterArgs) {
-    this.jobs = args.jobs;
+  /**
+   * @param jobs - The jobs which can be run.
+   * @param queues - The queues which jobs can be run on. @range {json}
+   * @param redisConfig - The configuration for redis to store job and queue details.
+   * @param queueProcessor - The queue processor.
+   */
+  public constructor(
+    jobs: Job[],
+    queues: Record<string, BullQueueSettings>,
+    redisConfig: RedisConfig,
+    queueProcessor: BullQueueProcessor,
+  ) {
+    this.jobs = jobs;
 
-    for (const [ queue, settings ] of Object.entries(args.queues)) {
+    for (const [ queue, settings ] of Object.entries(queues)) {
       this.queues[queue] = new Bull(
         queue,
         {
-          redis: args.redisConfig,
+          redis: redisConfig,
           settings,
         },
       );
     }
-    args.queueProcessor.processJobsOnQueues(this.queues, this.jobs, this);
+    queueProcessor.processJobsOnQueues(this.queues, this.jobs, this);
   }
 
   public async finalize(): Promise<void> {
@@ -98,7 +103,7 @@ export class BullQueueAdapter implements QueueAdapter {
     data: Record<string, any> = {},
     overrideOptions: Partial<JobOptions> = {},
   ): Promise<void> {
-    const job = this.jobs[jobName];
+    const job = this.jobs.find((jobIter): boolean => jobIter.name === jobName);
     if (!job) {
       throw new Error(`Job '${jobName}' is not defined`);
     }

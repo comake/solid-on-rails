@@ -16,7 +16,7 @@ describe('A BullQueueAdapter', (): void => {
   let queues: Record<string, BullQueueSettings>;
   let perform: Job['perform'];
   let job: Job;
-  let jobs: Record<string, Job>;
+  let jobs: Job[];
   let close: any;
   let add: any;
   let obliterate: any;
@@ -27,12 +27,12 @@ describe('A BullQueueAdapter', (): void => {
   beforeEach(async(): Promise<void> => {
     jest.clearAllMocks();
 
-    queues = { [queue]: {}};
+    queues = { default: {}};
     perform = jest.fn().mockImplementation(async(): Promise<void> => {
       // Do nothing
     });
-    job = { perform, options: { queue }};
-    jobs = { example: job };
+    job = { name: 'example', perform, options: { queue }};
+    jobs = [ job ];
 
     close = jest.fn();
     obliterate = jest.fn();
@@ -45,7 +45,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('initializes bull queues.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await adapter.performLater('example');
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
@@ -54,14 +54,14 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('initializes queues with only one total concurrent job.', async(): Promise<void> => {
-    jobs = { example: job, example2: job };
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    jobs = [ job, { name: 'example2', perform, options: { queue }}];
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
   });
 
   it('closes all queues when finalized.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await adapter.performLater('example');
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
@@ -72,19 +72,19 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('errors when attempting to perform a job which has not been defined.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('sendEmail'))
       .rejects.toThrow('Job \'sendEmail\' is not defined');
   });
 
   it('errors when attempting to perform a job on a queue which has not been defined.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { queue: 'critical' }))
       .rejects.toThrow('Queue \'critical\' is not defined');
   });
 
   it('adds the job to the queue if the job and queue are defined.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     const data = { alpha: 1 };
     await expect(adapter.performLater('example', data))
       .resolves.toBeUndefined();
@@ -95,7 +95,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job on a cron schedule.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { every: '5 4 * * *' }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -105,7 +105,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job on a cron schedule with a start time at a specific date.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { at: tomorrow, every: '5 4 * * *' }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -115,7 +115,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job on a cron schedule with a start time after a delay.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { in: 1000, every: '5 4 * * *' }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -125,7 +125,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job on a certain millisecond schedule.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { every: 1000 }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -135,7 +135,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job to be run at a specific date.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { at: tomorrow }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -145,7 +145,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job to be run after a delay.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { in: 1000 }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -155,7 +155,7 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('adds the job with an auto-retry backoff setting.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { retryAttempts: 3 }))
       .resolves.toBeUndefined();
     expect(Bull).toHaveBeenCalledTimes(1);
@@ -168,34 +168,34 @@ describe('A BullQueueAdapter', (): void => {
   });
 
   it('deletes a queue.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.deleteQueue('default')).resolves.toBeUndefined();
     expect(obliterate).toHaveBeenCalledTimes(1);
     expect(obliterate).toHaveBeenCalledWith({ force: true });
   });
 
   it('throws an error when deleting a queue that does not exist.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.deleteQueue('otherQueue')).rejects.toThrow('No queue named otherQueue found');
     expect(obliterate).toHaveBeenCalledTimes(0);
   });
 
   it('deletes all queues.', async(): Promise<void> => {
     queues = { queue: {}, secondQueue: {}};
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.deleteAllQueues()).resolves.toBeUndefined();
     expect(obliterate).toHaveBeenCalledTimes(2);
     expect(obliterate).toHaveBeenCalledWith({ force: true });
   });
 
   it('sets up jobs to be processed on the queueProcessor.', async(): Promise<void> => {
-    adapter = new BullQueueAdapter({ jobs, queues, redisConfig, queueProcessor });
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     expect(queueProcessor.processJobsOnQueues).toHaveBeenCalledTimes(1);
     expect(queueProcessor.processJobsOnQueues).toHaveBeenCalledWith(
       expect.objectContaining({
         default: expect.any(Object),
       }),
-      { example: job },
+      [ job ],
       adapter,
     );
   });

@@ -7,7 +7,6 @@
     "sor:config/app/variables/default.json",
     "sor:config/app/path/default.json",
     "sor:config/http/static/default.json",
-    "sor:config/http/error-handler.json",
     "sor:config/server/server-factory/default.json",
     "sor:config/storage/key-value/memory.json",
     "sor:config/util/variables/default.json",

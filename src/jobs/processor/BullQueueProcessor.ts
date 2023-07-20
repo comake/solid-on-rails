@@ -9,14 +9,14 @@ export class BullQueueProcessor implements QueueProcessor<Queue> {
 
   public processJobsOnQueues(
     queues: Record<string, Queue>,
-    jobs: Record<string, Job>,
+    jobs: Job[],
     queueAdapter: QueueAdapter,
   ): void {
     for (const queue of Object.keys(queues)) {
       let isFirst = true;
-      for (const jobName of Object.keys(jobs)) {
-        queues[queue].process(jobName, isFirst ? 1 : 0, async(bullJob): Promise<void> =>
-          jobs[jobName].perform(bullJob.data, queueAdapter)) as any;
+      for (const job of jobs) {
+        queues[queue].process(job.name, isFirst ? 1 : 0, async(bullJob): Promise<void> =>
+          job.perform(bullJob.data, queueAdapter)) as any;
         isFirst = false;
       }
       this.initializeQueueEvents(queues[queue]);

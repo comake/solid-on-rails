@@ -40,19 +40,18 @@ describe('An http server with preconfigured jobs', (): void => {
     bullConstructor = jest.fn().mockImplementation((): Bull.Queue => ({ process, add, on } as any));
     (Bull as jest.Mock).mockImplementation(bullConstructor);
 
-    const adapter = new BullQueueAdapter({
-      queues: { default: {}},
-      jobs: {
-        Void: {
-          options: { queue: 'default' },
-          perform: jest.fn().mockImplementation(async({ value }: { value: string }): Promise<void> => {
-            jobValue = value;
-          }),
-        },
-      },
-      queueProcessor: new BullQueueProcessor(),
+    const adapter = new BullQueueAdapter(
+      [{
+        name: 'Void',
+        options: { queue: 'default' },
+        perform: jest.fn().mockImplementation(async({ value }: { value: string }): Promise<void> => {
+          jobValue = value;
+        }),
+      }],
+      { default: {}},
       redisConfig,
-    });
+      new BullQueueProcessor(),
+    );
 
     const instances = await instantiateFromConfig(
       'urn:solid-on-rails:test:Instances',

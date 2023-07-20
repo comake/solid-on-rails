@@ -4,7 +4,7 @@ import type { Job } from '../Job';
 export interface QueueProcessor<TQueue> {
   processJobsOnQueues: (
     queues: Record<string, TQueue>,
-    jobs: Record<string, Job>,
+    jobs: Job[],
     queueAdapter: QueueAdapter,
   ) => void;
 }

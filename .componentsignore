@@ -4,6 +4,7 @@
   "HttpErrorOptions",
   "WinstonLogger",
   "TypeOrmRepository",
+  "EntitySchemaOptions",
   "ConfiguredJobOptions",
   "MigrationInterface",
   "BullQueueSettings",
