@@ -1,32 +1,29 @@
 {
   "@context":[
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
-    { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld"
   ],
   "import": [
-    "files-sor:config/app/main/default.json",
-    "files-sor:config/app/initialize/default.json",
-    "files-sor:config/app/finalize/default.json",
-    "files-sor:config/app/variables/default.json",
-    "files-sor:config/app/path/default.json",
-    "files-sor:config/http/handler/default.json",
-    "files-sor:config/http/static/default.json",
-    "files-sor:config/http/routes/default.json",
-    "files-sor:config/http/error-handler.json",
-    "files-sor:config/http/response-writer.json",
-    "files-sor:config/http/request-parser.json",
-    "files-sor:config/server/middleware/default.json",
-    "files-sor:config/server/server-factory/default.json",
-    "files-sor:config/storage/key-value/memory.json",
-    "files-sor:config/storage/data-mapper/init/initializer.json",
-    "files-sor:config/util/variables/default.json",
-    "files-sor:config/util/logging/winston.json"
+    "sor:config/app/main/default.json",
+    "sor:config/app/initialize/default.json",
+    "sor:config/app/finalize/default.json",
+    "sor:config/app/variables/default.json",
+    "sor:config/app/path/default.json",
+    "sor:config/http/handler/default.json",
+    "sor:config/http/static/default.json",
+    "sor:config/http/routes/default.json",
+    "sor:config/http/response-writer.json",
+    "sor:config/server/middleware/default.json",
+    "sor:config/server/server-factory/default.json",
+    "sor:config/storage/key-value/memory.json",
+    "sor:config/storage/data-mapper/init/initializer.json",
+    "sor:config/util/variables/default.json",
+    "sor:config/util/logging/winston.json"
   ],
   "@graph": [
     {
       "@id": "urn:solid-on-rails:test:Instances",
       "@type": "RecordObject",
-      "RecordObject:_record": [
+      "record": [
         {
           "RecordObject:_record_key": "app",
           "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }

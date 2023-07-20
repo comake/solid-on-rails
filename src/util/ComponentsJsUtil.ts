@@ -92,6 +92,7 @@ export async function createComponentsManagerSetupFromCliArgs(
     mainModulePath: pathResolver.resolveAssetPath(params.mainModulePath),
     dumpErrorState: true,
     logLevel: params.loggingLevel,
+    typeChecking: false,
   };
 
   const config = pathResolver.resolveAssetPath(params.config);

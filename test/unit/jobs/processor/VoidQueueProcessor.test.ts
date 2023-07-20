@@ -7,15 +7,15 @@ describe('A VoidQueueProcessor', (): void => {
   let queues: Record<string, Queue>;
   let perform: Job['perform'];
   let job: Job;
-  let jobs: Record<string, Job>;
+  let jobs: Job[];
   let processor: VoidQueueProcessor;
   let adapter: QueueAdapter;
 
   beforeEach(async(): Promise<void> => {
     queues = { default: { name: 'default' } as any };
     perform = jest.fn();
-    job = { perform, options: { queue: 'default' }};
-    jobs = { example: job };
+    job = { name: 'Void', perform, options: { queue: 'default' }};
+    jobs = [ job ];
 
     adapter = { } as any;
     processor = new VoidQueueProcessor();

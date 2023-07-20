@@ -1,12 +1,12 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/http/error-handler.json",
-    "files-sor:config/http/response-writer.json",
-    "files-sor:config/http/request-parser.json",
-    "files-sor:config/http/parameter-extractor.json",
-    "files-sor:config/http/routes/templates/application.json",
-    "files-sor:config/http/routes/handlers/index.json"
+    "sor:config/http/error-handler.json",
+    "sor:config/http/response-writer.json",
+    "sor:config/http/request-parser.json",
+    "sor:config/http/parameter-extractor.json",
+    "sor:config/http/routes/templates/application.json",
+    "sor:config/http/routes/handlers/index.json"
   ],
   "@graph": [
     {
@@ -20,13 +20,6 @@
         "comment": "Routes all requests to the proper handlers.",
         "@type": "WaterfallHandler",
         "handlers": [
-          {
-            "comment": [
-              "This handler is required to prevent Components.js issues with arrays.",
-              "This might be fixed in the next Components.js release after which this can be removed."
-            ],
-            "@type": "UnsupportedAsyncHandler"
-          },
           { "@id": "urn:solid-on-rails:default:IndexRouteHandler" }
         ]
       }

@@ -15,7 +15,7 @@ The goal of the Data Mapper pattern is to keep the in-memory representation and 
 The default Data Mapper within Solid on Rails is configured by the [type-orm.json](https://github.com/comake/solid-on-rails/blob/main/config/storage/data-mapper/type-orm.json) Components.js configuration. Override this default configuration by replacing it in your Components.js config file:
 
 ```diff
-- "files-sor:config/storage/data-mapper/type-orm.json",
+- "sor:config/storage/data-mapper/type-orm.json",
 + "files-myapp:config/storage/data-mapper/type-orm.json",
 ```
 

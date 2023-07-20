@@ -5,49 +5,77 @@
       "comment": "Extracts CLI arguments into a key/value object. Config and mainModulePath are only defined here so their description is returned.",
       "@id": "urn:solid-on-rails-setup:default:CliExtractor",
       "@type": "YargsCliExtractor",
-      "parameters": {
-        "config": {
-          "alias": "c",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The configuration for the server."
+      "parameters": [
+        {
+          "@type": "YargsParameter",
+          "name": "config",
+          "options": {
+            "alias": "c",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The configuration for the server."
+          }
         },
-        "mainModulePath": {
-          "alias": "m",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Path from where Components.js will start its lookup when initializing configurations."
+        {
+          "@type": "YargsParameter",
+          "name": "mainModulePath",
+          "options": {
+            "alias": "m",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Path from where Components.js will start its lookup when initializing configurations."
+          }
         },
-        "loggingLevel": {
-          "alias": "l",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The detail level of logging; useful for debugging problems."
+        {
+          "@type": "YargsParameter",
+          "name": "loggingLevel",
+          "options": {
+            "alias": "l",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The detail level of logging; useful for debugging problems."
+          }
         },
-        "envVarPrefix": {
-          "alias": "v",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "Only environment variables starting with this prefix will be parsed when initializing configurations."
+        {
+          "@type": "YargsParameter",
+          "name": "envVarPrefix",
+          "options": {
+            "alias": "v",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "Only environment variables starting with this prefix will be parsed when initializing configurations."
+          }
         },
-        "baseUrl": {
-          "alias": "b",
-          "requiresArg": true,
-          "type": "string",
-          "describe": "The public URL of your server."
+        {
+          "@type": "YargsParameter",
+          "name": "baseUrl",
+          "options": {
+            "alias": "b",
+            "requiresArg": true,
+            "type": "string",
+            "describe": "The public URL of your server."
+          }
         },
-        "port": {
-          "alias": "p",
-          "requiresArg": true,
-          "type": "number",
-          "describe": "The TCP port on which the server runs."
+        {
+          "@type": "YargsParameter",
+          "name": "port",
+          "options": {
+            "alias": "p",
+            "requiresArg": true,
+            "type": "number",
+            "describe": "The TCP port on which the server runs."
+          }
         },
-        "showStackTrace": {
-          "alias": "t",
-          "type": "boolean",
-          "describe": "Enables detailed logging on error pages."
+        {
+          "@type": "YargsParameter",
+          "name": "showStackTrace",
+          "options": {
+            "alias": "t",
+            "type": "boolean",
+            "describe": "Enables detailed logging on error pages."
+          }
         }
-      },
+      ],
       "options": {
         "usage": "node ./bin/server.js [args]",
         "loadFromEnv": true

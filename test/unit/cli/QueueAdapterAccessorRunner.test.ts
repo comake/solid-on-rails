@@ -89,6 +89,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
         dumpErrorState: true,
         logLevel: 'info',
         mainModulePath: joinFilePath(__dirname, '../../../'),
+        typeChecking: false,
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
       expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
@@ -120,6 +121,7 @@ describe('QueueAdapterAccessorRunner', (): void => {
         dumpErrorState: true,
         logLevel: 'info',
         mainModulePath: joinFilePath(__dirname, '../../../'),
+        typeChecking: false,
       });
       expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
       expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');

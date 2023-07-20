@@ -4,7 +4,21 @@
   "HttpErrorOptions",
   "WinstonLogger",
   "TypeOrmRepository",
+  "EntitySchemaOptions",
   "ConfiguredJobOptions",
   "MigrationInterface",
-  "BullQueueSettings"
+  "BullQueueSettings",
+  "Dict",
+  "NodeJS.Dict",
+  "Promise",
+  "Readonly",
+  "RegExp",
+  "Set",
+  "URL",
+  "HttpResponse",
+  "VariableBindings",
+  "Settings",
+  "Server",
+  "EventEmitter",
+  "YargsOptions"
 ]

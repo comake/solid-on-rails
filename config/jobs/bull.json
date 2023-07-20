@@ -1,34 +1,24 @@
 {
-  "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
-    { "BullQueueAdapter:_args_queues_value": { "@type": "@json" } }
-  ],
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "@graph": [
     {
       "@id": "urn:solid-on-rails:default:QueueAdapter",
       "@type": "BullQueueAdapter",
-      "args_queues": [
-        {
-          "BullQueueAdapter:_args_queues_key": "default",
-          "BullQueueAdapter:_args_queues_value": {}
-        }
+      "queues": {
+        "default": {}
+      },
+      "jobs": [
+        { "@type": "VoidJob" }
       ],
-      "args_jobs": [
-        {
-          "BullQueueAdapter:_args_jobs_key": "Void",
-          "BullQueueAdapter:_args_jobs_value": {
-            "@type": "VoidJob"
-          }
-        }
-      ],
-      "args_queueProcessor": {
+      "queueProcessor": {
         "@type": "BullQueueProcessor"
       }
     },
     {
       "comment": "Makes sure the queue adapter shuts down when the application needs to stop.",
       "@id": "urn:solid-on-rails:default:Finalizer",
-      "ParallelFinalizer:_finalizers": [ { "@id": "urn:solid-on-rails:default:QueueAdapter" } ]
+      "@type": "ParallelFinalizer",
+      "finalizers": [ { "@id": "urn:solid-on-rails:default:QueueAdapter" } ]
     }
   ]
 }
