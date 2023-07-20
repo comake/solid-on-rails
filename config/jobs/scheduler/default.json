@@ -10,12 +10,14 @@
       "comment": "Logs a warning if the base URL changes.",
       "@id": "urn:solid-on-rails:default:JobSchedulesInitializer",
       "@type": "JobSchedulesInitializer",
-      "scheduler": { "@id": "urn:solid-on-rails:default:JobScheduler" }
+      "scheduler": { "@id": "urn:solid-on-rails:default:JobScheduler" },
+      "schedules": {}
     },
     {
       "comment": "Ensure the preconfigured Job schedules get initialized.",
       "@id": "urn:solid-on-rails:default:ParallelInitializer",
-      "ParallelHandler:_handlers": [
+      "@type": "ParallelHandler",
+      "handlers": [
         { "@id": "urn:solid-on-rails:default:JobSchedulesInitializer" }
       ]
     }

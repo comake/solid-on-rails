@@ -15,7 +15,7 @@ describe('A BullQueueProcessor', (): void => {
   let queues: Record<string, Queue>;
   let perform: Job['perform'];
   let job: Job;
-  let jobs: Record<string, Job>;
+  let jobs: Job[];
   let process: any;
   let add: any;
   let on: any;
@@ -64,8 +64,8 @@ describe('A BullQueueProcessor', (): void => {
 
     queues = { default: { process, add, on, name: 'default' } as any };
     perform = jest.fn();
-    job = { perform, options: { queue: 'default' }};
-    jobs = { example: job };
+    job = { name: 'example', perform, options: { queue: 'default' }};
+    jobs = [ job ];
 
     adapter = { } as any;
     processor = new BullQueueProcessor();
@@ -80,7 +80,7 @@ describe('A BullQueueProcessor', (): void => {
   });
 
   it('initializes queues with only one total concurrent job.', async(): Promise<void> => {
-    jobs = { example: job, example2: job };
+    jobs = [ job, { name: 'example2', perform, options: { queue: 'default' }}];
     processor.processJobsOnQueues(queues, jobs, adapter);
     expect(process).toHaveBeenCalledTimes(2);
     expect(process.mock.calls[0][0]).toBe('example');

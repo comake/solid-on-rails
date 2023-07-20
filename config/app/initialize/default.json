@@ -1,10 +1,10 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/app/initialize/initializers/base-url.json",
-    "files-sor:config/app/initialize/initializers/logger.json",
-    "files-sor:config/app/initialize/initializers/server.json",
-    "files-sor:config/app/initialize/initializers/version.json"
+    "sor:config/app/initialize/initializers/base-url.json",
+    "sor:config/app/initialize/initializers/logger.json",
+    "sor:config/app/initialize/initializers/server.json",
+    "sor:config/app/initialize/initializers/version.json"
   ],
   "@graph": [
     {
@@ -26,12 +26,7 @@
       ],
       "@id": "urn:solid-on-rails:default:ParallelInitializer",
       "@type": "ParallelHandler",
-      "handlers": [
-        {
-          "comment": "This handler is here because having this array empty gives Components.js errors.",
-          "@type": "StaticHandler"
-        }
-      ]
+      "handlers": []
     }
   ]
 }

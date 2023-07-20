@@ -1,8 +1,8 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/server/middleware/handlers/constant-headers.json",
-    "files-sor:config/server/middleware/handlers/cors.json"
+    "sor:config/server/middleware/handlers/constant-headers.json",
+    "sor:config/server/middleware/handlers/cors.json"
   ],
   "@graph": [
     {

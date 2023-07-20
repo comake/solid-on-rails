@@ -1,18 +1,18 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/app/main/default.json",
-    "files-sor:config/app/initialize/no-server.json",
-    "files-sor:config/app/finalize/no-server.json",
-    "files-sor:config/app/variables/default.json",
-    "files-sor:config/app/path/default.json",
+    "sor:config/app/main/default.json",
+    "sor:config/app/initialize/no-server.json",
+    "sor:config/app/finalize/no-server.json",
+    "sor:config/app/variables/default.json",
+    "sor:config/app/path/default.json",
 
-    "files-sor:config/storage/key-value/memory.json",
+    "sor:config/storage/key-value/memory.json",
 
-    "files-sor:config/jobs/bull-no-processing.json",
+    "sor:config/jobs/bull-no-processing.json",
 
-    "files-sor:config/util/variables/default.json",
-    "files-sor:config/util/logging/winston.json"
+    "sor:config/util/variables/default.json",
+    "sor:config/util/logging/winston.json"
   ],
   "@graph": [
     {

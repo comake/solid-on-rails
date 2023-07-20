@@ -1,31 +1,24 @@
 {
   "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
-    { "JobSchedulesInitializer:_schedules": { "@type": "@json" } }
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld"
   ],
   "import": [
-    "files-sor:config/app/main/default.json",
-    "files-sor:config/app/initialize/default.json",
-    "files-sor:config/app/finalize/default.json",
-    "files-sor:config/app/variables/default.json",
-    "files-sor:config/app/path/default.json",
+    "sor:config/app/main/default.json",
+    "sor:config/app/initialize/default.json",
+    "sor:config/app/finalize/default.json",
+    "sor:config/app/variables/default.json",
+    "sor:config/app/path/default.json",
 
-    "files-sor:config/http/handler/no-routes.json",
-    "files-sor:config/http/static/default.json",
+    "sor:config/http/handler/no-routes.json",
+    "sor:config/http/static/default.json",
+    
+    "sor:config/server/middleware/default.json",
+    "sor:config/server/server-factory/default.json",
 
-    "files-sor:config/http/error-handler.json",
-    "files-sor:config/http/response-writer.json",
-    "files-sor:config/http/request-parser.json",
+    "sor:config/storage/key-value/memory.json",
 
-    "files-sor:config/server/middleware/default.json",
-    "files-sor:config/server/server-factory/default.json",
-
-    "files-sor:config/jobs/scheduler/default.json",
-
-    "files-sor:config/storage/key-value/memory.json",
-
-    "files-sor:config/util/variables/default.json",
-    "files-sor:config/util/logging/winston.json"
+    "sor:config/util/variables/default.json",
+    "sor:config/util/logging/winston.json"
   ],
   "@graph": [
     {
@@ -35,7 +28,7 @@
     {
       "@id": "urn:solid-on-rails:test:Instances",
       "@type": "RecordObject",
-      "RecordObject:_record": [
+      "record": [
         {
           "RecordObject:_record_key": "app",
           "RecordObject:_record_value": { "@id": "urn:solid-on-rails:default:App" }
@@ -43,8 +36,16 @@
       ]
     },
     {
+      "@id": "urn:solid-on-rails:default:JobScheduler",
+      "@type": "AdapterBasedScheduler",
+      "adapter": { "@id": "urn:solid-on-rails:default:QueueAdapter" }
+    },
+    {
+      "comment": "Logs a warning if the base URL changes.",
       "@id": "urn:solid-on-rails:default:JobSchedulesInitializer",
-      "JobSchedulesInitializer:_schedules": {
+      "@type": "JobSchedulesInitializer",
+      "scheduler": { "@id": "urn:solid-on-rails:default:JobScheduler" },
+      "schedules": {
         "Void": {
           "jobName": "Void",
           "cron": "0 1 * * *",
@@ -53,6 +54,14 @@
           }
         }
       }
+    },
+    {
+      "comment": "Ensure the preconfigured Job schedules get initialized.",
+      "@id": "urn:solid-on-rails:default:ParallelInitializer",
+      "@type": "ParallelHandler",
+      "handlers": [
+        { "@id": "urn:solid-on-rails:default:JobSchedulesInitializer" }
+      ]
     }
   ]
 }

@@ -1,10 +1,9 @@
 {
   "@context": [
-    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
-    { "options": { "@id": "TypeOrmDataMapper:_options", "@type": "@json" } }
+    "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld"
   ],
   "import": [
-    "files-sor:config/storage/data-mapper/init/initializer.json"
+    "sor:config/storage/data-mapper/init/initializer.json"
   ],
   "@graph": [
     {

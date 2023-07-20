@@ -35,7 +35,7 @@ describe('A JobSchedulesInitializer', (): void => {
   });
 
   it('does not schedule any jobs when none are supplied.', async(): Promise<void> => {
-    const initializer = new JobSchedulesInitializer(scheduler);
+    const initializer = new JobSchedulesInitializer(scheduler, {});
     await expect(initializer.handle()).resolves.toBeUndefined();
     expect(scheduler.performLater).toHaveBeenCalledTimes(0);
   });

@@ -16,7 +16,12 @@ export async function instantiateFromConfig(
 ): Promise<any> {
   // Initialize the Components.js loader
   const mainModulePath = joinFilePath(__dirname, '../../');
-  const manager = await ComponentsManager.build({ mainModulePath, logLevel: 'error', moduleState: cachedModuleState });
+  const manager = await ComponentsManager.build({
+    mainModulePath,
+    logLevel: 'error',
+    moduleState: cachedModuleState,
+    typeChecking: false,
+  });
   cachedModuleState = manager.moduleState;
 
   if (!Array.isArray(configPaths)) {

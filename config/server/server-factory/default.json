@@ -1,7 +1,7 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/server/server-factory/configurator/default.json"
+    "sor:config/server/server-factory/configurator/default.json"
   ],
   "@graph": [
     {

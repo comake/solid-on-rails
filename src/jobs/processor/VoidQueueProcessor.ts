@@ -9,7 +9,7 @@ export class VoidQueueProcessor implements QueueProcessor<any> {
 
   public processJobsOnQueues(
     queues: Record<string, any>,
-    jobs: Record<string, Job>,
+    jobs: Job[],
     queueAdapter: QueueAdapter,
   ): void {
     // Do nothing

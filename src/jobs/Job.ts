@@ -5,6 +5,7 @@ import type { ConfiguredJobOptions } from './JobOptions';
  * A single asyncronous Job.
  */
 export abstract class Job {
+  public abstract readonly name: string;
   public readonly options: ConfiguredJobOptions = { queue: 'default' };
 
   /**

@@ -1,5 +1,4 @@
-import type { YargsArgOptions } from '../../../../src/init/cli/YargsCliExtractor';
-import { YargsCliExtractor } from '../../../../src/init/cli/YargsCliExtractor';
+import { YargsCliExtractor, YargsParameter } from '../../../../src/init/cli/YargsCliExtractor';
 
 const error = jest.spyOn(console, 'error').mockImplementation(jest.fn());
 const log = jest.spyOn(console, 'log').mockImplementation(jest.fn());
@@ -7,14 +6,14 @@ const exit = jest.spyOn(process, 'exit').mockImplementation(jest.fn() as any);
 
 describe('A YargsCliExtractor', (): void => {
   const envVarPrefix = '';
-  const parameters: YargsArgOptions = {
-    baseUrl: { alias: 'b', requiresArg: true, type: 'string' },
-    port: { alias: 'p', requiresArg: true, type: 'number' },
-  };
+  const parameters: YargsParameter[] = [
+    new YargsParameter('baseUrl', { alias: 'b', requiresArg: true, type: 'string' }),
+    new YargsParameter('port', { alias: 'p', requiresArg: true, type: 'number' }),
+  ];
   let extractor: YargsCliExtractor;
 
   beforeEach(async(): Promise<void> => {
-    extractor = new YargsCliExtractor(parameters);
+    extractor = new YargsCliExtractor(parameters, {});
   });
 
   afterEach(async(): Promise<void> => {
@@ -38,19 +37,9 @@ describe('A YargsCliExtractor', (): void => {
   });
 
   it('defaults to no parameters if none are provided.', async(): Promise<void> => {
-    extractor = new YargsCliExtractor();
+    extractor = new YargsCliExtractor([], {});
     const argv = [ 'node', 'script', '-b', 'http://localhost:3000/', '-p', '3000' ];
     await expect(extractor.handle({ argv, envVarPrefix })).resolves.toEqual(expect.objectContaining({}));
-  });
-
-  it('combines parameters and extra parameters.', async(): Promise<void> => {
-    extractor = new YargsCliExtractor(parameters, {}, { test: { alias: 't', requiresArg: true, type: 'string' }});
-    const argv = [ 'node', 'script', '-b', 'http://localhost:3000/', '-p', '3000', '-t', 'test' ];
-    await expect(extractor.handle({ argv, envVarPrefix })).resolves.toEqual(expect.objectContaining({
-      baseUrl: 'http://localhost:3000/',
-      port: 3000,
-      test: 'test',
-    }));
   });
 
   it('prints usage if defined.', async(): Promise<void> => {

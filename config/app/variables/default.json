@@ -1,8 +1,8 @@
 {
   "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@comake/solid-on-rails/^0.0.0/components/context.jsonld",
   "import": [
-    "files-sor:config/app/variables/cli/cli.json",
-    "files-sor:config/app/variables/resolver/resolver.json"
+    "sor:config/app/variables/cli/cli.json",
+    "sor:config/app/variables/resolver/resolver.json"
   ],
   "@graph": [
     {
