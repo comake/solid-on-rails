@@ -14,14 +14,15 @@ jest.mock('../../../src/init/AppRunner');
 
 const HELP_MESSAGE = `solid-on-rails [<command>]
     Commands:
-      script task              Run a task from the tasks folder
-      script storages:seed     Seed the storages from the ./db/seeds.js file
-      script storages:drop     Drop all data from the DataMapper and KeyValue Storages
-      script db:setup          Setup the database from configured entity schemas
-      script db:migrate        Run all pending migrations in the ./db/migrations folder
-      script db:revert         Revert the last executed migration
-      script queues:deleteAll  Delete all queues
-      script queues:delete     Delete a specific queue
+      script task                       Run a task from the tasks folder
+      script storages:seed              Seed the storages from the ./db/seeds.js file
+      script storages:drop              Drop all data from the DataMapper and KeyValue Storages
+      script db:setup                   Setup the database from configured entity schemas
+      script db:migrate                 Run all pending migrations in the ./db/migrations folder
+      script db:revert                  Revert the last executed migration
+      script queues:deleteAll           Delete all queues
+      script queues:delete              Delete a specific queue
+      script queues:removeCompleted     Removes all completed jobs from a queue
     Options:
           --help                   Show help                                                                       [boolean]
           --version                Show version number                                                             [boolean]
@@ -121,6 +122,23 @@ describe('The Cli', (): void => {
         loggingLevel: 'info',
       }),
       [ 'node', 'script', 'queues:delete', 'default' ],
+    );
+  });
+
+  it('runs the queues:removeCompleted command.', async(): Promise<void> => {
+    const removeCompletedInQueue = jest.fn().mockReturnValue(Promise.resolve());
+    (QueueAdapterAccessorRunner as jest.Mock).mockImplementation((): any => ({ removeCompletedInQueue }));
+    // eslint-disable-next-line no-sync
+    new Cli().runCliSync({ argv: [ 'node', 'script', 'queues:removeCompleted', 'default' ]});
+    // Wait until app.start has been called, because we can't await AppRunner.run.
+    await flushPromises();
+    expect(QueueAdapterAccessorRunner).toHaveBeenCalledTimes(1);
+    expect(removeCompletedInQueue).toHaveBeenCalledTimes(1);
+    expect(removeCompletedInQueue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        loggingLevel: 'info',
+      }),
+      [ 'node', 'script', 'queues:removeCompleted', 'default' ],
     );
   });
 

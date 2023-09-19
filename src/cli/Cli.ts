@@ -75,6 +75,7 @@ export class Cli {
       .command('db:revert', 'Revert the last executed migration')
       .command('queues:deleteAll', 'Delete all queues')
       .command('queues:delete', 'Delete a specific queue')
+      .command('queues:removeCompleted', 'Removes all completed jobs from a queue')
       .example('solid-on-rails storages:seed -c ./path/to/config.json -m .', 'Seed the storages with a custom config')
       .options(cliParameters)
       .wrap(120)
@@ -124,6 +125,10 @@ export class Cli {
     if (command === 'queues:delete') {
       const runner = new QueueAdapterAccessorRunner();
       return runner.deleteQueue(params, argv);
+    }
+    if (command === 'queues:removeCompleted') {
+      const runner = new QueueAdapterAccessorRunner();
+      return runner.removeCompletedInQueue(params, argv);
     }
   }
 }

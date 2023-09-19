@@ -1,5 +1,5 @@
 /* eslint-disable tsdoc/syntax */
-import type { Queue } from 'bull';
+import type { Queue, Job as BullJob } from 'bull';
 import Bull from 'bull';
 import { getLoggerFor } from '../../logging/LogUtil';
 import type { Job } from '../Job';
@@ -122,6 +122,15 @@ export class BullQueueAdapter implements QueueAdapter {
   private jobOptionsToBullOptions(options: JobOptions): Bull.JobOptions {
     const bullOptions: Bull.JobOptions = {};
 
+    bullOptions.removeOnComplete = !options.disableRemoveOnComplete;
+
+    if (options.removeOnFailAge ?? options.removeOnFailCount) {
+      bullOptions.removeOnFail = {
+        age: options.removeOnFailAge,
+        count: options.removeOnFailCount,
+      };
+    }
+
     if (options.every && typeof options.every === 'string') {
       bullOptions.repeat = { cron: options.every };
       this.addDelayFieldToObject(bullOptions.repeat, 'startDate', options.at ?? options.in);
@@ -171,6 +180,18 @@ export class BullQueueAdapter implements QueueAdapter {
     await Promise.allSettled(
       Object.keys(this.queues)
         .map((queueName: string): Promise<void> => this.deleteQueue(queueName)),
+    );
+  }
+
+  public async removeCompletedInQueue(queueName: string): Promise<void> {
+    const queue = this.queues[queueName];
+    if (!queue) {
+      throw new Error(`No queue named ${queueName} found`);
+    }
+    const getCompletedFn = queue.getCompleted as (start?: number, end?: number, opts?: any) => Promise<BullJob[]>;
+    const completed = await getCompletedFn(undefined, undefined, { excludeData: true });
+    await Promise.all(
+      completed.map((job): Promise<void> => job.remove()),
     );
   }
 }
