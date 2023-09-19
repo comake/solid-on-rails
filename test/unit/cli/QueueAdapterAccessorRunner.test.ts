@@ -16,6 +16,7 @@ const app: jest.Mocked<App> = {
 const queueAdapter: jest.Mocked<QueueAdapter> = {
   deleteAllQueues: jest.fn(),
   deleteQueue: jest.fn(),
+  removeCompletedInQueue: jest.fn(),
 } as any;
 
 const instances = {
@@ -144,6 +145,43 @@ describe('QueueAdapterAccessorRunner', (): void => {
       expect(app.start).toHaveBeenCalledTimes(1);
       expect(queueAdapter.deleteQueue).toHaveBeenCalledTimes(1);
       expect(queueAdapter.deleteQueue).toHaveBeenCalledWith('default');
+      expect(app.stop).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('removeCompleted', (): void => {
+    it('runs the server and removed completed jobs from a queue.', async(): Promise<void> => {
+      const runner = new QueueAdapterAccessorRunner();
+      await expect(runner.removeCompletedInQueue(params, [ 'node', 'queues:removeCompleted', 'default' ]))
+        .resolves.toBeUndefined();
+      expect(ComponentsManager.build).toHaveBeenCalledTimes(1);
+      expect(ComponentsManager.build).toHaveBeenCalledWith({
+        dumpErrorState: true,
+        logLevel: 'info',
+        mainModulePath: joinFilePath(__dirname, '../../../'),
+        typeChecking: false,
+      });
+      expect(manager.configRegistry.register).toHaveBeenCalledTimes(1);
+      expect(manager.configRegistry.register).toHaveBeenCalledWith('/var/cwd/config.json');
+      expect(manager.instantiate).toHaveBeenCalledTimes(2);
+      expect(manager.instantiate).toHaveBeenNthCalledWith(
+        1,
+        'urn:solid-on-rails-setup:default:CliResolver',
+        { variables: { 'urn:solid-on-rails:default:variable:modulePathPlaceholder': '@SoR:' }},
+      );
+      expect(cliExtractor.handleSafe).toHaveBeenCalledTimes(1);
+      expect(cliExtractor.handleSafe).toHaveBeenCalledWith({
+        argv: [ 'node', 'queues:removeCompleted', 'default' ],
+        envVarPrefix: '',
+      });
+      expect(settingsResolver.handleSafe).toHaveBeenCalledTimes(1);
+      expect(settingsResolver.handleSafe).toHaveBeenCalledWith(defaultParameters);
+      expect(manager.instantiate).toHaveBeenNthCalledWith(2,
+        'urn:solid-on-rails:queue-accessor:Instances',
+        { variables: defaultVariables });
+      expect(app.start).toHaveBeenCalledTimes(1);
+      expect(queueAdapter.removeCompletedInQueue).toHaveBeenCalledTimes(1);
+      expect(queueAdapter.removeCompletedInQueue).toHaveBeenCalledWith('default');
       expect(app.stop).toHaveBeenCalledTimes(1);
     });
   });
