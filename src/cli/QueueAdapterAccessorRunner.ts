@@ -1,4 +1,5 @@
 import type { CliArgv } from '../init/variables/Types';
+import type { QueueAdapter } from '../jobs/adapter/QueueAdapter';
 import { getLoggerFor } from '../logging/LogUtil';
 import type { CliParameters } from '../util/ComponentsJsUtil';
 import type { AsyncronousAppRunnerCallbackArgs } from './AsyncronousAppAccessorRunner';
@@ -34,6 +35,20 @@ export class QueueAdapterAccessorRunner extends AsyncronousAppAccessorRunner {
       this.logger.info(`Deleting this ${queueName} queue`);
       await queueAdapter.deleteQueue(queueName);
       this.logger.info(`Successfully deleted the ${queueName} queue.`);
+    };
+    await this.runAppAndExecuteCallbackWithInstancesAndEnv(params, argv, callback);
+  }
+
+  public async removeCompletedInQueue(
+    params: CliParameters,
+    argv: CliArgv,
+  ): Promise<void> {
+    const callback = async({ instances: { queueAdapter }}: AsyncronousAppRunnerCallbackArgs): Promise<void> => {
+      const indexOfQueuesDeleteCommand = argv.indexOf('queues:removeCompleted');
+      const queueName = argv[indexOfQueuesDeleteCommand + 1];
+      this.logger.info(`Removing completed in the ${queueName} queue`);
+      await (queueAdapter as QueueAdapter).removeCompletedInQueue(queueName);
+      this.logger.info(`Successfully removed completed in the ${queueName} queue.`);
     };
     await this.runAppAndExecuteCallbackWithInstancesAndEnv(params, argv, callback);
   }

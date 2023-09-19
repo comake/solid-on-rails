@@ -13,5 +13,7 @@ export interface QueueAdapter extends Finalizable {
 
   deleteQueue: (queueName: string) => Promise<void>;
 
+  removeCompletedInQueue: (queueName: string) => Promise<void>;
+
   deleteAllQueues: () => Promise<void>;
 }

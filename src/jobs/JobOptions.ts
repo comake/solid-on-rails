@@ -23,6 +23,18 @@ export interface JobOptions {
    * If this field is not specified, the job will not be auto-retried.
    */
   retryAttempts?: number;
+  /**
+   * Whether jobs of this type should be removed from storage after they are completed
+   */
+  disableRemoveOnComplete?: boolean;
+  /**
+   * The number of seconds after which to remove failed jobs
+   */
+  removeOnFailAge?: number;
+  /**
+   * The number of failed jobs to keep
+   */
+  removeOnFailCount?: number;
 }
 
 export type ConfiguredJobOptions = Omit<JobOptions, 'at'>;
