@@ -12,6 +12,7 @@ const today = Date.now();
 const tomorrow = new Date(today + dayInMs);
 
 describe('A BullQueueAdapter', (): void => {
+  const jobId = 'somejobid';
   const queue = 'default';
   let queues: Record<string, BullQueueSettings>;
   let perform: Job['perform'];
@@ -21,6 +22,8 @@ describe('A BullQueueAdapter', (): void => {
   let add: any;
   let obliterate: any;
   let getCompleted: any;
+  let getJob: any;
+  let bullJob: any;
   const redisConfig = { port: 6379, host: '127.0.0.1' };
   let adapter: BullQueueAdapter;
   let queueProcessor: BullQueueProcessor;
@@ -34,15 +37,24 @@ describe('A BullQueueAdapter', (): void => {
     });
     job = { name: 'example', perform, options: { queue }};
     jobs = [ job ];
-
     close = jest.fn();
     obliterate = jest.fn();
     getCompleted = jest.fn();
-    add = jest.fn();
+    bullJob = { remove: jest.fn() };
+    getJob = jest.fn().mockResolvedValue(bullJob);
+    add = jest.fn().mockResolvedValue({ id: jobId, queue: { name: queue }});
     queueProcessor = { processJobsOnQueues: jest.fn() } as any;
 
     (Bull as jest.Mock).mockImplementation(
-      (name: string): Bull.Queue => ({ process, add, name, close, obliterate, getCompleted } as any),
+      (name: string): Bull.Queue => ({
+        process,
+        add,
+        name,
+        close,
+        obliterate,
+        getCompleted,
+        getJob,
+      } as any),
     );
   });
 
@@ -89,7 +101,7 @@ describe('A BullQueueAdapter', (): void => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     const data = { alpha: 1 };
     await expect(adapter.performLater('example', data))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -99,7 +111,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job on a cron schedule.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { every: '5 4 * * *' }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -112,7 +124,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job on a cron schedule with a start time at a specific date.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { at: tomorrow, every: '5 4 * * *' }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -125,7 +137,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job on a cron schedule with a start time after a delay.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { in: 1000, every: '5 4 * * *' }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -138,7 +150,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job on a certain millisecond schedule.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { every: 1000 }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -151,7 +163,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job to be run at a specific date.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { at: tomorrow }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -164,7 +176,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job to be run after a delay.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { in: 1000 }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -177,7 +189,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job with an auto-retry backoff setting.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { retryAttempts: 3 }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -191,7 +203,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job with remove on complete setting disabled.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { disableRemoveOnComplete: true }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -203,7 +215,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job with a removeOnFail age.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { removeOnFailAge: 1000 }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -219,7 +231,7 @@ describe('A BullQueueAdapter', (): void => {
   it('adds the job with a removeOnFail count.', async(): Promise<void> => {
     adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
     await expect(adapter.performLater('example', {}, { removeOnFailCount: 1000 }))
-      .resolves.toBeUndefined();
+      .resolves.toEqual({ id: jobId, queue });
     expect(Bull).toHaveBeenCalledTimes(1);
     expect(Bull).toHaveBeenCalledWith('default', { redis: redisConfig, settings: {}});
     expect(add).toHaveBeenCalledTimes(1);
@@ -230,6 +242,15 @@ describe('A BullQueueAdapter', (): void => {
         count: 1000,
       },
     });
+  });
+
+  it('removes a job from a queue.', async(): Promise<void> => {
+    adapter = new BullQueueAdapter(jobs, queues, redisConfig, queueProcessor);
+    await expect(adapter.removeJob('somejobid', 'default'))
+      .resolves.toBeUndefined();
+    expect(getJob).toHaveBeenCalledTimes(1);
+    expect(getJob).toHaveBeenCalledWith(jobId);
+    expect(bullJob.remove).toHaveBeenCalledTimes(1);
   });
 
   it('deletes a queue.', async(): Promise<void> => {

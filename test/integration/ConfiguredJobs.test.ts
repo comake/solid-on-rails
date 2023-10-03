@@ -19,19 +19,25 @@ describe('An http server with preconfigured jobs', (): void => {
   let add: any;
   let on: any;
   let bullConstructor: any;
-  let registeredJobs: Record<string, (data: any) => Promise<void>>;
+  let registeredJobs: Record<string, any>;
 
   beforeEach(async(): Promise<void> => {
     registeredJobs = {};
     process = jest.fn().mockImplementation(
       (jobName: string, concurrency: number, processFn: (bullJob: any) => Promise<void>): void => {
-        registeredJobs[jobName] = processFn;
+        registeredJobs[jobName] = {
+          perform: processFn,
+          id: 'jobId',
+          queue: { name: 'default' },
+        };
       },
     );
 
     add = jest.fn().mockImplementation(
-      async(jobName: string, data: any): Promise<void> => {
-        await registeredJobs[jobName]({ data });
+      async(jobName: string, data: any): Promise<any> => {
+        const job = registeredJobs[jobName];
+        await registeredJobs[jobName].perform({ data });
+        return job;
       },
     );
 
