@@ -1,4 +1,5 @@
 import type { Finalizable } from '../../init/finalize/Finalizable';
+import type { JobInfo } from '../JobInfo';
 import type { JobOptions } from '../JobOptions';
 
 /**
@@ -9,7 +10,9 @@ export interface QueueAdapter extends Finalizable {
     jobName: string,
     data?: Record<string, any>,
     overrideOptions?: Partial<JobOptions>,
-  ) => Promise<void>;
+  ) => Promise<JobInfo>;
+
+  removeJob: (jobId: string, queueName: string) => Promise<void>;
 
   deleteQueue: (queueName: string) => Promise<void>;
 
